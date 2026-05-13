@@ -35,7 +35,17 @@ const leaders = [
     bio: 'Monitor dedicado ao auxílio das aulas e desenvolvimento das acrobacias.',
     specialties: ['Acrobacias', 'Benguela'],
     yearsTraining: 12
-}
+},
+  {
+    id: 'g2',
+    name: 'Nome do Prateado',
+    nickname: 'Contramestre Prateado',
+    rank: 'Contramestre',
+    image: '@/imports/Monitor_Jhoy.jpg',
+    bio: 'Contramestre dedicado ao auxílio das aulas e desenvolvimento das acrobacias.',
+    specialties: ['Acrobacias', 'Benguela'],
+    yearsTraining: 12
+},
 ];
 
 // 2. FORMADOS E GRADUADOS (A base técnica do grupo)
