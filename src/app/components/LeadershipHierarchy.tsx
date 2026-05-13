@@ -27,15 +27,15 @@ const leaders = [
     yearsTraining: 25
   },
   {
-    id: '5',
-    name: 'Kaio Souza',
-    nickname: 'Estagiário Invergado',
-    rank: 'Estagiário',
-    image: '@/imports/Estagiário_Invergado.jpg',
-    bio: 'Lidera o trabalho de desenvolvimento técnico focado em fundamentos de Angola.',
-    specialties: ['Toque', 'Canto','São Bento Grande'],
-    yearsTraining: 10
-  }
+    id: 'g2',
+    name: 'Joel Brito',
+    nickname: 'Monitor Jhoy',
+    rank: 'Monitor',
+    image: '@/imports/Monitor_Jhoy.jpg',
+    bio: 'Monitor dedicado ao auxílio das aulas e desenvolvimento das acrobacias.',
+    specialties: ['Acrobacias', 'Benguela'],
+    yearsTraining: 12
+}
 ];
 
 // 2. FORMADOS E GRADUADOS (A base técnica do grupo)
@@ -51,15 +51,36 @@ const graduates = [
     yearsTraining: 8
   },
   {
-    id: 'g2',
-    name: 'Joel Brito',
-    nickname: 'Monitor Jhoy',
-    rank: 'Monitor',
-    image: '@/imports/Monitor_Jhoy.jpg',
-    bio: 'Monitor dedicado ao auxílio das aulas e desenvolvimento das acrobacias.',
-    specialties: ['Acrobacias', 'Benguela'],
-    yearsTraining: 12
-  }
+    id: '5',
+    name: 'Kaio Souza',
+    nickname: 'Estagiário Invergado',
+    rank: 'Estagiário',
+    image: '@/imports/Estagiário_Invergado.jpg',
+    bio: 'Lidera o trabalho de desenvolvimento técnico focado em fundamentos de Angola.',
+    specialties: ['Toque', 'Canto','São Bento Grande'],
+    yearsTraining: 10
+  },
+  {
+    id: '5',
+    name: 'Kaio Souza',
+    nickname: 'Estagiário Invergado',
+    rank: 'Estagiário',
+    image: '@/imports/Estagiário_Invergado.jpg',
+    bio: 'Lidera o trabalho de desenvolvimento técnico focado em fundamentos de Angola.',
+    specialties: ['Toque', 'Canto','São Bento Grande'],
+    yearsTraining: 10
+  },
+  {
+    id: '5',
+    name: 'Kaio Souza',
+    nickname: 'Estagiário Invergado',
+    rank: 'Estagiário',
+    image: '@/imports/Estagiário_Invergado.jpg',
+    bio: 'Lidera o trabalho de desenvolvimento técnico focado em fundamentos de Angola.',
+    specialties: ['Toque', 'Canto','São Bento Grande'],
+    yearsTraining: 10
+  },
+
 ];
 
 export function LeadershipHierarchy() {
@@ -90,7 +111,7 @@ export function LeadershipHierarchy() {
         {/* SEÇÃO: FORMADOS E GRADUADOS */}
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">Corpo de Formados</h2>
-          <div className="w-16 h-1 bg-gray-300 mx-auto mb-6" />
+          <div className="w-16 h-1 bg-yellow-300 mx-auto mb-6" />
           <p className="text-gray-600">Alunos graduados que preservam nossa técnica e tradição</p>
         </div>
 
