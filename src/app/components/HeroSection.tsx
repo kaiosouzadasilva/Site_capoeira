@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 // Adicione esta linha com o nome exato do seu ficheiro:
 
-import fotoRoda from '../src/imports/Imagem do grupo.png';
+import fotoGrupo from "@/imports/Imagem_do_grupo.png";
 
 export function HeroSection() {
   return (
@@ -10,7 +10,7 @@ export function HeroSection() {
       {/* Imagem de Fundo com Escurecimento */}
       <div className="absolute inset-0">
         <ImageWithFallback
-        src={fotoRoda} 
+        src={fotoGrupo} 
         alt="Roda de Capoeira do meu grupo"
         className="w-full h-full object-cover"
       />

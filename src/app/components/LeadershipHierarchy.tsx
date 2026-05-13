@@ -7,33 +7,53 @@ import { ImageWithFallback } from './figma/ImageWithFallback';
 const leaders = [
   {
     id: '1',
-    name: 'João Silva',
-    nickname: 'Mestre Coruja',
+    name: 'Dermilson Brasil',
+    nickname: 'Mestre Canário',
     rank: 'Mestre',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
-    bio: 'Mestre Coruja dedicou mais de 40 anos à Capoeira, treinado diretamente sob mestres lendários na Bahia. Fundou nossa escola com a visão de preservar tradições autênticas.',
-    specialties: ['Angola', 'Música e Cantos', 'Filosofia'],
+    image: '@/imports/Mestre_Canário.jpg',
+    bio: 'Mestre Canário dedicou mais de 40 anos à Capoeira, treinado diretamente sob mestres lendários na Bahia. Fundou nossa escola com a visão de preservar tradições autênticas.',
+    specialties: ['Angola', 'Regional', 'Música e Cantos', 'Filosofia'],
     yearsTraining: 42
   },
   {
     id: '2',
-    name: 'Maria Santos',
-    nickname: 'Contramestra Lua',
+    name: 'Jarline da Silva',
+    nickname: 'Contramestra Peteca',
     rank: 'Contramestra',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80',
-    bio: 'Contramestra Lua traz 25 anos de experiência e especializa-se em métodos pedagógicos para crianças e jovens. Desenvolveu nosso currículo que equilibra tradição com ensino moderno.',
+    image: '@/imports/Contramestra_Peteca.jpg',
+    bio: 'Contramestra Peteca traz 25 anos de experiência e especializa-se em métodos pedagógicos para crianças e jovens. Desenvolveu nosso currículo que equilibra tradição com ensino moderno.',
     specialties: ['Treinamento Infantil', 'Regional'],
     yearsTraining: 25
   },
   {
     id: '3',
-    name: 'Carlos Mendes',
-    nickname: 'Contramestre Relâmpago',
+    name: 'Fulano',
+    nickname: 'Contramestre Prateado',
     rank: 'Contramestre',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80',
+    image: '@/imports/Contramestre_Prateado.jpg',
     bio: 'Conhecido por seu estilo acrobático explosivo e profundo conhecimento de sequências avançadas. Lidera nossa equipe de competição.',
     specialties: ['Acrobacias', 'Benguela'],
     yearsTraining: 22
+  },
+  {
+    id: '4',
+    name: 'Joel Brito',
+    nickname: 'Monitor Jhoy',
+    rank: 'Monitor',
+    image: '@/imports/Monitor_Jhoy.jpg',
+    bio: 'Conhecido por seu estilo acrobático explosivo e profundo conhecimento de sequências avançadas. Lidera nossa equipe de competição.',
+    specialties: ['Acrobacias', 'Benguela'],
+    yearsTraining: 22
+  },
+  {
+    id: '5',
+    name: 'Kaio Souza',
+    nickname: 'Estagiário Invergado',
+    rank: 'Estagiário',
+    image: '@/imports/Estagiário_Invergado.jpg',
+    bio: 'Conhecido por seu estilo acrobático explosivo e profundo conhecimento de sequências avançadas. Lidera nossa equipe de competição.',
+    specialties: ['Toque', 'Canto','São bento Grande de Angola'],
+    yearsTraining: 10
   }
 ];
 

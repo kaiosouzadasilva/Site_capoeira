@@ -4,27 +4,27 @@ import { MapPin, Clock, MessageCircle } from 'lucide-react';
 const polos = [
   {
     id: '1',
-    name: 'Polo Centro Cultural',
-    address: 'Rua Principal, 123 - Centro',
-    instructor: 'Contramestra Lua',
-    schedules: { afternoon: 'Seg, Qua, Sex - 15h às 17h', night: 'Ter, Qui - 19h às 21h' },
-    whatsapp: '5511987654321' // Coloque o número real aqui
+    name: 'Polo Centro Cultural Canto do Canário',
+    address: 'R. Juticá, 280 - Cidade de Deus, Manaus - AM, 69099-201',
+    instructor: 'Mestre Canário e Contramestre Peteca',
+    schedules: { morning: 'Sáb - 09h às 11h', night: 'Ter, Qui - 18:30h às 20:30h', afternoon: 'Não possui horário à tarde' },
+    whatsapp: '+55 92 9333-1766' // Coloque o número real aqui
   },
   {
     id: '2',
-    name: 'Polo Praia',
-    address: 'Avenida Litorânea, 456 - Orla',
-    instructor: 'Contramestre Relâmpago',
-    schedules: { afternoon: 'Sáb, Dom - 16h às 18h', night: 'Qua, Sex - 20h às 22h' },
-    whatsapp: '5511987654322'
+    name: 'Polo Novo Aleixo - Cidade Nova',
+    address: 'R. Cento Noventa Tres, 249 - Cj Cidade - Nova IV, Manaus - AM, 69098-240',
+    instructor: 'Monitor Jhoy e Estagiário Invergado',
+    schedules: { afternoon: 'Sáb - 15h às 17h', night: 'Ter, Qui - 19h às 21h', morning: 'Não possui horário de manhã' },
+    whatsapp: '+55 92 98501-2070' + ' +55 92 99199-8238'
   },
   {
     id: '3',
     name: 'Polo Comunitário',
     address: 'Rua do Parque, 789 - Zona Oeste',
-    instructor: 'Mestre Coruja',
+    instructor: 'Contra-Mestre Prateado',
     schedules: { afternoon: 'Ter, Qui - 14h30 às 16h30', night: 'Seg, Qua, Sex - 19h30 às 21h30' },
-    whatsapp: '5511987654323'
+    whatsapp: '+55 92 99999-9999'
   }
 ];
 
@@ -62,8 +62,9 @@ export function LocationsMap() {
                 <div className="flex gap-3">
                   <Clock className="w-5 h-5 text-yellow-600 flex-shrink-0" />
                   <div className="text-sm">
-                    <p><strong>Tarde:</strong> {polo.schedules.afternoon}</p>
+                    <p><strong>Manhã:</strong> {polo.schedules.morning}</p>
                     <p><strong>Noite:</strong> {polo.schedules.night}</p>
+                    <p><strong> Tarde:</strong> {polo.schedules.afternoon}</p>
                   </div>
                 </div>
                 <div className="text-sm bg-gray-50 p-2 rounded">
