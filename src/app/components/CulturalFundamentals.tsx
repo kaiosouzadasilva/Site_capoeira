@@ -14,7 +14,6 @@ const instruments = [
 const gameStyles = [
   { id: 'angola', name: 'Angola', description: 'O estilo tradicional, mais lento e estratégico, jogado próximo ao chão.', img: 'https://images.unsplash.com/photo-1518549945237-2e91b5e8f968?w=800&q=80' },
   { id: 'regional', name: 'Regional', description: 'Estilo moderno que incorpora técnicas rápidas, acrobáticas e métodos estruturados.', img: 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800&q=80' },
-  { id: 'benguela', name: 'Benguela', description: 'Um meio termo. Ritmo moderado com movimentos suaves e fluidos.', img: 'https://images.unsplash.com/photo-1605364815509-df52f0059430?w=800&q=80' }
 ];
 
 export function CulturalFundamentals() {
