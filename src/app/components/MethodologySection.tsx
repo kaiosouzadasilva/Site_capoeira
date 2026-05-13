@@ -3,6 +3,12 @@ import { Heart, Brain, Users, ChevronDown, Calendar, User, Award, Info, X } from
 import { motion, AnimatePresence } from 'motion/react';
 import { BackgroundTexture } from './BackgroundTexture';
 
+const methodologyPillars = [
+  { icon: Heart, title: 'Corpo', description: 'Condicionamento físico, acrobacias e a arte do movimento através de sequências tradicionais e treinamento moderno.' },
+  { icon: Brain, title: 'Mente', description: 'Pensamento estratégico, conhecimento musical e a filosofia por trás de cada movimento.' },
+  { icon: Users, title: 'Comunidade', description: 'Respeito, camaradagem e o espírito coletivo que define nossa roda e nossa família de capoeiristas.' }
+];
+
 // 1. Dados detalhados da Linhagem
 const lineageData = {
   camisa: {
