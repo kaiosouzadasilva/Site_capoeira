@@ -5,7 +5,7 @@ import { BackgroundTexture } from './BackgroundTexture';
 
 // Importação das imagens utilizando caminhos relativos para evitar erros de alias (@)
 // IMPORTANTE: Renomeie os seus arquivos na pasta 'src/imports/' para retirar acentos e espaços
-import fotoCamisa from '../../imports/Mestre_Camisa_Furada.jpg';
+import fotoCamisa from '../../imports/Mestre_Camisa_furada.jpg';
 import fotoCanario from '../../imports/Mestre_Canario.jpg'; // Arquivo sem acento
 
 // 1. Pilares da Metodologia
