@@ -46,7 +46,7 @@ export function HeroSection() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="inline-block bg-yellow-500 hover:bg-yellow-400 text-black font-bold px-10 py-4 rounded-lg transition-all duration-300 shadow-lg"
           >
-            Conheça Nosso Método
+            Conheça Nossa história
           </motion.a>
         </div>
       </div>
