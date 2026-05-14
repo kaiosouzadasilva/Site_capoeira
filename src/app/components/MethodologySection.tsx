@@ -20,7 +20,8 @@ function MemberCard({ name, role, image, status, highlight, isSmall, borderColor
         <img 
           src={image} 
           alt={name} 
-          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
+          // {/* ALTERAÇÃO AQUI: Removido 'grayscale' e 'group-hover:grayscale-0' */}
+          className="w-full h-full object-cover transition-all duration-700" 
           onError={(e) => (e.currentTarget.src = "https://via.placeholder.com/150?text=Capoeira")}
         />
         {status && (
@@ -110,21 +111,20 @@ export function MethodologySection() {
             
             {/* MONITOR JHOY -> INVERGADO */}
             <div className="flex flex-col items-center">
-              <MemberCard 
-              name="Monitor Jhoy" 
-              role="Monitor" 
-              image="/membros/Monitor_jhoy.png" 
-              borderColor="border-yellow-500" 
-              isSmall 
-              />
-
-              <div className="h-6 w-px bg-yellow-500 my-2" />
-              <MemberCard
-              name="Est. Invergado" 
-              role="Estagiário" 
-              image="/membros/Invergado.png" 
-              isSmall 
-              />
+                <MemberCard 
+                  name="Monitor Jhoy" 
+                  role="Monitor" 
+                  image="/membros/Monitor_jhoy.png" 
+                  borderColor="border-yellow-500" 
+                  isSmall 
+                />
+                <div className="h-6 w-px bg-yellow-500 my-2" />
+                <MemberCard 
+                  name="Est. Invergado" 
+                  role="Estagiário" 
+                  image="/membros/Invergado.png" 
+                  isSmall 
+                />
                 {/* Espaço para um futuro aluno do Invergado ou do Jhoy -----------------------------------------------------------------------------------
                 <div className="h-4 w-px bg-gray-300 my-1" />
                 <PlaceholderCard isSmall /> */}
