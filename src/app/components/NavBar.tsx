@@ -1,73 +1,138 @@
-import { useState, useEffect } from 'react';
-import { Moon, Sun, Menu, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Menu, 
+  X, 
+  User, 
+  ShieldCheck, 
+  ChevronRight,
+  LayoutDashboard
+} from 'lucide-react';
 
 export function Navbar() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDarkMode]);
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   const navLinks = [
     { name: 'Início', href: '/' },
     { name: 'Nossa História', href: '/historia' },
-    { name: 'Fundamentos', href: '/fundamentos' },
     { name: 'Liderança', href: '/lideranca' },
-    { name: 'Oficinas', href: '/oficinas' },
     { name: 'Polos', href: '/polos' },
+    { name: 'Galeria', href: '/galeria' },
+  ];
+
+  // Links que só aparecem/destacam para membros
+  const memberLinks = [
+    { name: 'Meu Progresso', href: '/meu-progresso', icon: <User size={18} />, color: 'text-blue-500' },
+    { name: 'Área do Mestre', href: '/admin', icon: <ShieldCheck size={18} />, color: 'text-yellow-500' },
   ];
 
   return (
-    <nav className="fixed w-full z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
+    <nav className="fixed top-0 w-full z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         
-        <Link to="/" className="font-black text-2xl tracking-tighter text-gray-900 dark:text-white">
-          <span className="text-yellow-500">Escola de Capoeira Luta de Libertação</span>
+        {/* LOGO */}
+        <Link to="/" className="flex items-center gap-2 group">
+          <div className="w-10 h-10 bg-yellow-500 rounded-xl flex items-center justify-center font-black text-black group-hover:rotate-12 transition-transform">
+            E
+          </div>
+          <span className="font-black text-xl tracking-tighter uppercase dark:text-white">
+            ECLL<span className="text-yellow-500">.</span>
+          </span>
         </Link>
 
-        {/* Desktop */}
-        <div className="hidden md:flex items-center gap-8 font-bold text-sm text-gray-700 dark:text-gray-200">
+        {/* DESKTOP MENU */}
+        <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <Link key={link.name} to={link.href} className="hover:text-yellow-500 transition-colors">
+            <Link
+              key={link.name}
+              to={link.href}
+              className={`text-xs font-black uppercase tracking-widest transition-colors ${
+                location.pathname === link.href 
+                ? 'text-yellow-500' 
+                : 'text-gray-500 hover:text-yellow-500'
+              }`}
+            >
               {link.name}
             </Link>
           ))}
-          
-          <button 
-            onClick={() => setIsDarkMode(!isDarkMode)} 
-            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-yellow-500 transition-all"
-          >
-            {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
+
+          {/* DIVISOR VISUAL */}
+          <div className="w-px h-6 bg-gray-200 dark:bg-gray-800" />
+
+          {/* ACESSOS RESTRITOS (Botões de Destaque) */}
+          <div className="flex items-center gap-4">
+             {memberLinks.map((link) => (
+               <Link
+                key={link.name}
+                to={link.href}
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 text-[10px] font-black uppercase tracking-widest transition-all hover:scale-105 active:scale-95 ${
+                  location.pathname === link.href ? 'bg-gray-100 dark:bg-gray-800' : ''
+                }`}
+               >
+                <span className={link.color}>{link.icon}</span>
+                <span className="dark:text-white">{link.name}</span>
+               </Link>
+             ))}
+          </div>
         </div>
 
-        {/* Mobile Toggle */}
-        <div className="md:hidden flex items-center gap-4">
-          <button onClick={() => setIsDarkMode(!isDarkMode)} className="text-gray-800 dark:text-yellow-500">
-            {isDarkMode ? <Sun size={22} /> : <Moon size={22} />}
-          </button>
-          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-gray-900 dark:text-white">
-            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
-        </div>
+        {/* MOBILE MENU BUTTON */}
+        <button 
+          className="md:hidden p-2 text-gray-500"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <X /> : <Menu />}
+        </button>
       </div>
 
-      {/* Menu Mobile Dropdown */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-20 left-0 w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 flex flex-col p-6 gap-6 font-black text-gray-800 dark:text-white shadow-2xl">
-          {navLinks.map((link) => (
-            <Link key={link.name} to={link.href} onClick={() => setIsMobileMenuOpen(false)} className="text-xl">
-              {link.name}
-            </Link>
-          ))}
-        </div>
-      )}
+      {/* MOBILE MENU DROPDOWN */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 overflow-hidden"
+          >
+            <div className="p-6 space-y-4">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center justify-between group"
+                >
+                  <span className="text-sm font-black uppercase tracking-widest text-gray-500 group-hover:text-yellow-500 transition-colors">
+                    {link.name}
+                  </span>
+                  <ChevronRight size={16} className="text-gray-300" />
+                </Link>
+              ))}
+
+              <div className="h-px bg-gray-100 dark:bg-gray-800 my-4" />
+              
+              {/* LINKS DE MEMBROS NO MOBILE */}
+              <div className="grid grid-cols-1 gap-3">
+                {memberLinks.map((link) => (
+                  <Link
+                    key={link.name}
+                    to={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-2xl"
+                  >
+                    <div className={`${link.color}`}>{link.icon}</div>
+                    <span className="text-xs font-black uppercase tracking-widest dark:text-white">
+                      {link.name}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }
