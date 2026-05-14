@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Navbar } from './components/Navbar';
+import { Navbar } from './components/NavBar';
 import { HeroSection } from './components/HeroSection';
 import { MemorialPatriarca } from './components/MemorialPatriarca';
 import { MethodologySection } from './components/MethodologySection';
