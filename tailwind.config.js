@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: 'selector', // <-- O SEGREDO ESTÁ AQUI (tem que ter as aspas simples e a vírgula)
+  darkMode: 'class', // <--- ESSA LINHA É A CHAVE
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
