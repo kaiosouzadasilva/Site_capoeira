@@ -38,13 +38,13 @@ const gameStyles = [
     id: 'angola', 
     name: 'Angola', 
     description: 'O estilo tradicional, mais lento e estratégico, jogado próximo ao chão. Na ECLL, a Angola é preservada como o fundamento da malícia e do respeito aos ancestrais.', 
-    img: 'https://images.unsplash.com/photo-1518549945237-2e91b5e8f968?w=800&q=80' 
+    img: '/membros/Mestre_Pastinha.jpg' 
   },
   { 
     id: 'regional', 
     name: 'Regional', 
     description: 'Um jogo de rapidez, técnica e disciplina. Onde a agilidade e o atletismo se encontram com a metodologia rítmica do Mestre Bimba.', 
-    img: 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800&q=80' 
+    img: '/membros/mestre_bimba.jpg' 
   },
 ];
 
