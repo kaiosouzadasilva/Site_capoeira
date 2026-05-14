@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { Award, BookOpen, Heart } from 'lucide-react';
 // Certifique-se de que o caminho da imagem está correto
-import fotoCamisa from '../../imports/Mestre_Camisa_Furada.jpg';
+import fotoCamisa from '../../imports/Mestre_Camisa_furada.jpg';
 
 export function MemorialPatriarca() {
   return (
