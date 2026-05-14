@@ -10,3 +10,7 @@ export default {
   },
   plugins: [],
 }
+module.exports = {
+  darkMode: 'class', // Isso avisa ao Tailwind para usar a classe CSS e não o sistema do Windows
+  // ... restante da config
+}

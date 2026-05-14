@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 // Importação dos Componentes
@@ -12,6 +12,7 @@ import { LocationsMap } from './components/LocationsMap';
 import { Gallery } from './components/Gallery';
 import { GraduationManager } from './components/GraduationManager';
 import { StudentDashboard } from './components/StudentDashboard';
+import { StudentProfile } from './components/StudentProfile'; // <-- NOVO IMPORT ADICIONADO
 import { Login } from './components/Login';
 
 // Definição do tipo de Usuário
@@ -22,12 +23,38 @@ interface User {
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
+  
+  // --- LÓGICA DE TEMA (CLARO/ESCURO) ---
+  const [darkMode, setDarkMode] = useState(() => {
+    // Tenta pegar a preferência salva no navegador, se não tiver, usa escuro como padrão
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme ? savedTheme === 'dark' : true;
+  });
+
+  useEffect(() => {
+    // Aplica ou remove a classe 'dark' no elemento raiz (HTML)
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [darkMode]);
+
+  const toggleTheme = () => setDarkMode(!darkMode);
 
   return (
     <Router>
-      <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
-        {/* Passamos o papel do usuário para a Navbar ajustar os links */}
-        <Navbar />
+      {/* A classe 'transition-colors' garante que a mudança entre 
+        claro e escuro seja suave (300ms) e não um susto.
+      */}
+      <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white transition-colors duration-300">
+        
+        {/* Passamos o estado do tema e a função de trocar para a Navbar.
+          Lá na Navbar, você poderá colocar o botão de Sol/Lua.
+        */}
+        <Navbar darkMode={darkMode} toggleTheme={toggleTheme} userRole={user?.role} />
         
         <main className="pt-20"> 
           <Routes>
@@ -51,7 +78,6 @@ function App() {
 
             {/* --- ROTAS PROTEGIDAS (CONTROLE PEDAGÓGICO) --- */}
             
-            {/* Área do Mestre: Só entra se for 'mestre' */}
             <Route 
               path="/admin" 
               element={
@@ -59,7 +85,14 @@ function App() {
               } 
             />
 
-            {/* Área do Aluno: Aluno vê o dele, Mestre também pode ver para avaliar */}
+            {/* --- NOVA ROTA: PERFIL DO ALUNO (ÁREA DO MESTRE) --- */}
+            <Route 
+              path="/admin/aluno/:id" 
+              element={
+                user?.role === 'mestre' ? <StudentProfile /> : <Navigate to="/login" />
+              } 
+            />
+
             <Route 
               path="/meu-progresso" 
               element={
