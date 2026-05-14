@@ -21,7 +21,7 @@ export function HeroSection() {
           Escola de capoeira <span className="text-yellow-500">Luta de Libertação</span>
         </motion.h1>
         <p className="text-white text-xl md:text-1xl font-bold tracking-widest uppercase italic">
-          Preservando a ancestralidade da nossa arte brasileira
+          Preservando a ancestralidade da nossa arte e cultura brasileira
         </p>
       </div>
     </section>
