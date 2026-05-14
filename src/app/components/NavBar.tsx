@@ -1,3 +1,4 @@
+import { useDarkMode } from '../hooks/useDarkMode';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,12 +8,16 @@ import {
   User, 
   ShieldCheck, 
   ChevronRight,
-  LayoutDashboard
+  Sun,
+  Moon
 } from 'lucide-react';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  
+  // Integração do Hook de Dark Mode
+  const [colorTheme, setTheme] = useDarkMode();
 
   const navLinks = [
     { name: 'Início', href: '/' },
@@ -20,16 +25,16 @@ export function Navbar() {
     { name: 'Liderança', href: '/lideranca' },
     { name: 'Polos', href: '/polos' },
     { name: 'Galeria', href: '/galeria' },
+    { name: 'Fundamentos', href: '/fundamentos' },
   ];
 
-  // Links que só aparecem/destacam para membros
   const memberLinks = [
     { name: 'Meu Progresso', href: '/meu-progresso', icon: <User size={18} />, color: 'text-blue-500' },
     { name: 'Área do Mestre', href: '/admin', icon: <ShieldCheck size={18} />, color: 'text-yellow-500' },
   ];
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
+    <nav className="fixed top-0 w-full z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         
         {/* LOGO */}
@@ -38,7 +43,7 @@ export function Navbar() {
             E
           </div>
           <span className="font-black text-xl tracking-tighter uppercase dark:text-white">
-            ECLL<span className="text-yellow-500">.</span>
+            E.C. <span className="text-yellow-500">Luta de Libertação.</span>
           </span>
         </Link>
 
@@ -61,7 +66,16 @@ export function Navbar() {
           {/* DIVISOR VISUAL */}
           <div className="w-px h-6 bg-gray-200 dark:bg-gray-800" />
 
-          {/* ACESSOS RESTRITOS (Botões de Destaque) */}
+          {/* BOTÃO DARK MODE (DESKTOP) */}
+          <button
+            onClick={() => setTheme(colorTheme)}
+            className="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-yellow-500 hover:scale-110 transition-all"
+            title="Alternar Tema"
+          >
+            {colorTheme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
+
+          {/* ACESSOS RESTRITOS */}
           <div className="flex items-center gap-4">
              {memberLinks.map((link) => (
                <Link
@@ -78,13 +92,23 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* MOBILE MENU BUTTON */}
-        <button 
-          className="md:hidden p-2 text-gray-500"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <X /> : <Menu />}
-        </button>
+        {/* MOBILE ACTIONS */}
+        <div className="flex items-center gap-4 md:hidden">
+          {/* Botão Dark Mode Mobile */}
+          <button
+            onClick={() => setTheme(colorTheme)}
+            className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-yellow-500"
+          >
+            {colorTheme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
+          
+          <button 
+            className="p-2 text-gray-500 dark:text-white"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X /> : <Menu />}
+          </button>
+        </div>
       </div>
 
       {/* MOBILE MENU DROPDOWN */}
@@ -104,7 +128,7 @@ export function Navbar() {
                   onClick={() => setIsOpen(false)}
                   className="flex items-center justify-between group"
                 >
-                  <span className="text-sm font-black uppercase tracking-widest text-gray-500 group-hover:text-yellow-500 transition-colors">
+                  <span className="text-sm font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 group-hover:text-yellow-500 transition-colors">
                     {link.name}
                   </span>
                   <ChevronRight size={16} className="text-gray-300" />
@@ -113,7 +137,6 @@ export function Navbar() {
 
               <div className="h-px bg-gray-100 dark:bg-gray-800 my-4" />
               
-              {/* LINKS DE MEMBROS NO MOBILE */}
               <div className="grid grid-cols-1 gap-3">
                 {memberLinks.map((link) => (
                   <Link
