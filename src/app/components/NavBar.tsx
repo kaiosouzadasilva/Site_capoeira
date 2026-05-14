@@ -1,6 +1,7 @@
+import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Moon, Sun, Menu, X } from 'lucide-react';
-// Aqui depois importaremos o 'Link' do react-router-dom
+import { Link } from 'react-router-dom'; // ADICIONADO: Importação do Link
 
 export function Navbar() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -29,16 +30,18 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         
         {/* Logo */}
-        <div className="font-black text-2xl tracking-tighter text-gray-900 dark:text-white flex items-center gap-2">
+        <Link to="/" className="font-black text-2xl tracking-tighter text-gray-900 dark:text-white flex items-center gap-2">
           <span className="text-yellow-500">ECLL</span>
-        </div>
+        </Link>
 
         {/* Links Desktop */}
         <div className="hidden md:flex items-center gap-8 font-semibold text-sm text-gray-700 dark:text-gray-200">
+          
+          {/* AQUI ESTÁ A MUDANÇA (Desktop) */}
           {navLinks.map((link) => (
-            <a key={link.name} href={link.href} className="hover:text-yellow-500 transition-colors">
+            <Link key={link.name} to={link.href} className="hover:text-yellow-500 transition-colors">
               {link.name}
-            </a>
+            </Link>
           ))}
           
           {/* Botão Tema */}
@@ -65,11 +68,19 @@ export function Navbar() {
       {/* Menu Mobile Dropdown */}
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-20 left-0 w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 flex flex-col p-6 gap-4 font-bold text-gray-800 dark:text-white shadow-xl transition-colors duration-300">
+          
+          {/* AQUI ESTÁ A MUDANÇA (Mobile) */}
           {navLinks.map((link) => (
-            <a key={link.name} href={link.href} onClick={() => setIsMobileMenuOpen(false)} className="hover:text-yellow-500">
+            <Link 
+              key={link.name} 
+              to={link.href} 
+              onClick={() => setIsMobileMenuOpen(false)} 
+              className="hover:text-yellow-500"
+            >
               {link.name}
-            </a>
+            </Link>
           ))}
+
         </div>
       )}
     </nav>
