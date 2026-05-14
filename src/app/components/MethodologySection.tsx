@@ -73,8 +73,7 @@ const lineageData = {
 export function MethodologySection() {
   return (
     // z-20 para os popups ficarem por cima da próxima seção; sem overflow-hidden
-    <section id="metodologia" className="py-24 px-6 bg-white relative z-20">
-      <BackgroundTexture />
+<section id="metodologia" className="py-24 px-6 bg-white dark:bg-gray-900 relative z-20 transition-colors duration-300">      <BackgroundTexture />
       
       <div className="max-w-7xl mx-auto relative z-10">
         
@@ -105,9 +104,9 @@ export function MethodologySection() {
           viewport={{ once: true }} 
           className="max-w-4xl mx-auto text-center mb-20"
         >
-          <h2 className="text-4xl font-bold text-gray-900 mb-6">Nossas Raízes e Legado</h2>
+          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">Nossas Raízes e Legado</h2>
           <div className="w-24 h-1 bg-yellow-500 mx-auto mb-8" />
-          <p className="text-lg text-gray-600">
+          <p className="text-lg text-gray-600 dark:text-gray-300">
             Abaixo, conheça a árvore genealógica que sustenta o fundamento da <strong>ECLL</strong>. 
             Interaja com os nomes para ver a trajetória de cada um.
           </p>

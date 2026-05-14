@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 // Adicione esta linha com o nome exato do seu ficheiro:
 
-import fotoGrupo from "@/imports/Imagem_do_grupo.png";
+import fotoGrupo from '../../imports/Imagem_do_grupo.png';
 
 export function HeroSection() {
   return (

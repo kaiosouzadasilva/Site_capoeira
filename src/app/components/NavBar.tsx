@@ -30,7 +30,7 @@ export function Navbar() {
         
         {/* Logo */}
         <Link to="/" className="font-black text-2xl tracking-tighter text-gray-900 dark:text-white flex items-center gap-2">
-          <span className="text-yellow-500">ECLL</span>
+          <span className="text-yellow-500">Escola de Capoeira Luta de Libertação</span>
         </Link>
 
         {/* Links Desktop */}
