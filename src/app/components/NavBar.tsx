@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+// import logoGrupo from './membros/Imagem_do_grupo.png';
 import { 
   Menu, 
   X, 
@@ -19,6 +20,8 @@ export function Navbar() {
     { name: 'Nossa História', href: '/historia' },
     { name: 'Liderança', href: '/lideranca' },
     { name: 'Polos', href: '/polos' },
+    { name: 'Fundamentos', href: '/fundamentos' },
+    { name: 'Oficinas', href: '/oficinas' },
     { name: 'Galeria', href: '/galeria' },
   ];
 
@@ -28,23 +31,50 @@ export function Navbar() {
     { name: 'Área do Mestre', href: '/admin', icon: <ShieldCheck size={18} />, color: 'text-yellow-500' },
   ];
 
-  return (
+return (
     <nav className="fixed top-0 w-full z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      
+      {/* MUDANÇA AQUI: 
+        Trocamos 'max-w-7xl' por 'w-full' e aumentamos o padding lateral (px-8 lg:px-16).
+        Isso empurra o Logo para a extrema esquerda e o Menu para a extrema direita.
+      */}
+      <div className="w-full mx-auto px-8 lg:px-16 h-20 flex items-center justify-between">
         
+        {/* LOGO - ALTERADO PARA USAR IMAGEM */}
+        {/* Mantemos 'shrink-0' e o Link para a home */}
         {/* LOGO */}
-        <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 bg-yellow-500 rounded-xl flex items-center justify-center font-black text-black group-hover:rotate-12 transition-transform">
-            E
+      {/* LOGO - ALTERADO PARA CIRCULAR */}
+        <Link to="/" className="flex items-center gap-3 group shrink-0">
+          
+          {/* CONTAINER DA IMAGEM (Moldura Circular) */}
+          {/* h-12 w-12: Garante que seja um quadrado perfeito.
+              rounded-full: Transforma em círculo.
+              overflow-hidden: Corta qualquer parte da imagem que sair do círculo.
+              border-2 border-yellow-500: Adiciona uma bordinha amarela sutil.
+              shadow-lg: Dá um leve efeito de profundidade.
+          */}
+          <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-yellow-500 shadow-lg transition-transform duration-300 group-hover:rotate-12 group-hover:scale-105 shrink-0">
+            {/* A IMAGEM EM SI */}
+            {/* object-cover: O segredo para a imagem preencher o círculo 
+                             sem esticar nem achatar, cortando o que sobrar.
+            */}
+            <img 
+              src="/Imagem_do_grupo.png" 
+              alt="Logo ECLL" 
+              className="h-full w-full object-cover"
+            />
           </div>
-          <span className="font-black text-xl tracking-tighter uppercase dark:text-white">
-            ECLL<span className="text-yellow-500">.</span>
+
+          <span className="font-black text-xl tracking-tighter uppercase dark:text-white transition-colors group-hover:text-yellow-500">
+            Escola de Capoeira <span className="text-yellow-500">Luta de Libertação.</span>
           </span>
         </Link>
+        
 
         {/* DESKTOP MENU */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
+// ... (o restante do código continua exatamente igual a partir daqui)
             <Link
               key={link.name}
               to={link.href}
