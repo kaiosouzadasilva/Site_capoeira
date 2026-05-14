@@ -114,7 +114,7 @@ export function MethodologySection() {
                 <MemberCard 
                   name="Monitor Jhoy" 
                   role="Monitor" 
-                  image="/membros/Monitor_Jhoy.png" 
+                  image="/membros/Monitor_jhoy.png" 
                   borderColor="border-yellow-500" 
                   isSmall 
                 />
