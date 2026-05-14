@@ -1,19 +1,23 @@
+import { useDarkMode } from '../hooks/useDarkMode';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-// import logoGrupo from './membros/Imagem_do_grupo.png';
 import { 
   Menu, 
   X, 
   User, 
   ShieldCheck, 
   ChevronRight,
-  LayoutDashboard
+  Sun,
+  Moon
 } from 'lucide-react';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  
+  // Integração do Hook de Dark Mode
+  const [colorTheme, setTheme] = useDarkMode();
 
   const navLinks = [
     { name: 'Início', href: '/' },
@@ -25,39 +29,22 @@ export function Navbar() {
     { name: 'Galeria', href: '/galeria' },
   ];
 
-  // Links que só aparecem/destacam para membros
   const memberLinks = [
     { name: 'Meu Progresso', href: '/meu-progresso', icon: <User size={18} />, color: 'text-blue-500' },
     { name: 'Área do Mestre', href: '/admin', icon: <ShieldCheck size={18} />, color: 'text-yellow-500' },
   ];
 
-return (
-    <nav className="fixed top-0 w-full z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
+  return (
+    <nav className="fixed top-0 w-full z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 transition-colors duration-300">
       
-      {/* MUDANÇA AQUI: 
-        Trocamos 'max-w-7xl' por 'w-full' e aumentamos o padding lateral (px-8 lg:px-16).
-        Isso empurra o Logo para a extrema esquerda e o Menu para a extrema direita.
-      */}
+      {/* Container com largura total (w-full) e margens laterais (px-8 lg:px-16) */}
       <div className="w-full mx-auto px-8 lg:px-16 h-20 flex items-center justify-between">
         
-        {/* LOGO - ALTERADO PARA USAR IMAGEM */}
-        {/* Mantemos 'shrink-0' e o Link para a home */}
-        {/* LOGO */}
-      {/* LOGO - ALTERADO PARA CIRCULAR */}
+        {/* LOGO - CIRCULAR */}
         <Link to="/" className="flex items-center gap-3 group shrink-0">
           
-          {/* CONTAINER DA IMAGEM (Moldura Circular) */}
-          {/* h-12 w-12: Garante que seja um quadrado perfeito.
-              rounded-full: Transforma em círculo.
-              overflow-hidden: Corta qualquer parte da imagem que sair do círculo.
-              border-2 border-yellow-500: Adiciona uma bordinha amarela sutil.
-              shadow-lg: Dá um leve efeito de profundidade.
-          */}
+          {/* Moldura Circular */}
           <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-yellow-500 shadow-lg transition-transform duration-300 group-hover:rotate-12 group-hover:scale-105 shrink-0">
-            {/* A IMAGEM EM SI */}
-            {/* object-cover: O segredo para a imagem preencher o círculo 
-                             sem esticar nem achatar, cortando o que sobrar.
-            */}
             <img 
               src="/Imagem_do_grupo.png" 
               alt="Logo ECLL" 
@@ -65,16 +52,15 @@ return (
             />
           </div>
 
+          {/* Texto E.C. Luta de Libertação */}
           <span className="font-black text-xl tracking-tighter uppercase dark:text-white transition-colors group-hover:text-yellow-500">
-            Escola de Capoeira <span className="text-yellow-500">Luta de Libertação.</span>
+            E.C. <span className="text-yellow-500">Luta de Libertação.</span>
           </span>
         </Link>
         
-
         {/* DESKTOP MENU */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-// ... (o restante do código continua exatamente igual a partir daqui)
             <Link
               key={link.name}
               to={link.href}
@@ -91,7 +77,16 @@ return (
           {/* DIVISOR VISUAL */}
           <div className="w-px h-6 bg-gray-200 dark:bg-gray-800" />
 
-          {/* ACESSOS RESTRITOS (Botões de Destaque) */}
+          {/* BOTÃO DARK MODE (DESKTOP) */}
+          <button
+            onClick={() => setTheme(colorTheme)}
+            className="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-yellow-500 hover:scale-110 transition-all"
+            title="Alternar Tema"
+          >
+            {colorTheme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
+
+          {/* ACESSOS RESTRITOS */}
           <div className="flex items-center gap-4">
              {memberLinks.map((link) => (
                <Link
@@ -108,13 +103,23 @@ return (
           </div>
         </div>
 
-        {/* MOBILE MENU BUTTON */}
-        <button 
-          className="md:hidden p-2 text-gray-500"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <X /> : <Menu />}
-        </button>
+        {/* MOBILE ACTIONS */}
+        <div className="flex items-center gap-4 md:hidden">
+          {/* Botão Dark Mode Mobile */}
+          <button
+            onClick={() => setTheme(colorTheme)}
+            className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-yellow-500"
+          >
+            {colorTheme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
+          
+          <button 
+            className="p-2 text-gray-500 dark:text-white"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X /> : <Menu />}
+          </button>
+        </div>
       </div>
 
       {/* MOBILE MENU DROPDOWN */}
@@ -134,7 +139,7 @@ return (
                   onClick={() => setIsOpen(false)}
                   className="flex items-center justify-between group"
                 >
-                  <span className="text-sm font-black uppercase tracking-widest text-gray-500 group-hover:text-yellow-500 transition-colors">
+                  <span className="text-sm font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 group-hover:text-yellow-500 transition-colors">
                     {link.name}
                   </span>
                   <ChevronRight size={16} className="text-gray-300" />
@@ -143,7 +148,6 @@ return (
 
               <div className="h-px bg-gray-100 dark:bg-gray-800 my-4" />
               
-              {/* LINKS DE MEMBROS NO MOBILE */}
               <div className="grid grid-cols-1 gap-3">
                 {memberLinks.map((link) => (
                   <Link

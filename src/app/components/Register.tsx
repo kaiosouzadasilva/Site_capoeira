@@ -33,7 +33,7 @@ export function Register({ onToggle }: { onToggle: () => void }) {
               nome, 
               apelido, 
               polo: 'A definir', // Aluno novo entra sem polo definido
-              graduacao: 'Corda Crua',
+              graduacao: 'Sem corda', // Aluno novo entra sem graduação
               status: 'Iniciante'
             }
           ]);
