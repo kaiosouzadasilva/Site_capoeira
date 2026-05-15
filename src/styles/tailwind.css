@@ -1,2 +1,5 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+
+/* 👇 Adicione esta linha para o Dark Mode por classe (botão) funcionar no Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
