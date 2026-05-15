@@ -4,7 +4,7 @@ export function HeroSection() {
   return (
     <section className="relative h-[90vh] w-full overflow-hidden bg-black">
       <img 
-        src="public/Imagem_do_grupo.png" 
+        src="../../Imagem_do_grupo.png" 
         alt="Grupo ECLL" 
         className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale-[30%]"
       />
