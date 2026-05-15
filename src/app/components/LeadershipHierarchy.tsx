@@ -29,7 +29,7 @@ const liderancaIntermediaria = [
 ];
 
 const baseGraduados = [
-  { id: 'b1', nickname: 'Graduado Francês', rank: 'Graduado', image: '/membros/placeholder.jpg' },
+  { id: 'b1', nickname: 'Graduado Francês', rank: 'Graduado', image: '/membros/foto_frances.jpeg'},
   { id: 'b2', nickname: 'Graduado Zumbi', rank: 'Graduado', image: '/membros/foto_zumbi.jpeg' },
   { id: 'b3', nickname: 'Graduado Shrek', rank: 'Graduado', image: '/membros/placeholder.jpg' },
   { id: 'b4', nickname: 'Graduado Calanguinho', rank: 'Graduado', image: '/membros/placeholder.jpg' },

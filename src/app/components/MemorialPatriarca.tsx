@@ -15,8 +15,8 @@ export function MemorialPatriarca() {
             <img 
               src="/membros/Mestre_Camisa_furada.jpg" 
               alt="Mestre Camisa Furada" 
-              className="w-full h-full object-cover object-top grayscale contrast-125"
-            />
+              className="w-full h-full object-cover object-[center_15%] grayscale contrast-125"            
+              />
           </div>
 
           <div className="w-full md:w-1/2 p-10 flex flex-col justify-center">
