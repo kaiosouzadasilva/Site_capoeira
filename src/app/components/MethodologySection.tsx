@@ -69,7 +69,7 @@ export function MethodologySection() {
         </div>
 
         {/* --- NÍVEL 1: PATRIARCA --- */}
-        <div className="flex justify-center mb-4">
+        <div className="flex justify-center mb-4 object-top">
           <MemberCard 
             name="Mestre Camisa Furada" 
             role="Patriarca & Fundador" 
