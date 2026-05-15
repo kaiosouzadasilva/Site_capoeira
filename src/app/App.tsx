@@ -13,8 +13,7 @@ import { Gallery } from './components/Gallery';
 import { GraduationManager } from './components/GraduationManager';
 import { StudentDashboard } from './components/StudentDashboard';
 import { StudentProfile } from './components/StudentProfile'; // <-- NOVO IMPORT ADICIONADO
-import { Login } from './components/Login';
-
+import { Login } from './components/login';
 // Definição do tipo de Usuário
 interface User {
   name: string;
