@@ -3,7 +3,8 @@ import { ChevronDown } from 'lucide-react';
 
 // --- SUB-COMPONENTES AUXILIARES (Deixando aqui no topo para organização) ---
 
-function MemberCard({ name, role, image, status, highlight, isSmall, borderColor }: any) {
+// Adicionamos 'imagePosition' nas propriedades
+function MemberCard({ name, role, image, status, highlight, isSmall, borderColor, imagePosition }: any) {
   return (
     <motion.div 
       initial={{ opacity: 0, scale: 0.9 }}
@@ -16,12 +17,12 @@ function MemberCard({ name, role, image, status, highlight, isSmall, borderColor
         rounded-full overflow-hidden border-4 
         ${borderColor || (highlight ? 'border-yellow-500' : 'border-gray-200 dark:border-gray-700')} 
         group-hover:border-yellow-500 transition-all duration-500 shadow-xl relative
-      `}>
+       `}>
         <img 
           src={image} 
           alt={name} 
-          // {/* ALTERAÇÃO AQUI: Removido 'grayscale' e 'group-hover:grayscale-0' */}
-          className="w-full h-full object-cover transition-all duration-700" 
+          /* 👇 Inserimos a variável imagePosition aqui */
+          className={`w-full h-full object-cover transition-all duration-700 ${imagePosition || 'object-center'}`} 
           onError={(e) => (e.currentTarget.src = "https://via.placeholder.com/150?text=Capoeira")}
         />
         {status && (
@@ -29,6 +30,8 @@ function MemberCard({ name, role, image, status, highlight, isSmall, borderColor
              <span className="text-[8px] font-black text-white uppercase tracking-tighter">{status}</span>
           </div>
         )}
+    
+
       </div>
       <h3 className={`${isSmall ? 'text-xs' : 'text-sm md:text-lg'} font-black text-gray-900 dark:text-white mt-4 uppercase text-center`}>{name}</h3>
       <p className="text-yellow-600 dark:text-yellow-400 font-bold text-[9px] md:text-xs uppercase tracking-widest text-center">{role}</p>
@@ -68,15 +71,17 @@ export function MethodologySection() {
           <p className="mt-4 text-gray-500 dark:text-gray-400">A história preservada através das gerações</p>
         </div>
 
-        {/* --- NÍVEL 1: PATRIARCA --- */}
-        <div className="flex justify-center mb-4 object-top">
-          <MemberCard 
-            name="Mestre Camisa Furada" 
-            role="Patriarca & Fundador" 
-            image="/membros/Mestre_Camisa_furada.jpg" 
-            status="In Memoriam"
-            highlight
-          />
+       {/* --- NÍVEL 1: PATRIARCA --- */}
+       <div className="flex justify-center mb-4">
+        <MemberCard 
+        name="Mestre Camisa Furada" 
+        role="Patriarca & Fundador" 
+        image="/membros/Mestre_Camisa_furada2.jpg" 
+        status="In Memoriam"
+        highlight
+        /* 👇 Adicione esta linha: */
+        imagePosition="object-[center_15%]" 
+        />
         </div>
 
         <Connector />
