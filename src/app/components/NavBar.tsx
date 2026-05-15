@@ -59,7 +59,7 @@ export function Navbar() {
         </Link>
         
         {/* DESKTOP MENU */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.name}
@@ -104,7 +104,7 @@ export function Navbar() {
         </div>
 
         {/* MOBILE ACTIONS */}
-        <div className="flex items-center gap-4 md:hidden">
+        <div className="flex items-center gap-4 lg:hidden">
           {/* Botão Dark Mode Mobile */}
           <button
             onClick={() => setTheme(colorTheme)}
@@ -129,7 +129,7 @@ export function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 overflow-hidden"
+            className="lg:hidden bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 overflow-hidden"
           >
             <div className="p-6 space-y-4">
               {navLinks.map((link) => (

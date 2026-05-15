@@ -1,7 +1,6 @@
-import { useState } from 'react';
-import * as Dialog from '@radix-ui/react-dialog';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { X, Award, ShieldCheck, Users, Clock } from 'lucide-react';
+import { Award, Users } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 
 // --- DADOS ORGANIZADOS POR NÍVEL ---
@@ -37,10 +36,19 @@ const baseGraduados = [
   { id: 'b6', nickname: 'Estagiário Colorau', rank: 'Estagiário', image: '/membros/Estagiario_Colorau.jpg' },
 ];
 
+const baseAlunos = [
+  { id: 'a1', nickname: 'Aluno do João Carlos', rank: 'Aluno', image: '/membros/placeholder.jpg' },
+  { id: 'a2', nickname: 'Aluno do Mariana Silva', rank: 'Aluno', image: '/membros/placeholder.jpg' },
+  { id: 'c1', nickname: 'Aluno do Pedro Henrique', rank: 'Aluno', image: '/membros/placeholder.jpg' },
+  { id: 'c2', nickname: 'Aluno do Adriana', rank: 'Aluno', image: '/membros/placeholder.jpg' },
+  { id: 'd1', nickname: 'Aluno do Lucas Mendes', rank: 'Aluno', image: '/membros/placeholder.jpg' },
+  { id: 'd2', nickname: 'Aluno do Beatriz Costa', rank: 'Aluno', image: '/membros/placeholder.jpg' },
+];
+
 // --- COMPONENTE PRINCIPAL ---
 
 export function LeadershipHierarchy() {
-  const [selectedPerson, setSelectedPerson] = useState<any | null>(null);
+  const navigate = useNavigate();
 
   return (
     <section className="py-24 px-6 bg-white dark:bg-gray-900 transition-colors duration-300">
@@ -54,9 +62,16 @@ export function LeadershipHierarchy() {
         {/* --- NÍVEL 1: O MESTRE (ISOLADO) --- */}
         <div className="flex justify-center mb-24">
           <div className="max-w-sm w-full">
-            <p className="text-center text-xs font-black text-yellow-600 dark:text-yellow-400 uppercase tracking-widest mb-4">Grão-Mestre</p>
+            <p className="text-center text-xs font-black text-yellow-600 dark:text-yellow-400 uppercase tracking-widest mb-4">
+              Grão-Mestre
+            </p>
             {mestreTopo.map(person => (
-              <LeaderCard key={person.id} person={person} onClick={() => setSelectedPerson(person)} isLarge />
+              <LeaderCard 
+                key={person.id} 
+                person={person} 
+                onClick={() => navigate(`/lideranca/${person.id}`)} 
+                isLarge={true} 
+              />
             ))}
           </div>
         </div>
@@ -69,7 +84,12 @@ export function LeadershipHierarchy() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {liderancaIntermediaria.map(person => (
-              <LeaderCard key={person.id} person={person} onClick={() => setSelectedPerson(person)} />
+               <LeaderCard 
+                key={person.id} 
+                person={person} 
+                onClick={() => navigate(`/lideranca/${person.id}`)} 
+                
+              />
             ))}
           </div>
         </div>
@@ -80,41 +100,40 @@ export function LeadershipHierarchy() {
             <Users className="text-yellow-500" />
             <h3 className="text-xl font-bold dark:text-white uppercase tracking-tight">Graduados e Estagiários</h3>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
             {baseGraduados.map(person => (
-              <LeaderCard key={person.id} person={person} isSmall />
-            ))}
+               <LeaderCard 
+                key={person.id} 
+                person={person} 
+                onClick={() => navigate(`/lideranca/${person.id}`)} 
+                isSmall={true}
+              />
+            ))} 
           </div>
         </div>
 
-        {/* MODAL (Mantive para os níveis 1 e 2 que têm Bio) */}
-        <Dialog.Root open={!!selectedPerson} onOpenChange={(open) => !open && setSelectedPerson(null)}>
-          <Dialog.Portal>
-            <Dialog.Overlay className="fixed inset-0 bg-black/80 z-50 backdrop-blur-sm" />
-            <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-[95%] max-w-lg -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700">
-              {selectedPerson && (
-                <div className="relative">
-                  <Dialog.Close className="absolute -top-2 -right-2 p-2 text-gray-400 hover:text-black dark:hover:text-white">
-                    <X />
-                  </Dialog.Close>
-                  <div className="flex items-center gap-4 mb-6">
-                    <img src={selectedPerson.image} className="w-20 h-20 rounded-full object-cover border-2 border-yellow-500" />
-                    <div>
-                      <h4 className="text-2xl font-black dark:text-white">{selectedPerson.nickname}</h4>
-                      <p className="text-yellow-600 font-bold text-sm uppercase">{selectedPerson.rank}</p>
-                    </div>
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-300 italic mb-6">"{selectedPerson.bio}"</p>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedPerson.specialties?.map((s: string) => (
-                      <span key={s} className="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-[10px] font-bold dark:text-white">{s}</span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </Dialog.Content>
-          </Dialog.Portal>
-        </Dialog.Root>
+        {/* --- NÍVEL 4: ALUNOS --- */}
+        < div className="mt-24">
+          <div className="flex items-center gap-4 mb-10 justify-center md:justify-start">
+            <Users className="text-yellow-500" />
+            <h3 className="text-xl font-bold dark:text-white uppercase tracking-tight">Alunos</h3>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+            {baseAlunos.map(person => (
+               <LeaderCard 
+                key={person.id} 
+                person={person} 
+                onClick={() => navigate(`/lideranca/${person.id}`)} 
+                isSmall={true}
+              />
+            ))} 
+          </div>
+         <div className="mt-8 text-center">
+            <p className="text-gray-500 dark:text-gray-400">
+              {/* Adicione aqui qualquer informação adicional sobre os alunos */}
+            </p>
+          </div>
+        </div>
 
       </div>
     </section>
