@@ -14,6 +14,8 @@ import { GraduationManager } from './components/GraduationManager';
 import { StudentDashboard } from './components/StudentDashboard';
 import { StudentProfile } from './components/StudentProfile'; // <-- NOVO IMPORT ADICIONADO
 import { Login } from './components/Login';
+import { LeaderDetail } from './components/LeaderDetail'; // <-- NOVO IMPORT ADICIONADO
+import { Oficinas } from './components/Oficinas'; // <-- NOVO IMPORT ADICIONADO
 // Definição do tipo de Usuário
 interface User {
   name: string;
@@ -68,9 +70,12 @@ function App() {
             } />
             
             <Route path="/fundamentos" element={<CulturalFundamentals />} />
+            <Route path="/fundamentos" element={<CulturalFundamentals />} />
+            <Route path="/oficinas" element={<Oficinas />} /> {/* <-- ADICIONE ESTA LINHA */}
             <Route path="/lideranca" element={<LeadershipHierarchy />} />
             <Route path="/polos" element={<LocationsMap />} />
             <Route path="/galeria" element={<Gallery />} />
+            <Route path="/lideranca/:id" element={<LeaderDetail />} /> {/* ROTA DE DETALHE DO LÍDER */}
             
             {/* --- ROTA DE LOGIN --- */}
             <Route path="/login" element={<Login onLogin={(u) => setUser(u)} />} />
