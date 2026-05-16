@@ -3,7 +3,7 @@ import { Award, BookOpen } from 'lucide-react';
 
 export function MemorialPatriarca() {
   return (
-    <section className="py-24 px-6 bg-gray-50 dark:bg-gray-900 transition-colors duration-300 relative overflow-hidden">
+    <section className="py-24 px-6 bg-transparent dark:bg-gray-900 transition-colors duration-300 relative overflow-hidden">
       <div className="max-w-5xl mx-auto relative z-10">
         <div className="text-center mb-16">
           <span className="text-orange-600 dark:text-orange-400 font-bold uppercase tracking-widest text-sm">In Memoriam</span>

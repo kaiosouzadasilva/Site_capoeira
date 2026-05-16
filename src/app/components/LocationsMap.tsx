@@ -42,8 +42,8 @@ const polos = [
 
 export function LocationsMap() {
   return (
-    <section id="locais" className="py-24 px-6 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto">
+    <section id="locais" className="py-24 px-6 bg-transparent dark:bg-gray-900 transition-colors duration-300">      
+    <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-black text-gray-900 dark:text-white mb-4 uppercase tracking-tighter">Locais de Treinamento</h2>
           <div className="w-24 h-1 bg-yellow-500 mx-auto mb-6" />

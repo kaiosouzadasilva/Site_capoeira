@@ -9,7 +9,7 @@ const categories = ['Todos', 'Rodas', 'Eventos', 'Histórico'];
 const galleryItems = [
   { id: 1, category: 'Eventos', title: 'Batizado 2025', image: '/galeria/roda1.jpg' },
   { id: 2, category: 'Rodas', title: 'Roda na Eduardo Ribeiro', image: '/galeria/treino1.jpg' },
-  { id: 3, category: 'Histórico', title: 'Mestre Camisa (27 Anos ACBP)', image: '/galeria/evento1.jpg' },
+  { id: 3, category: 'Histórico', title: 'Mestre Camisa e Mestre Canário (27 Anos ACBP)', image: 'public/membros/mestre_camisa_e_mestre_canário.jpeg' },
 ];
 
 // OS SEUS LINKS DO GOOGLE FOTOS ORGANIZADOS
@@ -122,7 +122,7 @@ export function Gallery() {
     : galleryItems.filter(item => item.category === filter);
 
   return (
-    <section className="py-24 px-6 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <section className="py-24 px-6 bg-transparent dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
         
         {/* CABEÇALHO DA GALERIA */}

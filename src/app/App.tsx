@@ -1,39 +1,28 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-// Importação dos Componentes
 import { Navbar } from './components/NavBar';
 import { HeroSection } from './components/HeroSection';
 import { MemorialPatriarca } from './components/MemorialPatriarca';
 import { MethodologySection } from './components/MethodologySection';
 import { LeadershipHierarchy } from './components/LeadershipHierarchy';
 import { CulturalFundamentals } from './components/CulturalFundamentals';
+import { WikiFundamentos } from './components/WikiFundamentos'; 
 import { LocationsMap } from './components/LocationsMap';
 import { Gallery } from './components/Gallery';
-import { GraduationManager } from './components/GraduationManager';
-import { StudentDashboard } from './components/StudentDashboard';
-import { StudentProfile } from './components/StudentProfile'; // <-- NOVO IMPORT ADICIONADO
-import { Login } from './components/Login';
-import { LeaderDetail } from './components/LeaderDetail'; // <-- NOVO IMPORT ADICIONADO
-import { Oficinas } from './components/Oficinas'; // <-- NOVO IMPORT ADICIONADO
-// Definição do tipo de Usuário
-interface User {
-  name: string;
-  role: 'mestre' | 'aluno';
-}
+import { LeaderDetail } from './components/LeaderDetail'; 
+import { Oficinas } from './components/Oficinas'; 
+import { Batizados } from './components/Batizados';
+import { Graduacao } from './components/Graduacao'; 
+import { BackgroundTexture } from './components/BackgroundTexture'; // <-- IMPORTAÇÃO DO EFEITO ADICIONADA AQUI
 
 function App() {
-  const [user, setUser] = useState<User | null>(null);
-  
-  // --- LÓGICA DE TEMA (CLARO/ESCURO) ---
   const [darkMode, setDarkMode] = useState(() => {
-    // Tenta pegar a preferência salva no navegador, se não tiver, usa escuro como padrão
     const savedTheme = localStorage.getItem('theme');
     return savedTheme ? savedTheme === 'dark' : true;
   });
 
   useEffect(() => {
-    // Aplica ou remove a classe 'dark' no elemento raiz (HTML)
     if (darkMode) {
       document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
@@ -43,23 +32,23 @@ function App() {
     }
   }, [darkMode]);
 
-  const toggleTheme = () => setDarkMode(!darkMode);
-
   return (
     <Router>
-      {/* A classe 'transition-colors' garante que a mudança entre 
-        claro e escuro seja suave (300ms) e não um susto.
+      {/* Adicionamos as classes "relative overflow-hidden" na div principal 
+        para conter a textura absoluta e cobrir a tela inteira corretamente.
       */}
-      <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white transition-colors duration-300">
+      <div className="min-h-screen bg-stone-50 dark:bg-gray-950 text-gray-900 dark:text-white transition-colors duration-300 relative overflow-hidden">
         
-        {/* Passamos o estado do tema e a função de trocar para a Navbar.
-          Lá na Navbar, você poderá colocar o botão de Sol/Lua.
+        <Navbar />
+        
+        {/* APLICADO GLOBALMENTE: Agora o efeito de ondulação se repete em todo o restante do site */}
+        <BackgroundTexture /> 
+        
+        {/* Adicionamos "relative z-10" na tag main para garantir que todo o conteúdo 
+          das páginas e rotas flutue perfeitamente por cima do efeito de fundo.
         */}
-        <Navbar darkMode={darkMode} toggleTheme={toggleTheme} userRole={user?.role} />
-        
-        <main className="pt-20"> 
+        <main className="pt-20 relative z-10"> 
           <Routes>
-            {/* --- ROTAS PÚBLICAS --- */}
             <Route path="/" element={<HeroSection />} />
             
             <Route path="/historia" element={
@@ -70,43 +59,17 @@ function App() {
             } />
             
             <Route path="/fundamentos" element={<CulturalFundamentals />} />
-            <Route path="/fundamentos" element={<CulturalFundamentals />} />
-            <Route path="/oficinas" element={<Oficinas />} /> {/* <-- ADICIONE ESTA LINHA */}
+            
+            <Route path="/fundamentos/:categoria/:id" element={<WikiFundamentos />} />
+            
+            <Route path="/graduacao" element={<Graduacao />} />
+            <Route path="/oficinas" element={<Oficinas />} /> 
             <Route path="/lideranca" element={<LeadershipHierarchy />} />
             <Route path="/polos" element={<LocationsMap />} />
             <Route path="/galeria" element={<Gallery />} />
-            <Route path="/lideranca/:id" element={<LeaderDetail />} /> {/* ROTA DE DETALHE DO LÍDER */}
-            
-            {/* --- ROTA DE LOGIN --- */}
-            <Route path="/login" element={<Login onLogin={(u) => setUser(u)} />} />
+            <Route path="/lideranca/:id" element={<LeaderDetail />} /> 
+            <Route path="/batizados" element={<Batizados />} />
 
-            {/* --- ROTAS PROTEGIDAS (CONTROLE PEDAGÓGICO) --- */}
-            
-            <Route 
-              path="/admin" 
-              element={
-                user?.role === 'mestre' ? <GraduationManager /> : <Navigate to="/login" />
-              } 
-            />
-
-            {/* --- NOVA ROTA: PERFIL DO ALUNO (ÁREA DO MESTRE) --- */}
-            <Route 
-              path="/admin/aluno/:id" 
-              element={
-                user?.role === 'mestre' ? <StudentProfile /> : <Navigate to="/login" />
-              } 
-            />
-
-            <Route 
-              path="/meu-progresso" 
-              element={
-                user?.role === 'aluno' || user?.role === 'mestre' 
-                ? <StudentDashboard /> 
-                : <Navigate to="/login" />
-              } 
-            />
-
-            {/* Redirecionamento caso a rota não exista */}
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>
