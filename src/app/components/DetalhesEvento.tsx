@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, Calendar, MapPin, Target, Award, 
-  Clock, Loader2, BookOpen, FileText, History
+  Clock, Loader2, FileText, History
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabase';
@@ -94,7 +94,7 @@ export function DetalheEvento() {
                 <Calendar size={12} className="text-yellow-500" /> {evento.date}
               </span>
 
-              {/* 👇 ADIÇÃO UX: LINK EXATO PARA O GOOGLE MAPS DA ATRAÇÃO/LOCAL */}
+              {/* 👇 CORRIGIDO: Link universal e dinâmico para abrir rotas no Google Maps */}
               <a 
                 href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(evento.location)}`}
                 target="_blank"
@@ -122,7 +122,7 @@ export function DetalheEvento() {
             {/* COLUNA DA ESQUERDA: DETALHES PRINCIPAIS */}
             <div className="md:col-span-2 space-y-10">
               
-              {/* OBJETIVO DO EVENTO */}
+              {/* OBJETIVÓ DO EVENTO */}
               {evento.objetivo && (
                 <div className="bg-white dark:bg-gray-900 p-8 rounded-[2rem] border border-stone-200/60 dark:border-gray-800 shadow-sm">
                   <h3 className="font-black text-gray-900 dark:text-white uppercase text-xs tracking-[0.2em] mb-4 flex items-center gap-2">
