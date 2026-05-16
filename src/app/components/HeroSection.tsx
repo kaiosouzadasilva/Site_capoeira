@@ -25,7 +25,7 @@ export function HeroSection() {
           >
             <span className="text-yellow-500 font-black uppercase text-[10px] tracking-[0.4em] mb-4 block">Fundada em Manaus</span>
             <h1 className="text-4xl md:text-6xl font-black text-white mb-6 uppercase tracking-tighter leading-tight">
-              E.C. Luta de <br/><span className="text-yellow-500">Libertação</span>
+              EScola de Capoeira <br/><span className="text-yellow-500">Luta de Libertação</span>
             </h1>
             <p className="text-gray-300 text-lg mb-8 leading-relaxed font-medium">
               A Escola que guarda os segredos da ancestralidade e a força da capoeira regional e angola. Prepare-se para conhecer uma linhagem de verdadeiros guerreiros.
