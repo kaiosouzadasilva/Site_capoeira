@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 
 import { Navbar } from './components/NavBar';
 import { HeroSection } from './components/HeroSection';
@@ -74,6 +75,7 @@ function App() {
           </Routes>
         </main>
       </div>
+      <Analytics />
     </Router>
   );
 }
