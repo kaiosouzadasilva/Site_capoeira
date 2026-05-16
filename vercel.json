@@ -1,7 +1,4 @@
 {
-  "framework": "vite",
-  "installCommand": "npm install",
-  "buildCommand": "npx --yes vite build",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
