@@ -29,7 +29,7 @@ export function Navbar() {
             <img src="/Imagem_do_grupo.png" alt="Logo ECLL" className="h-full w-full object-cover" />
           </div>
           <span className="font-black text-xl tracking-tighter uppercase dark:text-white transition-colors group-hover:text-yellow-500">
-            Escola de Capoeira <span className="text-yellow-500">Luta de Libertação</span>
+            E.C.<span className="text-yellow-500">Luta de Libertação</span>
           </span>
         </Link>
         
