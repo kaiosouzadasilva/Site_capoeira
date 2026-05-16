@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Check, X, Save, MapPin, Loader2, Calendar } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Check, X, Save, MapPin, Loader2, Calendar, ArrowLeft } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 export function FastAttendance() {
+  const navigate = useNavigate();
   const [students, setStudents] = useState<any[]>([]);
   const [attendance, setAttendance] = useState<Record<string, boolean>>({});
   const [polo, setPolo] = useState('Novo Aleixo');
@@ -11,42 +13,81 @@ export function FastAttendance() {
 
   // Carregar alunos baseados no polo selecionado
   useEffect(() => {
-    const load = async () => {
+    const loadStudentsByPolo = async () => {
       setLoading(true);
-      const { data } = await supabase
-        .from('alunos')
-        .select('id, apelido, nome')
-        .eq('polo', polo);
-      
-      if (data) {
-        setStudents(data);
-        const initial: Record<string, boolean> = {};
-        data.forEach(s => initial[s.id] = true); // Todos começam como presentes
-        setAttendance(initial);
+      try {
+        const { data, error } = await supabase
+          .from('alunos')
+          .select('id, apelido, nome')
+          .eq('polo', polo);
+        
+        if (error) throw error;
+
+        if (data) {
+          setStudents(data);
+          // Todos os alunos começam marcados como PRESENTES (true) por padrão
+          const initialAttendance: Record<string, boolean> = {};
+          data.forEach(s => {
+            initialAttendance[s.id] = true;
+          });
+          setAttendance(initialAttendance);
+        }
+      } catch (err: any) {
+        alert('Erro ao carregar alunos do polo: ' + err.message);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
-    load();
+
+    loadStudentsByPolo();
   }, [polo]);
 
+  // Alternar entre Presente e Ausente ao clicar no card do aluno
   const toggleAttendance = (id: string) => {
     setAttendance(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
+  // Salvar a lista de chamadas no banco de dados
   const handleSaveAttendance = async () => {
+    if (students.length === 0) return;
+    
     setSaving(true);
-    // Aqui viria a lógica de salvar na tabela 'presencas' que criamos
-    // Simulando um delay para o feedback do botão
-    setTimeout(() => {
-      alert(`Chamada do polo ${polo} salva com sucesso!`);
+    try {
+      // Prepara as linhas para inserção em massa (Bulk Insert) na tabela 'presencas'
+      const registrosPresenca = students.map(s => ({
+        aluno_id: s.id,
+        polo: polo,
+        presente: attendance[s.id],
+        data: new Date().toISOString().split('T')[0] // Formato YYYY-MM-DD
+      }));
+
+      const { error } = await supabase
+        .from('presencas')
+        .insert(registrosPresenca);
+
+      if (error) throw error;
+
+      alert(`Chamada do Polo [ ${polo} ] salva com sucesso!`);
+      navigate('/admin'); // Retorna para a listagem principal após salvar
+    } catch (err: any) {
+      alert('Erro ao salvar a chamada: ' + err.message);
+    } finally {
       setSaving(false);
-    }, 1000);
+    }
   };
 
   return (
     <div className="p-6 md:p-10 bg-gray-50 dark:bg-gray-950 min-h-screen transition-colors duration-300">
       <div className="max-w-4xl mx-auto pb-24">
         
+        {/* BOTÃO VOLTAR PARA O PAINEL */}
+        <button 
+          onClick={() => navigate('/admin')} 
+          className="flex items-center gap-2 text-gray-500 hover:text-black dark:hover:text-white mb-8 font-black uppercase text-[10px] tracking-widest transition-all"
+        >
+          <ArrowLeft size={16} /> Voltar para o Painel
+        </button>
+
         {/* HEADER DE CONTROLE */}
         <header className="mb-8 bg-white dark:bg-gray-900 p-8 rounded-[2.5rem] shadow-xl border border-gray-100 dark:border-gray-800 transition-all">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -54,16 +95,17 @@ export function FastAttendance() {
               <h2 className="text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tighter flex items-center gap-2">
                 Chamada Diária
               </h2>
-              <div className="flex items-center gap-2 mt-1 text-gray-500 font-bold text-[10px] uppercase tracking-widest">
+              <div className="flex items-center gap-2 mt-1 text-gray-400 font-bold text-[10px] uppercase tracking-widest">
                 <Calendar size={14} className="text-yellow-500" />
                 {new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' })}
               </div>
             </div>
 
+            {/* Filtro de Polo */}
             <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-800 p-4 rounded-2xl border border-gray-100 dark:border-gray-700 transition-colors">
               <MapPin className="text-yellow-500" size={20} />
               <select 
-                className="bg-transparent font-black text-xs uppercase outline-none text-gray-900 dark:text-white w-full cursor-pointer" 
+                className="bg-transparent font-black text-xs uppercase outline-none text-gray-900 dark:text-white w-full cursor-pointer pr-4" 
                 value={polo} 
                 onChange={e => setPolo(e.target.value)}
               >
@@ -75,7 +117,7 @@ export function FastAttendance() {
           </div>
         </header>
 
-        {/* LISTA DE ALUNOS */}
+        {/* LISTA DE ALUNOS DO POLO */}
         <div className="grid gap-3">
           {loading ? (
             <div className="flex justify-center p-20">
@@ -102,16 +144,16 @@ export function FastAttendance() {
                   </div>
                   <div>
                     <span className="font-black uppercase text-sm tracking-tight text-gray-900 dark:text-white">
-                      {s.apelido}
+                      {s.apelido || s.nome}
                     </span>
                     <p className="text-[10px] font-bold text-gray-400 uppercase">
-                      {attendance[s.id] ? 'Presente' : 'Faltou'}
+                      {attendance[s.id] ? 'Presente' : 'Ausente'}
                     </p>
                   </div>
                 </div>
 
                 <div className={`text-[10px] font-black uppercase px-3 py-1 rounded-full ${
-                   attendance[s.id] ? 'text-green-600' : 'text-red-600'
+                   attendance[s.id] ? 'text-green-600 bg-green-500/10' : 'text-red-600 bg-red-500/10'
                 }`}>
                   {attendance[s.id] ? '✓ Na Roda' : '✕ Ausente'}
                 </div>
@@ -119,13 +161,13 @@ export function FastAttendance() {
             ))
           ) : (
             <div className="text-center p-20 bg-white dark:bg-gray-900 rounded-[2.5rem] border border-dashed border-gray-200 dark:border-gray-800">
-              <p className="text-gray-400 font-black uppercase text-xs">Nenhum aluno encontrado neste polo.</p>
+              <p className="text-gray-400 font-black uppercase text-xs">Nenhum aluno cadastrado neste polo.</p>
             </div>
           )}
         </div>
       </div>
 
-      {/* BOTÃO SALVAR (FLUTUANTE) */}
+      {/* BOTÃO SALVAR (BARRA FLUTUANTE INFERIOR) */}
       <div className="fixed bottom-10 left-0 right-0 px-6 z-50">
         <div className="max-w-4xl mx-auto">
           <button 
@@ -133,12 +175,8 @@ export function FastAttendance() {
             disabled={saving || students.length === 0}
             className="w-full bg-yellow-500 hover:bg-yellow-400 text-black p-6 rounded-[2.5rem] font-black uppercase tracking-widest text-xs shadow-2xl shadow-yellow-500/40 flex items-center justify-center gap-3 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:grayscale"
           >
-            {saving ? (
-              <Loader2 className="animate-spin" size={20} />
-            ) : (
-              <Save size={20} />
-            )}
-            Finalizar Chamada
+            {saving ? <Loader2 className="animate-spin" size={20} /> : <Save size={20} />}
+            Finalizar Chamada do Polo
           </button>
         </div>
       </div>

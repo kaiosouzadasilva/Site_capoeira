@@ -15,8 +15,8 @@ export function Navbar() {
     { name: 'Liderança', href: '/lideranca' },
     { name: 'Polos', href: '/polos' },
     { name: 'Fundamentos', href: '/fundamentos' },
-    { name: 'Graduação', href: '/graduacao' }, // <-- ADICIONADO AQUI NO MENU
-    { name: 'Oficinas', href: '/oficinas' },
+    { name: 'Graduação', href: '/graduacao' }, 
+    { name: 'Eventos', href: '/eventos' }, // ATUALIZADO AQUI
     { name: 'Galeria', href: '/galeria' },
   ];
 
@@ -29,7 +29,7 @@ export function Navbar() {
             <img src="/Imagem_do_grupo.png" alt="Logo ECLL" className="h-full w-full object-cover" />
           </div>
           <span className="font-black text-xl tracking-tighter uppercase dark:text-white transition-colors group-hover:text-yellow-500">
-            E.C. <span className="text-yellow-500">Luta de Libertação.</span>
+            Escola de Capoeira <span className="text-yellow-500">Luta de Libertação</span>
           </span>
         </Link>
         

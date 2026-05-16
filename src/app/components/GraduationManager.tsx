@@ -1,22 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserPlus, FileSpreadsheet, Edit, Trash2, Eye, X, Check, Loader2 } from 'lucide-react';
+import { UserPlus, Trash2, Eye, X, Check, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../lib/supabase';
 
 export function GraduationManager() {
-  const navigate = useNavigate(); // <-- Instanciando o hook de navegação
+  const navigate = useNavigate();
   const [students, setStudents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
   
-  // Estados para o formulário
   const [newName, setNewName] = useState('');
   const [newNickname, setNewNickname] = useState('');
   const [newPolo, setNewPolo] = useState('Novo Aleixo');
   const [newGraduation, setNewGraduation] = useState('Corda Crua');
 
-  // Buscar alunos do banco
   const fetchStudents = async () => {
     setLoading(true);
     const { data } = await supabase
@@ -28,9 +26,10 @@ export function GraduationManager() {
     setLoading(false);
   };
 
-  useEffect(() => { fetchStudents(); }, []);
+  useEffect(() => { 
+    fetchStudents(); 
+  }, []);
 
-  // Adicionar novo aluno
   const handleAddStudent = async (e: React.FormEvent) => {
     e.preventDefault();
     const { data, error } = await supabase.from('alunos').insert([{ 
@@ -49,27 +48,57 @@ export function GraduationManager() {
     }
   };
 
+  const handleDeleteStudent = async (id: string, apelido: string) => {
+    const confirmar = window.confirm(`Tem certeza que deseja remover o capoeirista "${apelido}" do grupo?`);
+    
+    if (confirmar) {
+      const { error } = await supabase
+        .from('alunos')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        alert('Erro ao remover aluno: ' + error.message);
+      } else {
+        setStudents(prev => prev.filter(student => student.id !== id));
+      }
+    }
+  };
+
   return (
     <section className="py-24 px-6 bg-gray-50 dark:bg-gray-950 min-h-screen transition-colors duration-300">
       <div className="max-w-6xl mx-auto">
         
-        {/* HEADER */}
-        <div className="flex justify-between items-end mb-10">
+        {/* HEADER CONTROLE */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-10">
           <div>
             <h2 className="text-4xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">Membros</h2>
             <p className="text-gray-500 dark:text-gray-400 text-[10px] font-black uppercase tracking-widest">Controle Pedagógico ECLL</p>
           </div>
-          <button 
-            onClick={() => setShowAddForm(true)} 
-            className="bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-3 rounded-2xl font-black uppercase text-[10px] shadow-xl shadow-yellow-500/20 transition-all active:scale-95"
-          >
-            <div className="flex items-center gap-2">
-              <UserPlus size={16} /> Novo Aluno
-            </div>
-          </button>
+          
+          {/* Grupo de botões de Ação rápida */}
+          <div className="flex gap-3 w-full sm:w-auto">
+            <button 
+              onClick={() => navigate('/admin/chamada')} 
+              className="flex-1 sm:flex-none bg-zinc-900 text-white dark:bg-gray-800 hover:bg-zinc-800 dark:hover:bg-gray-750 px-6 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-xl transition-all active:scale-95"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <Check size={16} className="text-green-500" /> Fazer Chamada
+              </div>
+            </button>
+
+            <button 
+              onClick={() => setShowAddForm(true)} 
+              className="flex-1 sm:flex-none bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-xl shadow-yellow-500/20 transition-all active:scale-95"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <UserPlus size={16} /> Novo Aluno
+              </div>
+            </button>
+          </div>
         </div>
 
-        {/* TABELA COM DESIGN ADAPTÁVEL */}
+        {/* TABELA DE MEMBROS */}
         <div className="bg-white dark:bg-gray-900 rounded-[2.5rem] overflow-hidden border border-gray-100 dark:border-gray-800 shadow-2xl transition-colors duration-300">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
@@ -112,8 +141,6 @@ export function GraduationManager() {
                       </td>
                       <td className="p-6 text-center">
                         <div className="flex justify-center gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                          
-                          {/* <-- AQUI ESTÁ O BOTÃO ATUALIZADO COM O ONCLICK --> */}
                           <button 
                             onClick={() => navigate(`/admin/aluno/${s.id}`)}
                             title="Ver Prontuário"
@@ -122,7 +149,13 @@ export function GraduationManager() {
                             <Eye size={18}/>
                           </button>
 
-                          <button className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-all"><Trash2 size={18}/></button>
+                          <button 
+                            onClick={() => handleDeleteStudent(s.id, s.apelido || s.nome)}
+                            title="Remover Aluno"
+                            className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-all"
+                          >
+                            <Trash2 size={18}/>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -134,7 +167,7 @@ export function GraduationManager() {
         </div>
       </div>
 
-      {/* MODAL ADAPTÁVEL */}
+      {/* MODAL ADICIONAR ALUNO */}
       <AnimatePresence>
         {showAddForm && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-md p-6">
@@ -163,7 +196,7 @@ export function GraduationManager() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <label className="text-[10px] font-black uppercase text-gray-400 ml-1">Polo</label>
-                    <select className="w-full p-4 bg-gray-50 dark:bg-gray-800 border-none rounded-2xl outline-none text-gray-900 dark:text-white" value={newPolo} onChange={e => setNewPolo(e.target.value)}>
+                    <select className="w-full p-4 bg-gray-50 dark:bg-gray-800 border-none rounded-2xl outline-none text-gray-900 dark:text-white cursor-pointer" value={newPolo} onChange={e => setNewPolo(e.target.value)}>
                       <option value="Novo Aleixo">Novo Aleixo</option>
                       <option value="Centro">Centro</option>
                       <option value="Cidade Nova">Cidade Nova</option>
@@ -171,7 +204,7 @@ export function GraduationManager() {
                   </div>
                   <div className="space-y-1">
                     <label className="text-[10px] font-black uppercase text-gray-400 ml-1">Graduação</label>
-                    <select className="w-full p-4 bg-gray-50 dark:bg-gray-800 border-none rounded-2xl outline-none text-gray-900 dark:text-white" value={newGraduation} onChange={e => setNewGraduation(e.target.value)}>
+                    <select className="w-full p-4 bg-gray-50 dark:bg-gray-800 border-none rounded-2xl outline-none text-gray-900 dark:text-white cursor-pointer" value={newGraduation} onChange={e => setNewGraduation(e.target.value)}>
                       <option value="Corda Crua">Corda Crua</option>
                       <option value="Amarela">Amarela</option>
                       <option value="Laranja">Laranja</option>

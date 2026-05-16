@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion'; // Corrigido de 'motion/react' para 'framer-motion'
 import { Award, BookOpen } from 'lucide-react';
 
 export function MemorialPatriarca() {
@@ -16,7 +16,7 @@ export function MemorialPatriarca() {
               src="/membros/Mestre_Camisa_furada.jpg" 
               alt="Mestre Camisa Furada" 
               className="w-full h-full object-cover object-[center_15%] grayscale contrast-125"            
-              />
+            />
           </div>
 
           <div className="w-full md:w-1/2 p-10 flex flex-col justify-center">
