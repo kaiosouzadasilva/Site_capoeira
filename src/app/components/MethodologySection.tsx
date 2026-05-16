@@ -62,7 +62,7 @@ function PlaceholderCard({ isSmall }: { isSmall?: boolean }) {
 
 export function MethodologySection() {
   return (
-    <section id="metodologia" className="py-24 px-6 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <section id="metodologia" className="py-24 px-6 bg-transparent dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
         
         <div className="text-center mb-20">
@@ -89,15 +89,12 @@ export function MethodologySection() {
         {/* --- NÍVEL 2: MESTRES --- */}
         <div className="flex flex-wrap justify-center gap-8 md:gap-32 mb-12">
           <MemberCard 
-            name="Contramestre Ely" 
-            role="Contramestre" 
-            image="/membros/Contramestre_Ely.jpg" 
-          />
-          <MemberCard 
             name="Mestre Canário" 
             role="Mestre ECLL" 
             image="/membros/Mestre_Canario.jpg" 
           />
+
+
           {/* <PlaceholderCard /> Espaço para novos Mestres */}
         </div>
 

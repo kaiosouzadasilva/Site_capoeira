@@ -1,36 +1,31 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { ArrowLeft, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ImageWithFallback } from './figma/ImageWithFallback'; 
 
-const historiaPadrao = "Como ainda não tenho a biografia de cada um fiquem com essa história irá se repetir em todos esses perfis.\n\nAs maltas de capoeira foram grupos organizados que dominaram as ruas do Rio de Janeiro no século XIX. Divididas principalmente entre duas grandes facções rivais, os Nagoas e os Guaiamuns, essas organizações possuíam cores, territórios e símbolos próprios. Os Nagoas, que costumavam usar calças brancas, dominavam a periferia da cidade, enquanto os Guaiamuns, geralmente usando calças de brim ou seda, controlavam a região central.\n\nNaquela época, a capoeira não era apenas um jogo de roda, mas uma verdadeira arma de defesa e ataque. Os capoeiras eram temidos por sua agilidade e pelo uso de navalhas, sendo frequentemente contratados como guarda-costas de políticos ou atuando em conflitos nas ruas, tanto contra maltas rivais quanto contra a dura repressão da guarda imperial.\n\nA história das maltas é um capítulo fascinante que nos lembra do poder da união, da resistência negra e de como a capoeira foi forjada na dureza das ruas antes de chegar às academias e ser reconhecida como o maior símbolo da cultura e da resistência brasileira.";
+const historiaPadrao = "Como ainda não tenho a biografia de cada um, fiquem com essa história que irá se repetir em todos esses perfis.\n\nAs maltas de capoeira foram grupos organizados que dominaram as ruas do Rio de Janeiro no século XIX. Divididas principalmente entre duas grandes facções rivais, os Nagoas e os Guaiamuns, essas organizações possuíam cores, territórios e símbolos próprios. Os Nagoas, que costumavam usar calças brancas, dominavam a periferia da cidade, enquanto os Guaiamuns, geralmente usando calças de brim ou seda, controlavam a região central.\n\nNaquela época, a capoeira não era apenas um jogo de roda, mas uma verdadeira arma de defesa e ataque. Os capoeiras eram temidos por sua agilidade e pelo uso de navalhas, sendo frequentemente contratados como guarda-costas de políticos ou atuando em conflitos nas ruas, tanto contra maltas rivais quanto contra a dura repressão da guarda imperial.";
 
-// --- BANCO DE DADOS DAS HISTÓRIAS ---
+// --- BANCO DE DADOS COM OS POLOS ---
 const leadersData: Record<string, any> = {
   "m1": { 
     name: "Dermilson Brasil", 
     nickname: "Mestre Canário", 
     rank: "Mestre", 
+    cordColor: "Branca",
     image: "/membros/Mestre_Canario.jpg", 
     years: 42, 
+    polo: "Centro Cultural Canto do Canário",
     specialties: ["Angola", "Regional", "Música"],
     history: historiaPadrao 
   },
-  "l1": { 
-    name: "Nome do Ely", 
-    nickname: "Contramestre Ely", 
-    rank: "Contramestre", 
-    image: "/membros/Contramestre_Ely.jpg", 
-    years: 28, 
-    specialties: ["Técnica", "Jogo"],
-    history: historiaPadrao 
-  },
   "l2": { 
-    name: "Nome do Prateado", 
+    name: "Prateado", 
     nickname: "Contramestre Prateado", 
     rank: "Contramestre", 
+    cordColor: "Branco Azul",
     image: "/membros/Contramestre_Prateado.jpg", 
     years: 20, 
+    polo: "Polo Comunitário",
     specialties: ["Benguela", "Acrobacias"],
     history: historiaPadrao 
   },
@@ -38,8 +33,10 @@ const leadersData: Record<string, any> = {
     name: "Jarline da Silva", 
     nickname: "Contramestra Peteca", 
     rank: "Contramestra", 
+    cordColor: "Branco e Azul",
     image: "/membros/Contramestra_Peteca.jpg", 
     years: 25, 
+    polo: "Centro Cultural Canto do Canário",
     specialties: ["Infantil", "Regional"],
     history: historiaPadrao 
   },
@@ -47,8 +44,10 @@ const leadersData: Record<string, any> = {
     name: "Joel Brito", 
     nickname: "Monitor Jhoy", 
     rank: "Monitor", 
+    cordColor: "Branco e verde",
     image: "/membros/Monitor_Jhoy.png", 
     years: 12, 
+    polo: "Novo Aleixo",
     specialties: ["Movimentação", "Técnica"],
     history: historiaPadrao 
   },
@@ -56,135 +55,86 @@ const leadersData: Record<string, any> = {
     name: "Relâmpago", 
     nickname: "Formado Relâmpago", 
     rank: "Formado", 
+    cordColor: "Verde, Amarelo e Azul",
     image: "/membros/Formado_Relampago.png", 
     years: 12, 
+    polo: "Polo Centro",
     specialties: ["Movimentação"],
     history: historiaPadrao 
   },
-
-
-//   A partir daqui são perfis de graduados e estagiários, que ainda não tem uma história individualizada, então estou usando a mesma história para todos, só para preencher o layout do site. Depois é só trocar a história de cada um quando tiver as informações.
-
-
   "l6": { 
     name: "Chocolate", 
     nickname: "Formado Chocolate", 
     rank: "Formado", 
+    cordColor: "Verde, Amarelo e Azul",
     image: "/membros/Formado_Chocolate.png", 
     years: 12, 
+    polo: "Polo Centro",
     specialties: ["Movimentação"],
-    history: historiaPadrao 
-  },
-  "b1": { 
-    name: "Francês", 
-    nickname: "Graduado Francês", 
-    rank: "Graduado", 
-    image: "/membros/foto_frances.jpeg", 
-    years: 8, 
-    specialties: ["Fundamentos"],
-    history: historiaPadrao 
-  },
-  "b2": { 
-    name: "Zumbi", 
-    nickname: "Graduado Zumbi", 
-    rank: "Graduado", 
-    image: "/membros/foto_zumbi.jpeg", 
-    years: 8, 
-    specialties: ["Fundamentos"],
-    history: historiaPadrao 
-  },
-  "b3": { 
-    name: "Shrek", 
-    nickname: "Graduado Shrek", 
-    rank: "Graduado", 
-    image: "/membros/placeholder.jpg", 
-    years: 7, 
-    specialties: ["Fundamentos"],
-    history: historiaPadrao 
-  },
-  "b4": { 
-    name: "Calanguinho", 
-    nickname: "Graduado Calanguinho", 
-    rank: "Graduado", 
-    image: "/membros/placeholder.jpg", 
-    years: 7, 
-    specialties: ["Fundamentos"],
     history: historiaPadrao 
   },
   "b5": { 
     name: "Kaio Souza", 
     nickname: "Estagiário Invergado", 
     rank: "Estagiário", 
+    cordColor: "Azul e Amarelo",
     image: "/membros/Invergado.png", 
     years: 5, 
-    specialties: ["Agilidade", "Esquiva"],
-    history: historiaPadrao 
+    polo: "Novo Aleixo",
+    history: historiaPadrao
   },
   "b6": { 
     name: "Colorau", 
     nickname: "Estagiário Colorau", 
     rank: "Estagiário", 
+    cordColor: "Azul e Amarelo",
     image: "/membros/Estagiario_Colorau.jpg", 
     years: 5, 
-    specialties: ["Força", "Resistência"],
+    polo: "Centro Cultural Canto do Canário",
     history: historiaPadrao 
   },
+  "b1": { 
+    name: "Francês", 
+    nickname: "Graduado Francês", 
+    rank: "Graduado", 
+    cordColor: "Verde e Azul",
+    image: "/membros/foto_frances.jpeg", 
+    years: 8, 
+    polo: "Polo Centro",
+    history: historiaPadrao 
+  },
+  "b2": { 
+    name: "Zumbi", 
+    nickname: "Graduado Zumbi", 
+    rank: "Graduado", 
+    cordColor: "Verde e Amarelo",
+    image: "/membros/foto_zumbi.jpeg", 
+    years: 47,
+    polo: "Novo Aleixo",
+    history: `A história de Zumbi na capoeira teve início através de seu filho. Acompanhando o pequeno de nove anos, que se encantou pela arte através de um filme, Zumbi sentiu a mesma paixão aos 36 anos. Seus primeiros passos foram no chapéu de palha do bairro Hiléia, no Grupo Muzenza.
 
-//   {Aqui começam os alunos que não tem perfil ainda, então a história é a mesma para todos, só para preencher o layout do site.}
+    Após passagens pelos grupos Giori e Cantoa, sob orientação do Professor Lua Branca, divergências internas o levaram a se afastar das rodas por seis anos. O reencontro com a arte aconteceu como um chamado: ao passar pelo chapéu de palha do Núcleo 16, na Cidade Nova, viu um treino e sentiu o "arrepio na pele" que o fez querer voltar.
 
-
+    Após algumas tentativas frustradas em outros grupos, observou o Monitor Jhoy ministrando um treino com seriedade. Após conversar com ele e ter o pedido aceito pelo Mestre Canário, Zumbi integrou-se à Escola de Capoeira Luta de Libertação em abril, onde segue treinando com dedicação e muito orgulho dos fundamentos.`
+  },
   "a1": { 
-    name: "João carlos", 
+    name: "João Carlos", 
     nickname: "Ventania", 
     rank: "Aluno", 
-    image: "/membros/...jpg", 
-    years: 5, 
-    specialties: ["Força", "Resistência"],
+    cordColor: "Verde",
+    image: "/membros/placeholder.jpg", 
+    years: 2, 
+    polo: "Novo Aleixo",
     history: historiaPadrao 
   },
   "a2": { 
-   name: "Mariana Silva", 
+    name: "Mariana Silva", 
     nickname: "Sereia", 
     rank: "Aluno", 
-    image: "/membros/...jpg", 
-    years: 5, 
-    specialties: ["Força", "Resistência"],
-    history: historiaPadrao
-  },
-  "c1": { 
-    name: "Pedro henrique", 
-    nickname: "Faísca", 
-    rank: "Aluno", 
-    image: "/membros/...jpg", 
-    years: 5, 
-    specialties: ["Força", "Resistência"],
-    history: historiaPadrao
-  },
-  "c2": { 
-    name: "Adriana", 
-    nickname: "Andorinha", 
-    rank: "Aluno", 
-    image: "/membros/...jpg", 
-    years: 5, 
-    specialties: ["Força", "Resistência"],
-    history: historiaPadrao 
-  },
-  "d1": { 
-    name: "Lucas Mendes", 
-    nickname: "Gavião", 
-    rank: "Aluno", 
-    image: "/membros/...jpg", 
-    years: 5, 
-    specialties: ["Força", "Resistência"],
-    history: historiaPadrao
-  },
-  "d2": { 
-    name: "Beatriz Costa", 
-    nickname: "Pimenta", 
-    rank: "Aluno", 
-    image: "/membros/...jpg", 
-    years: 5, 
-    specialties: ["Força", "Resistência"],
+    cordColor: "Verde",
+    image: "/membros/placeholder.jpg", 
+    years: 2, 
+    polo: "Polo Comunitário",
     history: historiaPadrao
   }
 };
@@ -197,7 +147,7 @@ export function LeaderDetail() {
   if (!person) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col items-center justify-center transition-colors duration-300">
-        <h2 className="text-2xl font-black dark:text-white uppercase mb-4 text-center px-4">Membro não encontrado ou biografia em construção</h2>
+        <h2 className="text-2xl font-black dark:text-white uppercase mb-4 text-center px-4">Biografia em construção</h2>
         <button onClick={() => navigate('/lideranca')} className="text-yellow-500 font-bold hover:underline">Voltar para Liderança</button>
       </div>
     );
@@ -218,7 +168,6 @@ export function LeaderDetail() {
         </button>
 
         <div className="grid md:grid-cols-3 gap-12">
-          {/* COLUNA ESQUERDA: TEXTO */}
           <div className="md:col-span-2 space-y-8">
             <div>
               <p className="text-yellow-600 font-black text-sm uppercase tracking-widest mb-2">{person.rank}</p>
@@ -228,14 +177,12 @@ export function LeaderDetail() {
             
             <div className="prose prose-lg dark:prose-invert max-w-none">
               <h2 className="text-xl font-bold border-b-2 border-yellow-500 pb-2 mb-6 text-gray-900 dark:text-white uppercase tracking-tight">Biografia e Trajetória</h2>
-              
               <p className="text-gray-600 dark:text-gray-400 leading-relaxed whitespace-pre-line text-lg">
                 {person.history}
               </p>
             </div>
           </div>
 
-          {/* COLUNA DIREITA: INFOBOX */}
           <aside className="bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-[2.5rem] p-8 h-fit md:sticky md:top-32 shadow-xl">
             <div className="aspect-[4/5] overflow-hidden rounded-2xl mb-8 shadow-inner">
               <ImageWithFallback 
@@ -252,14 +199,45 @@ export function LeaderDetail() {
                   <th className="py-4 font-bold text-gray-900 dark:text-white uppercase text-xs">Graduação</th>
                   <td className="py-4 text-yellow-600 font-black text-right">{person.rank}</td>
                 </tr>
+
+                {/* --- ATUAÇÃO / POLO CLICÁVEL --- */}
+                <tr>
+                  <th className="py-4 font-bold text-gray-900 dark:text-white uppercase text-xs">Atuação / Polo</th>
+                  <td className="py-4 text-right font-medium">
+                    <div className="flex flex-col items-end">
+                       <Link 
+                         to="/polos" 
+                         className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-yellow-600 dark:hover:text-yellow-500 transition-colors group"
+                         title="Ver detalhes de todos os polos"
+                       >
+                         <MapPin size={12} className="text-yellow-500 group-hover:scale-125 transition-transform" />
+                         <span className="underline decoration-transparent group-hover:decoration-yellow-500 underline-offset-4 transition-colors">
+                           {person.polo || "Polo Central"}
+                         </span>
+                       </Link>
+                       <span className="text-[8px] text-yellow-500 font-black uppercase mt-1">
+                         {person.rank === "Mestre" || person.rank === "Contramestre" ? "Responsável Técnico" : "Instrutor Auxiliar"}
+                       </span>
+                    </div>
+                  </td>
+                </tr>
+
+                {person.cordColor && (
+                  <tr>
+                    <th className="py-4 font-bold text-gray-900 dark:text-white uppercase text-xs">Corda</th>
+                    <td className="py-4 text-gray-600 dark:text-gray-400 text-right font-medium">{person.cordColor}</td>
+                  </tr>
+                )}
                 <tr>
                   <th className="py-4 font-bold text-gray-900 dark:text-white uppercase text-xs">Tempo de Arte</th>
                   <td className="py-4 text-gray-600 dark:text-gray-400 text-right font-medium">{person.years} anos</td>
                 </tr>
-                <tr>
-                  <th className="py-4 font-bold text-gray-900 dark:text-white uppercase text-xs">Especialidade</th>
-                  <td className="py-4 text-gray-600 dark:text-gray-400 text-right font-medium">{person.specialties.join(", ")}</td>
-                </tr>
+                {person.specialties && person.specialties.length > 0 && (
+                  <tr>
+                    <th className="py-4 font-bold text-gray-900 dark:text-white uppercase text-xs">Especialidade</th>
+                    <td className="py-4 text-gray-600 dark:text-gray-400 text-right font-medium">{person.specialties.join(", ")}</td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </aside>
