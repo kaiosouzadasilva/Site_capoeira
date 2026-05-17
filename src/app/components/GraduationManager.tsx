@@ -1,6 +1,7 @@
+// src/app/components/GraduationManager.tsx
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserPlus, Trash2, Eye, X, Check, Loader2 } from 'lucide-react';
+import { UserPlus, Trash2, Eye, X, Check, Loader2, ArrowLeft } from 'lucide-react'; 
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../lib/supabase';
 
@@ -17,13 +18,19 @@ export function GraduationManager() {
 
   const fetchStudents = async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from('alunos')
-      .select('*')
-      .order('created_at', { ascending: false });
-    
-    if (data) setStudents(data);
-    setLoading(false);
+    try {
+      const { data, error } = await supabase
+        .from('alunos')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      if (data) setStudents(data);
+    } catch (err: any) {
+      console.error('Erro ao carregar alunos:', err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { 
@@ -32,43 +39,58 @@ export function GraduationManager() {
 
   const handleAddStudent = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { data, error } = await supabase.from('alunos').insert([{ 
-      nome: newName, 
-      apelido: newNickname, 
-      polo: newPolo, 
-      graduacao: newGraduation, 
-      status: "Apto" 
-    }]).select();
+    try {
+      const { data, error } = await supabase.from('alunos').insert([{ 
+        nome: newName, 
+        apelido: newNickname, 
+        polo: newPolo, 
+        graduacao: newGraduation, 
+        status: "Ativo" // 👇 Ajustado para "Ativo" para atualizar em tempo real o Dashboard!
+      }]).select();
 
-    if (!error && data) {
-      setStudents([data[0], ...students]);
-      setNewName(''); 
-      setNewNickname(''); 
-      setShowAddForm(false);
+      if (error) throw error;
+
+      if (data) {
+        setStudents([data[0], ...students]);
+        setNewName(''); 
+        setNewNickname(''); 
+        setShowAddForm(false);
+      }
+    } catch (err: any) {
+      alert('Erro ao adicionar aluno: ' + err.message);
     }
   };
 
   const handleDeleteStudent = async (id: string, apelido: string) => {
-    const confirmar = window.confirm(`Tem certeza que deseja remover o capoeirista "${apelido}" do grupo?`);
+    const confirmar = window.confirm(`Tem certeza que deseja remover o capoeirista "${apelido || 'Sem nome'}" do grupo?`);
     
     if (confirmar) {
-      const { error } = await supabase
-        .from('alunos')
-        .delete()
-        .eq('id', id);
+      try {
+        const { error } = await supabase
+          .from('alunos')
+          .delete()
+          .eq('id', id);
 
-      if (error) {
-        alert('Erro ao remover aluno: ' + error.message);
-      } else {
+        if (error) throw error;
         setStudents(prev => prev.filter(student => student.id !== id));
+      } catch (err: any) {
+        alert('Erro ao remover aluno: ' + err.message);
       }
     }
   };
 
   return (
-    <section className="py-24 px-6 bg-gray-50 dark:bg-gray-950 min-h-screen transition-colors duration-300">
+    <section className="py-12 px-6 bg-gray-50 dark:bg-gray-950 min-h-screen transition-colors duration-300">
       <div className="max-w-6xl mx-auto">
         
+        {/* BOTÃO VOLTAR PARA O PAINEL DE COMANDO */}
+        <button 
+          onClick={() => navigate('/admin')} 
+          className="flex items-center gap-2 text-gray-500 hover:text-black dark:hover:text-white mb-8 font-black uppercase text-[10px] tracking-widest transition-all cursor-pointer"
+        >
+          <ArrowLeft size={16} /> Voltar para o Painel
+        </button>
+
         {/* HEADER CONTROLE */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-10">
           <div>
@@ -76,11 +98,10 @@ export function GraduationManager() {
             <p className="text-gray-500 dark:text-gray-400 text-[10px] font-black uppercase tracking-widest">Controle Pedagógico ECLL</p>
           </div>
           
-          {/* Grupo de botões de Ação rápida */}
           <div className="flex gap-3 w-full sm:w-auto">
             <button 
               onClick={() => navigate('/admin/chamada')} 
-              className="flex-1 sm:flex-none bg-zinc-900 text-white dark:bg-gray-800 hover:bg-zinc-800 dark:hover:bg-gray-750 px-6 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-xl transition-all active:scale-95"
+              className="flex-1 sm:flex-none bg-zinc-900 text-white dark:bg-gray-800 hover:bg-zinc-800 dark:hover:bg-gray-750 px-6 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-xl transition-all active:scale-95 cursor-pointer"
             >
               <div className="flex items-center justify-center gap-2">
                 <Check size={16} className="text-green-500" /> Fazer Chamada
@@ -89,7 +110,7 @@ export function GraduationManager() {
 
             <button 
               onClick={() => setShowAddForm(true)} 
-              className="flex-1 sm:flex-none bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-xl shadow-yellow-500/20 transition-all active:scale-95"
+              className="flex-1 sm:flex-none bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-xl shadow-yellow-500/20 transition-all active:scale-95 cursor-pointer"
             >
               <div className="flex items-center justify-center gap-2">
                 <UserPlus size={16} /> Novo Aluno
@@ -117,26 +138,34 @@ export function GraduationManager() {
                       <Loader2 className="animate-spin mx-auto text-yellow-500" size={32} />
                     </td>
                   </tr>
+                ) : students.length === 0 ? (
+                  <tr>
+                    <td colSpan={4} className="p-12 text-center text-gray-400 font-bold uppercase text-xs">
+                      Nenhum aluno cadastrado no sistema.
+                    </td>
+                  </tr>
                 ) : (
                   students.map((s) => (
                     <tr key={s.id} className="hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors group">
                       <td className="p-6">
                         <div className="flex items-center gap-4 text-gray-900 dark:text-white">
-                          <div className="w-10 h-10 bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 rounded-xl flex items-center justify-center font-black shadow-inner">
-                            {s.apelido ? s.apelido[0] : s.nome[0]}
+                          
+                          {/* 👇 ERRO ELIMINADO: Uso do encadeamento opcional (?.) impede a quebra e a tela branca */}
+                          <div className="w-10 h-10 bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 rounded-xl flex items-center justify-center font-black shadow-inner uppercase">
+                            {s.apelido?.[0] || s.nome?.[0] || '?'}
                           </div>
                           <div>
-                            <p className="font-black text-sm uppercase tracking-tight">{s.apelido}</p>
-                            <p className="text-[10px] text-gray-400 font-bold">{s.nome}</p>
+                            <p className="font-black text-sm uppercase tracking-tight">{s.apelido || s.nome || 'Sem Apelido'}</p>
+                            <p className="text-[10px] text-gray-400 font-bold">{s.nome || 'Sem Nome Civil'}</p>
                           </div>
                         </div>
                       </td>
                       <td className="p-6 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase">
-                        {s.polo}
+                        {s.polo || 'Não Especificado'}
                       </td>
                       <td className="p-6">
                         <span className="bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 px-3 py-1 rounded-full text-[10px] font-black uppercase border border-yellow-500/20">
-                          {s.graduacao}
+                          {s.graduacao || 'Sem Corda'}
                         </span>
                       </td>
                       <td className="p-6 text-center">
@@ -144,15 +173,15 @@ export function GraduationManager() {
                           <button 
                             onClick={() => navigate(`/admin/aluno/${s.id}`)}
                             title="Ver Prontuário"
-                            className="p-2 text-gray-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded-lg transition-all"
+                            className="p-2 text-gray-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded-lg transition-all cursor-pointer"
                           >
                             <Eye size={18}/>
                           </button>
 
                           <button 
-                            onClick={() => handleDeleteStudent(s.id, s.apelido || s.nome)}
+                            onClick={() => handleDeleteStudent(s.id, s.apelido || s.nome || 'Aluno')}
                             title="Remover Aluno"
-                            className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-all"
+                            className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-all cursor-pointer"
                           >
                             <Trash2 size={18}/>
                           </button>
@@ -213,7 +242,7 @@ export function GraduationManager() {
                   </div>
                 </div>
 
-                <button type="submit" className="w-full bg-black dark:bg-yellow-500 text-white dark:text-black p-5 rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 transition-all">
+                <button type="submit" className="w-full bg-black dark:bg-yellow-500 text-white dark:text-black p-5 rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 transition-all cursor-pointer">
                   <Check size={18} /> Confirmar Matrícula
                 </button>
               </form>

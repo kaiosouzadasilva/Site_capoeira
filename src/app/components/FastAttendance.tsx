@@ -1,3 +1,4 @@
+// src/app/components/FastAttendance.tsx
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, X, Save, MapPin, Loader2, Calendar, ArrowLeft } from 'lucide-react';
@@ -11,7 +12,6 @@ export function FastAttendance() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // Carregar alunos baseados no polo selecionado
   useEffect(() => {
     const loadStudentsByPolo = async () => {
       setLoading(true);
@@ -25,7 +25,6 @@ export function FastAttendance() {
 
         if (data) {
           setStudents(data);
-          // Todos os alunos começam marcados como PRESENTES (true) por padrão
           const initialAttendance: Record<string, boolean> = {};
           data.forEach(s => {
             initialAttendance[s.id] = true;
@@ -34,7 +33,7 @@ export function FastAttendance() {
         }
       } catch (err: any) {
         alert('Erro ao carregar alunos do polo: ' + err.message);
-      } finally {
+      } finally { // 👇 CORRIGIDO: O bloco 'finally' voltou para o lugar certo!
         setLoading(false);
       }
     };
@@ -42,23 +41,20 @@ export function FastAttendance() {
     loadStudentsByPolo();
   }, [polo]);
 
-  // Alternar entre Presente e Ausente ao clicar no card do aluno
   const toggleAttendance = (id: string) => {
     setAttendance(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
-  // Salvar a lista de chamadas no banco de dados
   const handleSaveAttendance = async () => {
     if (students.length === 0) return;
     
     setSaving(true);
     try {
-      // Prepara as linhas para inserção em massa (Bulk Insert) na tabela 'presencas'
       const registrosPresenca = students.map(s => ({
         aluno_id: s.id,
         polo: polo,
         presente: attendance[s.id],
-        data: new Date().toISOString().split('T')[0] // Formato YYYY-MM-DD
+        data: new Date().toISOString().split('T')[0]
       }));
 
       const { error } = await supabase
@@ -68,7 +64,7 @@ export function FastAttendance() {
       if (error) throw error;
 
       alert(`Chamada do Polo [ ${polo} ] salva com sucesso!`);
-      navigate('/admin'); // Retorna para a listagem principal após salvar
+      navigate('/admin'); 
     } catch (err: any) {
       alert('Erro ao salvar a chamada: ' + err.message);
     } finally {
@@ -77,13 +73,13 @@ export function FastAttendance() {
   };
 
   return (
-    <div className="p-6 md:p-10 bg-gray-50 dark:bg-gray-950 min-h-screen transition-colors duration-300">
+    <div className="py-12 px-6 md:px-10 bg-gray-50 dark:bg-gray-950 min-h-screen transition-colors duration-300">
       <div className="max-w-4xl mx-auto pb-24">
         
-        {/* BOTÃO VOLTAR PARA O PAINEL */}
+        {/* BOTÃO VOLTAR PERFEITAMENTE VISÍVEL E ALINHADO */}
         <button 
           onClick={() => navigate('/admin')} 
-          className="flex items-center gap-2 text-gray-500 hover:text-black dark:hover:text-white mb-8 font-black uppercase text-[10px] tracking-widest transition-all"
+          className="flex items-center gap-2 text-gray-500 hover:text-black dark:hover:text-white mb-8 font-black uppercase text-[10px] tracking-widest transition-all cursor-pointer"
         >
           <ArrowLeft size={16} /> Voltar para o Painel
         </button>
@@ -101,7 +97,6 @@ export function FastAttendance() {
               </div>
             </div>
 
-            {/* Filtro de Polo */}
             <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-800 p-4 rounded-2xl border border-gray-100 dark:border-gray-700 transition-colors">
               <MapPin className="text-yellow-500" size={20} />
               <select 
@@ -173,7 +168,7 @@ export function FastAttendance() {
           <button 
             onClick={handleSaveAttendance}
             disabled={saving || students.length === 0}
-            className="w-full bg-yellow-500 hover:bg-yellow-400 text-black p-6 rounded-[2.5rem] font-black uppercase tracking-widest text-xs shadow-2xl shadow-yellow-500/40 flex items-center justify-center gap-3 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:grayscale"
+            className="w-full bg-yellow-500 hover:bg-yellow-400 text-black p-6 rounded-[2.5rem] font-black uppercase tracking-widest text-xs shadow-2xl shadow-yellow-500/40 flex items-center justify-center gap-3 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:grayscale cursor-pointer"
           >
             {saving ? <Loader2 className="animate-spin" size={20} /> : <Save size={20} />}
             Finalizar Chamada do Polo

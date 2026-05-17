@@ -1,3 +1,4 @@
+// src/app/components/AdminDashboard.tsx
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
@@ -16,7 +17,6 @@ export function AdminDashboard() {
   });
   const [loading, setLoading] = useState(true);
 
-  // Lógica de Logout (Sair da Conta)
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate('/admin-login');
@@ -76,7 +76,9 @@ export function AdminDashboard() {
   }
 
   return (
-    <div className="space-y-8 pb-12">
+    // 👇 CORRIGIDO: Agora a estrutura respeita as margens e o alinhamento de tela de alto padrão
+    <div className="max-w-6xl mx-auto px-6 py-12 space-y-8 pb-24">
+      
       {/* CABEÇALHO COM BOTÃO DE SAIR */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
         <div>
@@ -98,7 +100,7 @@ export function AdminDashboard() {
         </div>
       </div>
 
-      {/* 👇 MENU DE ACESSO RÁPIDO (A peça que estava a faltar) */}
+      {/* MENU DE ACESSO RÁPIDO */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Link to="/admin/membros" className="flex items-center gap-4 p-6 bg-white dark:bg-gray-900 rounded-[2rem] border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md hover:border-yellow-500/50 transition-all group">
           <div className="p-4 bg-blue-500/10 text-blue-500 rounded-2xl group-hover:scale-110 transition-transform">
@@ -111,7 +113,7 @@ export function AdminDashboard() {
         </Link>
 
         <Link to="/admin/chamada" className="flex items-center gap-4 p-6 bg-white dark:bg-gray-900 rounded-[2rem] border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-md hover:border-yellow-500/50 transition-all group">
-          <div className="p-4 bg-green-500/10 text-green-500 rounded-2xl group-hover:scale-110 transition-transform">
+          <div className="p-4 bg-green-500/10 text-green-600 dark:text-green-500 rounded-2xl group-hover:scale-110 transition-transform">
             <ClipboardCheck size={24} />
           </div>
           <div>
