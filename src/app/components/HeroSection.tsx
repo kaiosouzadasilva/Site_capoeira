@@ -48,7 +48,7 @@ export function HeroSection() {
             {/* Foto 1: Mestre Camisa Furada */}
             <div className="w-1/2 aspect-[4/5] rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-stone-200 dark:border-gray-800 mt-8 relative group">
               <img 
-                src="/membros/Mestre_Camisa_furada.jpg" 
+                src="./membros/Mestre_Camisa_furada.jpg" 
                 alt="Mestre Camisa Furada" 
                 className="w-full h-full object-cover object-[center_35%] grayscale transition-transform duration-700 group-hover:scale-110"
               />
@@ -62,7 +62,7 @@ export function HeroSection() {
             {/* Foto 2: Mestre Canário */}
             <div className="w-1/2 aspect-[4/5] rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-yellow-500/40 mb-8 relative group">
               <img 
-                src="/membros/Mestre_Canario.jpg" 
+                src="./membros/Mestre_Canario.jpg" 
                 alt="Mestre Canário" 
                 className="w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover:scale-110"
               />
