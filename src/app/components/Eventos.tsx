@@ -1,72 +1,20 @@
+// src/app/components/Eventos.tsx
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { 
-  Music, Users, GraduationCap, Drum, HeartHandshake, 
-  Footprints, Leaf, Calendar, MapPin, ArrowUpRight, 
-  Loader2, History 
+  Music, GraduationCap, HeartHandshake, 
+  Calendar, MapPin, ArrowUpRight, Loader2, History 
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-
-const culturalWorkshops = [
-  {
-    title: "Toques de Berimbau",
-    description: "Estudo aprofundado das afinações, ritmos e da musicalidade que comanda a roda de capoeira.",
-    icon: Music
-  },
-  {
-    title: "Percussão e Pandeiro",
-    description: "Fundamentos do pandeiro, atabaque e marcação de ritmo para sustentar a energia do jogo.",
-    icon: Drum
-  },
-  {
-    title: "Dança do Maculelê",
-    description: "Resgate da expressão cultural afro-indígena com bastões, ritmo forte e muita expressão corporal.",
-    icon: Users
-  }, 
-  {
-    title: "Samba de Roda da Frente Unida",
-    description: "Expressão tradicional e festiva com passos característicos, palmas e cantigas de roda.",
-    icon: Footprints
-  }, 
-  {
-    title: "Carimbó",
-    description: "Vivência do ritmo e da dança tradicional nortista integrada às manifestações da nossa escola.",
-    icon: Leaf
-  }, 
-];
-
-const socialProjects = [
-  {
-    instructor: "Mestre Canário",
-    audience: "Turma Mista (Crianças, Jovens e Adultos)",
-    description: "Aulas completas abrangendo todas as idades, com foco na integração, filosofia da ECLL e disciplina em todas as fases da vida.",
-    color: "border-yellow-500"
-  },
-  {
-    instructor: "Contramestre Prateado",
-    audience: "Turma Mista (Crianças, Jovens e Adultos)",
-    description: "Desenvolvimento técnico e cultural para diversas faixas etárias, unindo fundamentos e acrobatacias.",
-    color: "border-gray-400"
-  },
-  {
-    instructor: "Contramestra Peteca",
-    audience: "Foco Infantil",
-    description: "Pedagogia adaptada para os pequenos, usando a ludicidade e brincadeiras para introduzir a capoeira na vida das crianças.",
-    color: "border-blue-500"
-  },
-  {
-    instructor: "Monitor Jhoy",
-    audience: "Turma mista (Crianças, Jovens e Adultos)",
-    description: "Trabalho focado em escolas e projetos sociais, direcionando a energia da juventude para o esporte, respeito e cidadania.",
-    color: "border-green-500"
-  }
-];
+import { Evento } from '../types'; // 👇 Importando a Tipagem do Passo 1
+import { culturalWorkshopsData, socialProjectsData } from '../data/oficinas'; // 👇 Importando os Dados do Passo 2
 
 export function Eventos() {
   const navigate = useNavigate();
-  const [eventosAtivos, setEventosAtivos] = useState<any[]>([]); 
-  const [eventosPassados, setEventosPassados] = useState<any[]>([]); 
+  // 🛡️ TypeScript ativo: Garante que os estados sigam estritamente o molde de Eventos
+  const [eventosAtivos, setEventosAtivos] = useState<Evento[]>([]); 
+  const [eventosPassados, setEventosPassados] = useState<Evento[]>([]); 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -83,9 +31,9 @@ export function Eventos() {
         trintaDiasAtras.setDate(hoje.getDate() - 30);
         const limiteData = trintaDiasAtras.toISOString().split('T')[0];
 
-        // Filtra os eventos de acordo com a regra de 1 mês
-        const ativos = data.filter(e => e.real_date >= limiteData);
-        const passados = data.filter(e => e.real_date < limiteData);
+        // Filtra os eventos usando mapeamento tipado seguro
+        const ativos = (data as Evento[]).filter(e => e.real_date >= limiteData);
+        const passados = (data as Evento[]).filter(e => e.real_date < limiteData);
 
         setEventosAtivos(ativos);
         setEventosPassados(passados);
@@ -197,7 +145,7 @@ export function Eventos() {
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
-            {culturalWorkshops.map((workshop, index) => (
+            {culturalWorkshopsData.map((workshop, index) => (
               <motion.div 
                 key={workshop.title}
                 initial={{ opacity: 0, y: 20 }}
@@ -224,7 +172,7 @@ export function Eventos() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            {socialProjects.map((project, index) => (
+            {socialProjectsData.map((project, index) => (
               <motion.div 
                 key={project.instructor}
                 initial={{ opacity: 0, scale: 0.95 }}

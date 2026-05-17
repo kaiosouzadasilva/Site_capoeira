@@ -1,0 +1,21 @@
+{
+  "short_name": "Gestão ECLL",
+  "name": "Escola de Capoeira Luta de Libertação - Gestão",
+  "icons": [
+    {
+      "src": "/Imagem_do_grupo.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/Imagem_do_grupo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/admin-login",
+  "background_color": "#030712",
+  "theme_color": "#eab308",
+  "display": "standalone",
+  "orientation": "portrait"
+}
