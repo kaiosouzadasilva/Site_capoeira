@@ -2,16 +2,15 @@
 import { useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { supabase } from './lib/supabase';
+import { Session } from '@supabase/supabase-js'; 
 import { ThemeProvider } from './contexts/ThemeContext';
 import { Loader2 } from 'lucide-react';
 
-// OBRIGATÓRIOS: Layout e Estrutura Inicial carregam imediatamente
 import { Navbar } from './components/NavBar';
 import { HeroSection } from './components/HeroSection';
 import { BackgroundTexture } from './components/BackgroundTexture';
-import { ScrollToTop } from './utils/ScrollToTop'; // Mova a função ScrollToTop para um arquivo utils se preferir, ou deixe no fim do arquivo
+import { ScrollToTop } from './utils/ScrollToTop';
 
-// PREGUIÇOSOS (Lazy): Páginas secundárias e administrativas só carregam quando chamadas
 const MemorialPatriarca = lazy(() => import('./components/MemorialPatriarca').then(m => ({ default: m.MemorialPatriarca })));
 const MethodologySection = lazy(() => import('./components/MethodologySection').then(m => ({ default: m.MethodologySection })));
 const CulturalFundamentals = lazy(() => import('./components/CulturalFundamentals').then(m => ({ default: m.CulturalFundamentals })));
@@ -25,7 +24,9 @@ const DetalheEvento = lazy(() => import('./components/DetalhesEvento').then(m =>
 const Batizados = lazy(() => import('./components/Batizados').then(m => ({ default: m.Batizados })));
 const Graduacao = lazy(() => import('./components/Graduacao').then(m => ({ default: m.Graduacao })));
 
-// SISTEMA DE GESTÃO (LAZY)
+// 👇 CORRIGIDO: Nome do ficheiro no singular sem o "s" no final para não dar tela branca
+const DetalhesOficina = lazy(() => import('./components/DetalhesOficina').then(m => ({ default: m.DetalhesOficina })));
+
 const Login = lazy(() => import('./components/Login').then(m => ({ default: m.Login })));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard').then(m => ({ default: m.AdminDashboard })));
 const GraduationManager = lazy(() => import('./components/GraduationManager').then(m => ({ default: m.GraduationManager })));
@@ -33,15 +34,12 @@ const StudentProfile = lazy(() => import('./components/StudentProfile').then(m =
 const FastAttendance = lazy(() => import('./components/FastAttendance').then(m => ({ default: m.FastAttendance })));
 const AdminEventos = lazy(() => import('./components/AdminEventos').then(m => ({ default: m.AdminEventos })));
 
-
-// Componente Global de Loading
 const PageLoader = () => (
   <div className="min-h-[60vh] flex items-center justify-center">
     <Loader2 className="animate-spin text-yellow-500" size={32} />
   </div>
 );
 
-// Componente ScrollToTop isolado
 function ScrollToTopComponent() {
   const { pathname } = useLocation();
   useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
@@ -49,7 +47,7 @@ function ScrollToTopComponent() {
 }
 
 function App() {
-  const [session, setSession] = useState<any>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
@@ -65,8 +63,6 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  if (authLoading) return <PageLoader />;
-
   return (
     <ThemeProvider>
       <Router>
@@ -77,10 +73,8 @@ function App() {
           <BackgroundTexture /> 
           
           <main className="pt-20 relative z-10"> 
-            {/* O Suspense segura a tela de carregamento enquanto o pedaço do site é baixado */}
             <Suspense fallback={<PageLoader />}>
               <Routes>
-                {/* --- ROTAS PÚBLICAS --- */}
                 <Route path="/" element={<HeroSection />} />
                 <Route path="/historia" element={<><MemorialPatriarca /><MethodologySection /></>} />
                 <Route path="/fundamentos" element={<CulturalFundamentals />} />
@@ -93,18 +87,18 @@ function App() {
                 <Route path="/galeria" element={<Gallery />} />
                 <Route path="/lideranca/:id" element={<LeaderDetail />} /> 
                 <Route path="/batizados" element={<Batizados />} />
+                <Route path="/oficinas/:id" element={<DetalhesOficina />} />
 
-                {/* --- ROTA DE LOGIN DO APP DE GESTÃO --- */}
+                {/* --- ROTA DE LOGIN --- */}
                 <Route path="/admin-login" element={!session ? <Login /> : <Navigate to="/admin" />} />
 
-                {/* --- ROTAS PROTEGIDAS DA LIDERANÇA --- */}
-                <Route path="/admin" element={session ? <AdminDashboard /> : <Navigate to="/admin-login" />} />
-                <Route path="/admin/membros" element={session ? <GraduationManager /> : <Navigate to="/admin-login" />} />
-                <Route path="/admin/eventos" element={session ? <AdminEventos /> : <Navigate to="/admin-login" />} />
-                <Route path="/admin/aluno/:id" element={session ? <StudentProfile /> : <Navigate to="/admin-login" />} />
-                <Route path="/admin/chamada" element={session ? <FastAttendance /> : <Navigate to="/admin-login" />} />
+                {/* --- ROTAS PROTEGIDAS --- */}
+                <Route path="/admin" element={authLoading ? <PageLoader /> : session ? <AdminDashboard /> : <Navigate to="/admin-login" />} />
+                <Route path="/admin/membros" element={authLoading ? <PageLoader /> : session ? <GraduationManager /> : <Navigate to="/admin-login" />} />
+                <Route path="/admin/eventos" element={authLoading ? <PageLoader /> : session ? <AdminEventos /> : <Navigate to="/admin-login" />} />
+                <Route path="/admin/aluno/:id" element={authLoading ? <PageLoader /> : session ? <StudentProfile /> : <Navigate to="/admin-login" />} />
+                <Route path="/admin/chamada" element={authLoading ? <PageLoader /> : session ? <FastAttendance /> : <Navigate to="/admin-login" />} />
 
-                {/* Redirecionamento padrão */}
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </Suspense>

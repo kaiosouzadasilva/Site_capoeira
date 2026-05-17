@@ -1,13 +1,15 @@
-import { useTheme } from '../contexts/ThemeContext';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronRight, Sun, Moon, Award } from 'lucide-react';
+import { useTheme } from '../contexts/ThemeContext'; // 👇 Importação correta do novo contexto
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const [colorTheme, setTheme] = useDarkMode();
+  
+  // 👇 ERRO CORRIGIDO: Agora usamos o theme e toggleTheme do nosso Contexto unificado
+  const { theme, toggleTheme } = useTheme();
 
   const navLinks = [
     { name: 'Início', href: '/' },
@@ -16,7 +18,7 @@ export function Navbar() {
     { name: 'Polos', href: '/polos' },
     { name: 'Fundamentos', href: '/fundamentos' },
     { name: 'Graduação', href: '/graduacao' }, 
-    { name: 'Eventos', href: '/eventos' }, // ATUALIZADO AQUI
+    { name: 'Eventos', href: '/eventos' },
     { name: 'Galeria', href: '/galeria' },
   ];
 
@@ -29,7 +31,7 @@ export function Navbar() {
             <img src="/Imagem_do_grupo.png" alt="Logo ECLL" className="h-full w-full object-cover" />
           </div>
           <span className="font-black text-xl tracking-tighter uppercase dark:text-white transition-colors group-hover:text-yellow-500">
-            E.C.<span className="text-yellow-500">Luta de Libertação</span>
+            E.C.<span className="text-yellow-500">L.L.</span>
           </span>
         </Link>
         
@@ -38,7 +40,7 @@ export function Navbar() {
             <Link
               key={link.name}
               to={link.href}
-              className={`text-[10px] font-black uppercase tracking-widest transition-colors ${
+              className={`text-xs font-black uppercase tracking-widest transition-colors ${ // Tamanho da fonte otimizado
                 location.pathname === link.href 
                 ? 'text-yellow-500' 
                 : 'text-gray-500 hover:text-yellow-500'
@@ -50,27 +52,38 @@ export function Navbar() {
 
           <div className="w-px h-6 bg-gray-200 dark:bg-gray-800" />
 
+          {/* 👇 Botão atualizado com a função toggleTheme */}
           <button
-            onClick={() => setTheme(colorTheme)}
+            onClick={toggleTheme}
             className="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-yellow-500 hover:scale-110 transition-all"
+            aria-label="Alternar Tema Escuro/Claro"
             title="Alternar Tema"
           >
-            {colorTheme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+            {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
           </button>
 
+          {/* 👇 Mudança de texto para evitar confusão com o menu "Graduação" */}
           <Link
             to="/batizados"
-            className="flex items-center gap-2 px-5 py-3 rounded-xl bg-yellow-500 text-black text-[10px] font-black uppercase tracking-widest shadow-lg shadow-yellow-500/20 hover:scale-105 active:scale-95 transition-all"
+            className="flex items-center gap-2 px-5 py-3 rounded-xl bg-yellow-500 text-black text-xs font-black uppercase tracking-widest shadow-lg shadow-yellow-500/20 hover:scale-105 active:scale-95 transition-all"
           >
-            <Award size={16} /> Acervo de Graduações
+            <Award size={16} /> Histórico de Batizados
           </Link>
         </div>
 
         <div className="flex items-center gap-4 lg:hidden">
-          <button onClick={() => setTheme(colorTheme)} className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-yellow-500">
-            {colorTheme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+          <button 
+            onClick={toggleTheme} 
+            className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-yellow-500"
+            aria-label="Alternar Tema Escuro/Claro"
+          >
+            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
           </button>
-          <button className="p-2 text-gray-500 dark:text-white" onClick={() => setIsOpen(!isOpen)}>
+          <button 
+            className="p-2 text-gray-500 dark:text-white" 
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Abrir Menu Principal"
+          >
             {isOpen ? <X /> : <Menu />}
           </button>
         </div>
@@ -108,7 +121,7 @@ export function Navbar() {
               >
                 <Award className="text-black" size={18} />
                 <span className="text-xs font-black uppercase tracking-widest text-black">
-                  Acervo de Graduações
+                  Histórico de Batizados
                 </span>
               </Link>
             </div>

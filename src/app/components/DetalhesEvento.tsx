@@ -2,17 +2,21 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, Calendar, MapPin, Target, Award, 
-  Clock, Loader2, FileText, History
+  Clock, Loader2, FileText, History, HeartHandshake, CheckCircle, Users, ArrowUpRight
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabase';
 import { BackgroundTexture } from './BackgroundTexture';
+import { Evento } from '../../types'; // 👇 Importação do Tipo (Ajuste o caminho '../types' se necessário baseado na sua pasta)
 
 export function DetalheEvento() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [evento, setEvento] = useState<any>(null);
+  // 👇 Fim da linha vermelha de erro do TypeScript!
+  const [evento, setEvento] = useState<Evento | null>(null);
   const [loading, setLoading] = useState(true);
+
+
 
   useEffect(() => {
     async function fetchEventDetails() {
@@ -52,12 +56,14 @@ export function DetalheEvento() {
     );
   }
 
-  // Lógica de transição: Calcula se o evento ocorreu há mais de 30 dias (1 mês)
   const dataEvento = new Date(evento.real_date);
   const hoje = new Date();
   const diferencaTempo = hoje.getTime() - dataEvento.getTime();
   const diferencaDias = Math.ceil(diferencaTempo / (1000 * 60 * 60 * 24));
   const ehNoticiaPassada = diferencaDias > 30;
+
+  // 🛡️ Lógica Inteligente: Se o campo editais_apoio contiver texto real, o evento foi contemplado!
+  const ehContemplado = evento.editais_apoio && evento.editais_apoio.trim() !== "";
 
   return (
     <div className="min-h-screen bg-stone-50 dark:bg-gray-950 pt-32 pb-24 transition-colors duration-300 relative overflow-hidden">
@@ -77,7 +83,7 @@ export function DetalheEvento() {
           <div className="mb-8">
             {ehNoticiaPassada ? (
               <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400 font-black text-[9px] uppercase tracking-widest rounded-full border border-gray-300 dark:border-gray-700">
-                <History size={10} /> Registo Histórico / Notícia
+                <History size={10} /> Registro Histórico / Notícia
               </span>
             ) : (
               <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 font-black text-[9px] uppercase tracking-widest rounded-full border border-yellow-500/20">
@@ -94,7 +100,7 @@ export function DetalheEvento() {
                 <Calendar size={12} className="text-yellow-500" /> {evento.date}
               </span>
 
-              {/* 👇 CORRIGIDO: Link universal e dinâmico para abrir rotas no Google Maps */}
+              {/* URL do Google Maps higienizada e robusta para produção */}
               <a 
                 href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(evento.location)}`}
                 target="_blank"
@@ -106,6 +112,7 @@ export function DetalheEvento() {
                 <span className="underline decoration-stone-300 dark:decoration-gray-700 group-hover:decoration-yellow-500 underline-offset-4 transition-colors">
                   {evento.location}
                 </span>
+                <ArrowUpRight size={10} className="opacity-0 group-hover:opacity-100 transition-opacity text-yellow-500" />
               </a>
 
               <span className="px-2.5 py-0.5 bg-stone-200 dark:bg-gray-800 rounded-md text-stone-600 dark:text-gray-400 font-bold">{evento.tag}</span>
@@ -118,11 +125,7 @@ export function DetalheEvento() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 items-start">
-            
-            {/* COLUNA DA ESQUERDA: DETALHES PRINCIPAIS */}
             <div className="md:col-span-2 space-y-10">
-              
-              {/* OBJETIVÓ DO EVENTO */}
               {evento.objetivo && (
                 <div className="bg-white dark:bg-gray-900 p-8 rounded-[2rem] border border-stone-200/60 dark:border-gray-800 shadow-sm">
                   <h3 className="font-black text-gray-900 dark:text-white uppercase text-xs tracking-[0.2em] mb-4 flex items-center gap-2">
@@ -134,7 +137,6 @@ export function DetalheEvento() {
                 </div>
               )}
 
-              {/* PROGRAMAÇÃO / CRONOGRAMA */}
               {evento.programacao && (
                 <div className="bg-white dark:bg-gray-900 p-8 rounded-[2rem] border border-stone-200/60 dark:border-gray-800 shadow-sm">
                   <h3 className="font-black text-gray-900 dark:text-white uppercase text-xs tracking-[0.2em] mb-4 flex items-center gap-2">
@@ -147,32 +149,56 @@ export function DetalheEvento() {
               )}
             </div>
 
-            {/* COLUNA DA DIREITA: PRESTAÇÃO DE CONTAS / FOMENTO */}
+            {/* ASIDE LATERAL: SISTEMA DE VERIFICAÇÃO AUTOMÁTICA DE EDITAIS */}
             <aside className="space-y-6">
-              <div className="bg-gradient-to-br from-stone-900 to-black p-6 rounded-[2rem] text-white shadow-xl border border-white/5 relative overflow-hidden">
-                <h3 className="font-black uppercase text-[10px] tracking-widest text-yellow-500 mb-4 flex items-center gap-2">
-                  <Award size={14} /> Fomento Cultural
-                </h3>
+              <div className={`p-6 rounded-[2rem] shadow-xl border relative overflow-hidden transition-colors ${
+                ehContemplado 
+                  ? "bg-gradient-to-br from-green-900/90 to-black border-green-500/30 text-white" 
+                  : "bg-gradient-to-br from-stone-900 to-black border-white/5 text-white"
+              }`}>
                 
-                {evento.editais_apoio ? (
-                  <div className="space-y-3">
-                    <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wide flex items-center gap-1.5">
-                      <FileText size={12} className="text-gray-400" /> Editais Contemplados:
+                <div className="flex flex-col gap-3 mb-4">
+                  <h3 className={`font-black uppercase text-[10px] tracking-widest flex items-center gap-1.5 ${
+                    ehContemplado ? "text-green-400" : "text-yellow-500"
+                  }`}>
+                    {ehContemplado ? <Award size={14} /> : <HeartHandshake size={14} />}
+                    {ehContemplado ? "Fomento Cultural" : "Iniciativa Independente"}
+                  </h3>
+                  
+                  {/* BADGE DE CERTIFICAÇÃO */}
+                  <div className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest border self-start ${
+                    ehContemplado 
+                      ? "bg-green-500/20 text-green-300 border-green-500/30" 
+                      : "bg-white/5 text-gray-400 border-white/10"
+                  }`}>
+                    {ehContemplado ? (
+                      <><CheckCircle size={10} /> Contemplado</>
+                    ) : (
+                      <><Users size={10} /> Recursos Próprios</>
+                    )}
+                  </div>
+                </div>
+                
+                {ehContemplado ? (
+                  <div className="space-y-2 mt-4">
+                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wide flex items-center gap-1">
+                      <FileText size={12} /> Recursos de Amparo:
                     </p>
                     <p className="text-xs text-gray-200 font-medium leading-relaxed whitespace-pre-line bg-white/5 p-4 rounded-xl border border-white/10">
                       {evento.editais_apoio}
                     </p>
                   </div>
                 ) : (
-                  <p className="text-xs text-gray-400 italic">Este evento foi realizado com recursos próprios e apoio da comunidade voluntária ECLL.</p>
+                  <p className="text-xs text-gray-400 italic mt-4 bg-white/5 p-4 rounded-xl border border-white/5">
+                    Este evento específico foi mantido através de contribuições comunitárias e recursos voluntários da instituição.
+                  </p>
                 )}
                 
-                <div className="text-[8px] font-black text-center text-yellow-500/40 uppercase tracking-widest mt-6 pt-4 border-t border-white/5">
+                <div className="text-[8px] font-black text-center text-yellow-500/30 uppercase tracking-widest mt-6 pt-4 border-t border-white/5">
                   Portfólio Institucional ECLL
                 </div>
               </div>
             </aside>
-
           </div>
 
         </motion.div>

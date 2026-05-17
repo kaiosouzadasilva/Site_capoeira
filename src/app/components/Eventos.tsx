@@ -1,4 +1,3 @@
-// src/app/components/Eventos.tsx
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -7,14 +6,14 @@ import {
   Calendar, MapPin, ArrowUpRight, Loader2, History 
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { Evento } from '../types'; // 👇 Importando a Tipagem do Passo 1
-import { culturalWorkshopsData, socialProjectsData } from '../data/oficinas'; // 👇 Importando os Dados do Passo 2
+import { Evento } from '../types'; 
+import { culturalWorkshopsData, socialProjectsData } from '../data/oficinas'; 
 
 export function Eventos() {
   const navigate = useNavigate();
-  // 🛡️ TypeScript ativo: Garante que os estados sigam estritamente o molde de Eventos
   const [eventosAtivos, setEventosAtivos] = useState<Evento[]>([]); 
   const [eventosPassados, setEventosPassados] = useState<Evento[]>([]); 
+  const [oficinasDinamicas, setOficinasDinamicas] = useState<Evento[]>([]); 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -31,12 +30,15 @@ export function Eventos() {
         trintaDiasAtras.setDate(hoje.getDate() - 30);
         const limiteData = trintaDiasAtras.toISOString().split('T')[0];
 
-        // Filtra os eventos usando mapeamento tipado seguro
-        const ativos = (data as Evento[]).filter(e => e.real_date >= limiteData);
-        const passados = (data as Evento[]).filter(e => e.real_date < limiteData);
+        const oficinas = (data as Evento[]).filter(e => e.tag === 'Oficina');
+        const eventosNormais = (data as Evento[]).filter(e => e.tag !== 'Oficina');
+
+        const ativos = eventosNormais.filter(e => e.real_date >= limiteData);
+        const passados = eventosNormais.filter(e => e.real_date < limiteData);
 
         setEventosAtivos(ativos);
         setEventosPassados(passados);
+        setOficinasDinamicas(oficinas);
       }
       setLoading(false);
     }
@@ -47,7 +49,6 @@ export function Eventos() {
     <div className="min-h-screen bg-transparent dark:bg-gray-950 transition-colors duration-300 pt-32 pb-24 px-6">      
       <div className="max-w-7xl mx-auto">
         
-        {/* CABEÇALHO DA PÁGINA */}
         <div className="text-center mb-20">
           <h1 className="text-5xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-4">Eventos & Calendários</h1>
           <div className="w-24 h-1 bg-yellow-500 mx-auto mb-6" />
@@ -56,7 +57,6 @@ export function Eventos() {
           </p>
         </div>
 
-        {/* ================= SEÇÃO 1: AGENDA ATIVA ================= */}
         <div className="mb-32">
           <div className="text-center md:text-left mb-10">
             <span className="text-[10px] font-black uppercase text-yellow-600 dark:text-yellow-500 tracking-[0.3em] block mb-2">Novidades & Próximas Datas</span>
@@ -101,7 +101,6 @@ export function Eventos() {
           )}
         </div>
 
-        {/* ================= SEÇÃO 2: MURAL DE MEMÓRIAS (NOTÍCIAS) ================= */}
         {!loading && eventosPassados.length > 0 && (
           <div className="mb-32 border-t border-gray-100 dark:border-gray-800 pt-24">
             <div className="text-center md:text-left mb-10 flex items-center gap-3">
@@ -137,7 +136,6 @@ export function Eventos() {
           </div>
         )}
 
-        {/* ================= SEÇÃO 3: GRADE DE OFICINAS ORDINÁRIAS ================= */}
         <div className="mb-32 border-t border-gray-100 dark:border-gray-800 pt-24">
           <div className="flex items-center gap-4 mb-10 justify-center md:justify-start">
             <Music className="text-yellow-500" size={32} />
@@ -145,26 +143,60 @@ export function Eventos() {
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
+            
+            {/* OFICINAS CRIADAS PELO PAINEL */}
+            {oficinasDinamicas.map((oficina, index) => (
+              <motion.div 
+                key={oficina.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                onClick={() => navigate(`/eventos/${oficina.id}`)} 
+                className="bg-white dark:bg-gray-900 p-8 rounded-3xl shadow-xl border border-yellow-500/50 dark:border-yellow-500/30 hover:bg-yellow-50 dark:hover:bg-yellow-900/10 cursor-pointer transition-all group flex flex-col justify-between"
+              >
+                <div>
+                  <div className="w-16 h-16 rounded-2xl overflow-hidden mb-6 shadow-md border-2 border-white dark:border-gray-800 group-hover:rotate-6 transition-transform">
+                    <img src={oficina.image} alt={oficina.title} className="w-full h-full object-cover" />
+                  </div>
+                  <span className="text-[9px] font-black uppercase text-yellow-600 dark:text-yellow-500 tracking-widest block mb-2">Novo Projeto Ativo</span>
+                  <h3 className="text-xl font-black text-gray-900 dark:text-white uppercase mb-3 flex justify-between items-start">
+                    {oficina.title}
+                    <ArrowUpRight size={20} className="text-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed line-clamp-3">
+                    {oficina.objetivo || "Clique para ver detalhes do projeto, cronogramas e editais."}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+
+            {/* OFICINAS FIXAS */}
             {culturalWorkshopsData.map((workshop, index) => (
               <motion.div 
                 key={workshop.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-white dark:bg-gray-900 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-800 hover:border-yellow-500 transition-all group"
+                transition={{ delay: (oficinasDinamicas.length + index) * 0.1 }}
+                onClick={() => navigate(`/oficinas/${workshop.id}`)} 
+                className="bg-white dark:bg-gray-900 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-800 hover:border-yellow-500 hover:scale-[1.02] cursor-pointer transition-all group flex flex-col justify-between"
               >
-                <div className="w-14 h-14 bg-yellow-500 rounded-2xl flex items-center justify-center mb-6 text-black group-hover:scale-110 transition-transform">
-                  <workshop.icon size={28} />
+                <div>
+                  <div className="w-14 h-14 bg-yellow-500 rounded-2xl flex items-center justify-center mb-6 text-black group-hover:rotate-12 transition-transform">
+                    <workshop.icon size={28} />
+                  </div>
+                  <h3 className="text-xl font-black text-gray-900 dark:text-white uppercase mb-3 flex justify-between items-start">
+                    {workshop.title}
+                    <ArrowUpRight size={20} className="text-gray-300 group-hover:text-yellow-500 transition-colors" />
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{workshop.description}</p>
                 </div>
-                <h3 className="text-xl font-black text-gray-900 dark:text-white uppercase mb-3">{workshop.title}</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{workshop.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
 
-        {/* ================= SEÇÃO 4: PROJETOS SOCIAIS E ESCOLAS ================= */}
         <div className="border-t border-gray-100 dark:border-gray-800 pt-24">
           <div className="flex items-center gap-4 mb-10 justify-center md:justify-start">
             <GraduationCap className="text-yellow-500" size={32} />

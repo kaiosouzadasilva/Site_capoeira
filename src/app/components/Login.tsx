@@ -1,218 +1,132 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, ShieldCheck, KeyRound, Loader2, Lock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { Lock, Mail, Loader2, AlertCircle, ArrowLeft } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export function Login() {
   const [email, setEmail] = useState('');
-  const [token, setToken] = useState('');
   const [password, setPassword] = useState('');
-  
-  // O estado agora tem 3 etapas: email, token (para o mestre) ou password (para você)
-  const [step, setStep] = useState<'email' | 'token' | 'password'>('email'); 
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState({ type: '', text: '' });
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  // O seu e-mail de desenvolvedor (único que usa senha)
-  const EMAIL_DEV = "kaio.souza3020@gmail.com";
-  
-  const EMAILS_AUTORIZADOS = [
-    "mestre@ecll.com",             
-    EMAIL_DEV,
-    "auxiliar1@ecll.com",               
-    "auxiliar2@ecll.com",               
-    "auxiliar3@ecll.com" 
-  ];
-
-  // ETAPA 1: Identificar quem está tentando logar
-  const handleRequestAccess = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const currentEmail = email.trim().toLowerCase();
-    
-    if (!EMAILS_AUTORIZADOS.includes(currentEmail)) {
-      setMessage({ type: 'error', text: 'Acesso negado. E-mail não autorizado.' });
-      return;
-    }
-
-    // BYPASS DO DESENVOLVEDOR: Se for o seu e-mail, pede a senha e para por aqui.
-    if (currentEmail === EMAIL_DEV) {
-      setStep('password');
-      return;
-    }
-
-    // Se for o Mestre ou auxiliares, segue o fluxo normal do código por e-mail
-    setLoading(true);
-    setMessage({ type: '', text: '' });
-
-    try {
-      const { error } = await supabase.auth.signInWithOtp({
-        email: currentEmail,
-        options: { shouldCreateUser: true }
-      });
-
-      if (error) throw error;
-
-      setStep('token');
-      setMessage({ type: 'success', text: 'Código de 6 dígitos enviado para o seu e-mail!' });
-    } catch (err: any) {
-      setMessage({ type: 'error', text: err.message || 'Erro ao enviar código.' });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // ETAPA 2 (MESTRE): Validar código de 6 dígitos
-  const handleVerifyOTP = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setMessage({ type: '', text: '' });
+    setError(null);
 
-    try {
-      const { data, error } = await supabase.auth.verifyOtp({
-        email: email.trim().toLowerCase(),
-        token: token.trim(),
-        type: 'magiclink'
-      });
+    // 👇 Usando a função direta de E-mail e Senha do Supabase
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-      if (error) throw error;
-
-      if (data.session) {
-        setMessage({ type: 'success', text: 'Autenticado com sucesso!' });
-        setTimeout(() => navigate('/admin'), 1000);
-      }
-    } catch (err: any) {
-      setMessage({ type: 'error', text: 'Código inválido ou expirado. Tente novamente.' });
-    } finally {
+    if (error) {
+      setError('Acesso negado. E-mail ou senha incorretos.');
       setLoading(false);
-    }
-  };
-
-  // ETAPA 2 (DEV): Validar Senha
-  const handlePasswordLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage({ type: '', text: '' });
-
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: email.trim().toLowerCase(),
-        password: password
-      });
-
-      if (error) throw error;
-
-      if (data.session) {
-        setMessage({ type: 'success', text: 'Acesso de Desenvolvedor Autorizado!' });
-        setTimeout(() => navigate('/admin'), 1000);
-      }
-    } catch (err: any) {
-      setMessage({ type: 'error', text: 'Senha incorreta.' });
-    } finally {
-      setLoading(false);
+    } else if (data.session) {
+      // Se a senha estiver certa, joga o Mestre direto para o Painel
+      navigate('/admin');
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-6">
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="max-w-md w-full bg-white dark:bg-gray-900 rounded-[40px] shadow-2xl border border-gray-100 dark:border-gray-800 overflow-hidden"
+    <div className="min-h-screen bg-stone-50 dark:bg-gray-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8 transition-colors duration-300 relative overflow-hidden">
+      
+      {/* Botão de voltar para o site público */}
+      <button 
+        onClick={() => navigate('/')} 
+        className="absolute top-8 left-8 flex items-center gap-2 text-stone-500 dark:text-gray-400 hover:text-yellow-500 font-black uppercase text-[10px] tracking-widest transition-all z-20"
       >
-        <div className="bg-yellow-500 p-10 text-center relative">
-          <div className="w-20 h-20 bg-black rounded-3xl mx-auto flex items-center justify-center mb-4 shadow-xl rotate-3">
-            <ShieldCheck className="text-yellow-500" size={40} />
+        <ArrowLeft size={16} /> Voltar ao Site
+      </button>
+
+      <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+        <div className="flex justify-center mb-6">
+          <div className="w-24 h-24 bg-yellow-500 rounded-[2rem] shadow-xl flex items-center justify-center rotate-3 text-black">
+            <Lock size={48} />
           </div>
-          <h2 className="text-3xl font-black text-black uppercase tracking-tighter">Portal de Gestão</h2>
-          <p className="text-black/60 text-[10px] font-black uppercase tracking-[0.2em] mt-2">Uso Exclusivo da Liderança</p>
         </div>
+        <h2 className="mt-6 text-center text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">
+          Acesso Restrito
+        </h2>
+        <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400 font-medium">
+          Painel de Gestão da Escola Luta de Libertação
+        </p>
+      </div>
 
-        <div className="p-10 space-y-6">
-          {message.text && (
-            <div className={`p-4 rounded-xl text-xs font-black uppercase text-center ${
-              message.type === 'error' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'bg-green-500/10 text-green-500 border border-green-500/20'
-            }`}>
-              {message.text}
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white dark:bg-gray-900 py-8 px-4 shadow-2xl sm:rounded-[2rem] sm:px-10 border border-stone-200/60 dark:border-gray-800"
+        >
+          <form className="space-y-6" onSubmit={handleLogin}>
+            
+            {/* CAMPO DE E-MAIL */}
+            <div>
+              <label className="block text-xs font-black uppercase tracking-widest text-gray-700 dark:text-gray-300 mb-2">
+                E-mail Institucional
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                  <Mail size={18} />
+                </div>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="block w-full pl-11 pr-4 py-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl text-gray-900 dark:text-white focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-colors font-medium"
+                  placeholder="mestre@lutadelibertacao.com"
+                />
+              </div>
             </div>
-          )}
 
-          <AnimatePresence mode="wait">
-            {step === 'email' && (
-              <motion.form key="form-email" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onSubmit={handleRequestAccess} className="space-y-6">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">E-mail Administrativo</label>
-                  <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                    <input 
-                      type="email" required
-                      className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-gray-800 rounded-2xl border-none focus:ring-2 focus:ring-yellow-500 outline-none dark:text-white transition-all"
-                      placeholder="ex: mestre@ecll.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      disabled={loading}
-                    />
-                  </div>
+            {/* CAMPO DE SENHA */}
+            <div>
+              <label className="block text-xs font-black uppercase tracking-widest text-gray-700 dark:text-gray-300 mb-2">
+                Senha de Acesso
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                  <Lock size={18} />
                 </div>
-                <button type="submit" disabled={loading} className="w-full bg-black dark:bg-yellow-500 text-white dark:text-black font-black py-5 rounded-2xl uppercase tracking-widest text-sm flex items-center justify-center gap-2 transition-all disabled:opacity-50">
-                  {loading ? <Loader2 className="animate-spin" size={18} /> : 'Continuar'}
-                </button>
-              </motion.form>
+                <input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="block w-full pl-11 pr-4 py-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl text-gray-900 dark:text-white focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-colors font-medium"
+                  placeholder="••••••••"
+                />
+              </div>
+            </div>
+
+            {/* MENSAGEM DE ERRO */}
+            {error && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl flex items-center gap-3 text-red-600 dark:text-red-400 text-sm font-medium">
+                <AlertCircle size={18} className="shrink-0" />
+                {error}
+              </motion.div>
             )}
 
-            {step === 'token' && (
-              <motion.form key="form-token" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onSubmit={handleVerifyOTP} className="space-y-6">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">Código de Verificação (6 dígitos)</label>
-                  <div className="relative">
-                    <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                    <input 
-                      type="text" maxLength={6} required
-                      className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-gray-800 rounded-2xl border-none focus:ring-2 focus:ring-yellow-500 outline-none tracking-[0.5em] text-center font-black text-xl dark:text-white transition-all"
-                      placeholder="000000"
-                      value={token}
-                      onChange={(e) => setToken(e.target.value)}
-                      disabled={loading}
-                    />
-                  </div>
-                </div>
-                <button type="submit" disabled={loading} className="w-full bg-green-600 text-white font-black py-5 rounded-2xl uppercase tracking-widest text-sm flex items-center justify-center gap-2 transition-all disabled:opacity-50">
-                  {loading ? <Loader2 className="animate-spin" size={18} /> : 'Confirmar e Entrar'}
-                </button>
-                <button type="button" onClick={() => setStep('email')} className="w-full text-center text-[10px] text-gray-400 uppercase tracking-widest hover:underline">
-                  Alterar E-mail
-                </button>
-              </motion.form>
-            )}
-
-            {step === 'password' && (
-              <motion.form key="form-password" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onSubmit={handlePasswordLogin} className="space-y-6">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase text-yellow-600 dark:text-yellow-500 tracking-widest ml-1">Senha de Desenvolvedor</label>
-                  <div className="relative">
-                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-yellow-600 dark:text-yellow-500" size={20} />
-                    <input 
-                      type="password" required
-                      className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-gray-800 rounded-2xl border-none focus:ring-2 focus:ring-yellow-500 outline-none dark:text-white transition-all"
-                      placeholder="••••••••"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      disabled={loading}
-                    />
-                  </div>
-                </div>
-                <button type="submit" disabled={loading} className="w-full bg-yellow-600 dark:bg-yellow-500 text-white dark:text-black font-black py-5 rounded-2xl uppercase tracking-widest text-sm flex items-center justify-center gap-2 transition-all disabled:opacity-50">
-                  {loading ? <Loader2 className="animate-spin" size={18} /> : 'Acessar Sistema'}
-                </button>
-                <button type="button" onClick={() => setStep('email')} className="w-full text-center text-[10px] text-gray-400 uppercase tracking-widest hover:underline">
-                  Voltar
-                </button>
-              </motion.form>
-            )}
-          </AnimatePresence>
-        </div>
-      </motion.div>
+            {/* BOTÃO DE LOGIN */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full flex justify-center items-center gap-2 py-4 px-4 border border-transparent rounded-2xl shadow-lg text-sm font-black uppercase tracking-widest text-black bg-yellow-500 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-[1.02]"
+            >
+              {loading ? (
+                <><Loader2 className="animate-spin" size={20} /> Autenticando...</>
+              ) : (
+                'Entrar no Sistema'
+              )}
+            </button>
+          </form>
+        </motion.div>
+      </div>
     </div>
   );
 }

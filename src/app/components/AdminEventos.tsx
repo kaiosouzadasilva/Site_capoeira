@@ -14,10 +14,9 @@ export function AdminEventos() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  // Campos do formulário
   const [title, setTitle] = useState('');
-  const [date, setDate] = useState(''); // Texto livre para exibição (Ex: Sabado às 19h)
-  const [realDate, setRealDate] = useState(''); // Data real para controle interno (AAAA-MM-DD)
+  const [date, setDate] = useState(''); 
+  const [realDate, setRealDate] = useState(''); 
   const [location, setLocation] = useState('');
   const [tag, setTag] = useState('Roda Aberta');
   const [objetivo, setObjetivo] = useState('');
@@ -27,59 +26,32 @@ export function AdminEventos() {
 
   const fetchEventos = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('eventos')
-      .select('*')
-      .order('real_date', { ascending: false });
-    
+    const { data, error } = await supabase.from('eventos').select('*').order('real_date', { ascending: false });
     if (error) alert("Erro ao ler eventos: " + error.message);
     if (data) setEventos(data);
     setLoading(false);
   };
 
-  useEffect(() => { 
-    fetchEventos(); 
-  }, []);
+  useEffect(() => { fetchEventos(); }, []);
 
   const handleAddEvento = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    
     try {
       let imagemFinal = tag === 'Workshop' ? '/galeria/treino1.jpg' : '/galeria/roda1.jpg';
-
       if (imageFile) {
         const fileExt = imageFile.name.split('.').pop();
         const fileName = `${Math.random()}.${fileExt}`;
         const filePath = `flyers/${fileName}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from('eventos')
-          .upload(filePath, imageFile);
-
+        const { error: uploadError } = await supabase.storage.from('eventos').upload(filePath, imageFile);
         if (uploadError) throw uploadError;
-
-        const { data: { publicUrl } } = supabase.storage
-          .from('eventos')
-          .getPublicUrl(filePath);
-
+        const { data: { publicUrl } } = supabase.storage.from('eventos').getPublicUrl(filePath);
         imagemFinal = publicUrl;
       }
-
       const { data, error } = await supabase.from('eventos').insert([{ 
-        title, 
-        date,
-        real_date: realDate,
-        location, 
-        tag,
-        image: imagemFinal,
-        objetivo,
-        editais_apoio: editaisApoio,
-        programacao
+        title, date, real_date: realDate, location, tag, image: imagemFinal, objetivo, editais_apoio: editaisApoio, programacao
       }]).select();
-
       if (error) throw error;
-
       if (data) {
         setEventos([data[0], ...eventos]);
         setTitle(''); setDate(''); setRealDate(''); setLocation(''); 
@@ -103,7 +75,6 @@ export function AdminEventos() {
   return (
     <section className="py-24 px-6 bg-gray-50 dark:bg-gray-950 min-h-screen transition-colors duration-300">
       <div className="max-w-5xl mx-auto">
-        
         <button onClick={() => navigate('/admin')} className="flex items-center gap-2 text-gray-500 hover:text-black dark:hover:text-white mb-8 font-black uppercase text-[10px] tracking-widest transition-all">
           <ArrowLeft size={16} /> Voltar para o Painel
         </button>
@@ -152,7 +123,6 @@ export function AdminEventos() {
         </div>
       </div>
 
-      {/* MODAL ADICIONAR EVENTO */}
       <AnimatePresence>
         {showAddForm && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-md p-6 overflow-y-auto">
@@ -191,6 +161,7 @@ export function AdminEventos() {
                       <option value="Workshop">Workshop</option>
                       <option value="Batizado">Batizado</option>
                       <option value="Comunicado">Comunicado Oficial</option>
+                      <option value="Oficina">Oficina Cultural / Contínua</option> 
                     </select>
                   </div>
                 </div>
