@@ -1,0 +1,10 @@
+# Configurações locais / Segredos
+.env
+
+# Pastas de dependências
+node_modules/
+.pnpm-store/
+
+# Pastas de build
+dist/
+.next/
