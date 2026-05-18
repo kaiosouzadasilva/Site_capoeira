@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { Award, ShieldCheck, Clock, Users, Star } from 'lucide-react';
 
 const alunosBase = [

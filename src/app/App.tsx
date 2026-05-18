@@ -1,4 +1,4 @@
-// src/app/App.tsx
+﻿// src/app/App.tsx
 import { useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { supabase } from './lib/supabase';
@@ -9,6 +9,7 @@ import { Loader2 } from 'lucide-react';
 import { Navbar } from './components/NavBar';
 import { HeroSection } from './components/HeroSection';
 import { BackgroundTexture } from './components/BackgroundTexture';
+import { ToastProvider } from './components/Toast';
 import { ScrollToTop } from './utils/ScrollToTop';
 
 const MemorialPatriarca = lazy(() => import('./components/MemorialPatriarca').then(m => ({ default: m.MemorialPatriarca })));
@@ -67,6 +68,7 @@ function App() {
     <ThemeProvider>
       <Router>
         <ScrollToTopComponent />
+        <ToastProvider>
         <div className="min-h-screen bg-stone-50 dark:bg-gray-950 text-gray-900 dark:text-white transition-colors duration-300 relative overflow-hidden">
           
           <Navbar />
@@ -104,6 +106,7 @@ function App() {
             </Suspense>
           </main>
         </div>
+        </ToastProvider>
       </Router>
     </ThemeProvider>
   );

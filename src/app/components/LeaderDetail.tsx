@@ -1,4 +1,4 @@
-import { useParams, useNavigate, Link } from 'react-router-dom';
+﻿import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ImageWithFallback } from './figma/ImageWithFallback'; 
@@ -12,7 +12,7 @@ const leadersData: Record<string, any> = {
     nickname: "Mestre Canário", 
     rank: "Mestre", 
     cordColor: "Branca",
-    image: "/membros/Mestre_Canario.jpg", 
+    image: "/membros/Mestre_Canario.webp", 
     years: 42, 
     polo: "Centro Cultural Canto do Canário",
     specialties: ["Angola", "Regional", "Música"],
@@ -23,7 +23,7 @@ const leadersData: Record<string, any> = {
     nickname: "Contramestre Prateado", 
     rank: "Contramestre", 
     cordColor: "Branco Azul",
-    image: "/membros/Contramestre_Prateado.jpg", 
+    image: "/membros/Mestre_Canario_e_Mestre_Camisa.webp", 
     years: 20, 
     polo: "Polo Comunitário",
     specialties: ["Benguela", "Acrobacias"],
@@ -34,7 +34,7 @@ const leadersData: Record<string, any> = {
     nickname: "Contramestra Peteca", 
     rank: "Contramestra", 
     cordColor: "Branco e Azul",
-    image: "/membros/Contramestra_Peteca.jpg", 
+    image: "/membros/mestre_camisa_e_mestre_canario.webp", 
     years: 25, 
     polo: "Centro Cultural Canto do Canário",
     specialties: ["Infantil", "Regional"],
@@ -45,7 +45,7 @@ const leadersData: Record<string, any> = {
     nickname: "Monitor Jhoy", 
     rank: "Monitor", 
     cordColor: "Branco e verde",
-    image: "/membros/Monitor_Jhoy.png", 
+    image: "/membros/Monitor_Jhoy.webp", 
     years: 12, 
     polo: "Novo Aleixo",
     specialties: ["Movimentação", "Técnica"],
@@ -56,7 +56,7 @@ const leadersData: Record<string, any> = {
     nickname: "Formado Relâmpago", 
     rank: "Formado", 
     cordColor: "Verde, Amarelo e Azul",
-    image: "/membros/Formado_Relampago.png", 
+    image: "/membros/Invergado.webp", 
     years: 12, 
     polo: "Polo Centro",
     specialties: ["Movimentação"],
@@ -67,7 +67,7 @@ const leadersData: Record<string, any> = {
     nickname: "Formado Chocolate", 
     rank: "Formado", 
     cordColor: "Verde, Amarelo e Azul",
-    image: "/membros/Formado_Chocolate.png", 
+    image: "/membros/Mestre_Canario_e_Mestre_Camisa.webp", 
     years: 12, 
     polo: "Polo Centro",
     specialties: ["Movimentação"],
@@ -78,7 +78,7 @@ const leadersData: Record<string, any> = {
     nickname: "Estagiário Invergado", 
     rank: "Estagiário", 
     cordColor: "Azul e Amarelo",
-    image: "/membros/Invergado.png", 
+    image: "/membros/Invergado.webp", 
     years: 5, 
     polo: "Novo Aleixo",
     history: historiaPadrao
@@ -88,7 +88,7 @@ const leadersData: Record<string, any> = {
     nickname: "Estagiário Colorau", 
     rank: "Estagiário", 
     cordColor: "Azul e Amarelo",
-    image: "/membros/Estagiario_Colorau.jpg", 
+    image: "/membros/Invergado.webp", 
     years: 5, 
     polo: "Centro Cultural Canto do Canário",
     history: historiaPadrao 
@@ -98,7 +98,7 @@ const leadersData: Record<string, any> = {
     nickname: "Graduado Francês", 
     rank: "Graduado", 
     cordColor: "Verde e Azul",
-    image: "/membros/foto_frances.jpeg", 
+    image: "/membros/foto_frances.webp", 
     years: 8, 
     polo: "Polo Centro",
     history: historiaPadrao 
@@ -108,7 +108,7 @@ const leadersData: Record<string, any> = {
     nickname: "Graduado Zumbi", 
     rank: "Graduado", 
     cordColor: "Verde e Amarelo",
-    image: "/membros/foto_zumbi.jpeg", 
+    image: "/membros/foto_zumbi.webp", 
     years: 47,
     polo: "Novo Aleixo",
     history: `A história de Zumbi na capoeira teve início através de seu filho. Acompanhando o pequeno de nove anos, que se encantou pela arte através de um filme, Zumbi sentiu a mesma paixão aos 36 anos. Seus primeiros passos foram no chapéu de palha do bairro Hiléia, no Grupo Muzenza.
@@ -122,7 +122,7 @@ const leadersData: Record<string, any> = {
     nickname: "Ventania", 
     rank: "Aluno", 
     cordColor: "Verde",
-    image: "/membros/placeholder.jpg", 
+    image: "/membros/batizado2025.webp", 
     years: 2, 
     polo: "Novo Aleixo",
     history: historiaPadrao 
@@ -132,7 +132,7 @@ const leadersData: Record<string, any> = {
     nickname: "Sereia", 
     rank: "Aluno", 
     cordColor: "Verde",
-    image: "/membros/placeholder.jpg", 
+    image: "/membros/batizado2025.webp", 
     years: 2, 
     polo: "Polo Comunitário",
     history: historiaPadrao

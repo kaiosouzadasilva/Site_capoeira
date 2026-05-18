@@ -1,12 +1,14 @@
-// src/app/components/GraduationManager.tsx
+﻿// src/app/components/GraduationManager.tsx
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserPlus, Trash2, Eye, X, Check, Loader2, ArrowLeft } from 'lucide-react'; 
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../lib/supabase';
+import { useToast } from './Toast';
 
 export function GraduationManager() {
   const navigate = useNavigate();
+  const toast = useToast();
   const [students, setStudents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -55,9 +57,10 @@ export function GraduationManager() {
         setNewName(''); 
         setNewNickname(''); 
         setShowAddForm(false);
+        toast.success('Aluno cadastrado com sucesso.');
       }
     } catch (err: any) {
-      alert('Erro ao adicionar aluno: ' + err.message);
+      toast.error('Erro ao adicionar aluno: ' + err.message);
     }
   };
 
@@ -73,8 +76,9 @@ export function GraduationManager() {
 
         if (error) throw error;
         setStudents(prev => prev.filter(student => student.id !== id));
+        toast.success('Aluno removido do grupo.');
       } catch (err: any) {
-        alert('Erro ao remover aluno: ' + err.message);
+        toast.error('Erro ao remover aluno: ' + err.message);
       }
     }
   };

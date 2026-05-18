@@ -1,4 +1,4 @@
-export function BackgroundTexture() {
+﻿export function BackgroundTexture() {
   return (
     // position: absolute preenche a tela toda
     // opacity-[0.03] deixa o efeito quase transparente (3% visível)

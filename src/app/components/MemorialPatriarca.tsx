@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'; // Corrigido de 'motion/react' para 'framer-motion'
+﻿import { motion } from 'framer-motion'; // Corrigido de 'motion/react' para 'framer-motion'
 import { Award, BookOpen } from 'lucide-react';
 
 export function MemorialPatriarca() {
@@ -13,7 +13,7 @@ export function MemorialPatriarca() {
         <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-700 flex flex-col md:row-reverse md:flex-row">
           <div className="w-full md:w-1/2 h-96 md:h-auto">
             <img 
-              src="/membros/Mestre_Camisa_furada.jpg" 
+              src="/membros/Mestre_Camisa_furada.webp" 
               alt="Mestre Camisa Furada" 
               className="w-full h-full object-cover object-[center_15%] grayscale contrast-125"            
             />

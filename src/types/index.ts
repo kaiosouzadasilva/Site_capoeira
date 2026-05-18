@@ -1,4 +1,4 @@
-// src/types/index.ts
+﻿// src/types/index.ts
 
 // 1. Tipagem restrita para garantir que as categorias sejam exatas
 export type CategoriaEvento = 'Roda Aberta' | 'Workshop' | 'Batizado' | 'Comunicado Oficial' | string;

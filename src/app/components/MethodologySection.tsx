@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'; // Corrigido de 'motion/react' para 'framer-motion'
+﻿import { motion } from 'framer-motion'; // Corrigido de 'motion/react' para 'framer-motion'
 import { ChevronDown } from 'lucide-react';
 
 function MemberCard({ name, role, image, status, highlight, isSmall, borderColor, imagePosition }: any) {
@@ -19,7 +19,7 @@ function MemberCard({ name, role, image, status, highlight, isSmall, borderColor
           src={image} 
           alt={name} 
           className={`w-full h-full object-cover transition-all duration-700 ${imagePosition || 'object-center'}`} 
-          onError={(e) => (e.currentTarget.src = "https://via.placeholder.com/150?text=Capoeira")}
+          onError={(e) => (e.currentTarget.src = "/Imagem_do_grupo.webp")}
         />
         {status && (
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
@@ -57,7 +57,7 @@ export function MethodologySection() {
           <MemberCard 
             name="Mestre Camisa Furada" 
             role="Patriarca & Fundador" 
-            image="/membros/Mestre_Camisa_furada2.jpg" 
+            image="/membros/Mestre_Camisa_furada2.webp" 
             status="In Memoriam"
             highlight
             imagePosition="object-[center_15%]" 
@@ -70,7 +70,7 @@ export function MethodologySection() {
           <MemberCard 
             name="Mestre Canário" 
             role="Mestre ECLL" 
-            image="/membros/Mestre_Canario.jpg" 
+            image="/membros/Mestre_Canario.webp" 
           />
         </div>
 
@@ -82,14 +82,14 @@ export function MethodologySection() {
           <p className="text-center text-[10px] font-black uppercase tracking-[0.3em] text-white-400 mb-10">Descendência Direta: Mestre Canário</p>
           
           <div className="flex flex-wrap justify-center gap-10">
-            <MemberCard name="CM Prateado" role="Contramestre" image="/membros/Contramestre_Prateado.jpg" isSmall />
-            <MemberCard name="CM Peteca" role="Contramestra" image="/membros/Contramestra_Peteca.jpg" isSmall />
+            <MemberCard name="CM Prateado" role="Contramestre" image="/membros/Mestre_Canario_e_Mestre_Camisa.webp" isSmall />
+            <MemberCard name="CM Peteca" role="Contramestra" image="/membros/mestre_camisa_e_mestre_canario.webp" isSmall />
             
             <div className="flex flex-col items-center">
                 <MemberCard 
                   name="Monitor Jhoy" 
                   role="Monitor" 
-                  image="/membros/Monitor_Jhoy.png" 
+                  image="/membros/Monitor_Jhoy.webp" 
                   borderColor="border-yellow-500" 
                   isSmall 
                 />
@@ -97,14 +97,14 @@ export function MethodologySection() {
                 <MemberCard 
                   name="Est. Invergado" 
                   role="Estagiário" 
-                  image="/membros/Invergado.png" 
+                  image="/membros/Invergado.webp" 
                   isSmall 
                 />
             </div>
 
-            <MemberCard name="Formado Chocolate" role="Formado" image="/membros/placeholder.jpg" isSmall />
-            <MemberCard name="Formado Relâmpago" role="Formado" image="/membros/Formado_Relampago.jpg" isSmall />
-            <MemberCard name="Estagiário Colorau" role="Estagiário" image="/membros/Estagiario_Colorau.jpg" isSmall />
+            <MemberCard name="Formado Chocolate" role="Formado" image="/membros/batizado2025.webp" isSmall />
+            <MemberCard name="Formado Relâmpago" role="Formado" image="/membros/Invergado.webp" isSmall />
+            <MemberCard name="Estagiário Colorau" role="Estagiário" image="/membros/Invergado.webp" isSmall />
           </div>
         </div>
 

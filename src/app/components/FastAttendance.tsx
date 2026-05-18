@@ -1,11 +1,13 @@
-// src/app/components/FastAttendance.tsx
+﻿// src/app/components/FastAttendance.tsx
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, X, Save, MapPin, Loader2, Calendar, ArrowLeft } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { useToast } from './Toast';
 
 export function FastAttendance() {
   const navigate = useNavigate();
+  const toast = useToast();
   const [students, setStudents] = useState<any[]>([]);
   const [attendance, setAttendance] = useState<Record<string, boolean>>({});
   const [polo, setPolo] = useState('Novo Aleixo');
@@ -32,7 +34,7 @@ export function FastAttendance() {
           setAttendance(initialAttendance);
         }
       } catch (err: any) {
-        alert('Erro ao carregar alunos do polo: ' + err.message);
+        toast.error('Erro ao carregar alunos do polo: ' + err.message);
       } finally { // 👇 CORRIGIDO: O bloco 'finally' voltou para o lugar certo!
         setLoading(false);
       }
@@ -63,10 +65,10 @@ export function FastAttendance() {
 
       if (error) throw error;
 
-      alert(`Chamada do Polo [ ${polo} ] salva com sucesso!`);
+      toast.success(`Chamada do Polo ${polo} salva com sucesso.`);
       navigate('/admin'); 
     } catch (err: any) {
-      alert('Erro ao salvar a chamada: ' + err.message);
+      toast.error('Erro ao salvar a chamada: ' + err.message);
     } finally {
       setSaving(false);
     }

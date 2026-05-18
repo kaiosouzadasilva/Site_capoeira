@@ -1,4 +1,4 @@
-// src/app/data/oficinas.ts
+﻿// src/app/data/oficinas.ts
 import { Music, Users, Drum, Footprints, Leaf, LucideIcon } from 'lucide-react';
 
 export interface OficinaFixa {

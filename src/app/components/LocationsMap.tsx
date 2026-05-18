@@ -1,4 +1,4 @@
-// src/app/components/LocationsMap.tsx
+﻿// src/app/components/LocationsMap.tsx
 import { motion } from 'framer-motion';
 import { MapPin, Clock, MessageCircle, ArrowUpRight } from 'lucide-react';
 import { polosData } from '../data/polos'; // 👇 Importando os dados limpos

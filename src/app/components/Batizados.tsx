@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Award, MapPin, CalendarDays, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -11,13 +11,13 @@ const historicoBatizados: Record<string, any[]> = {
     {
       categoria: "Contramestria e Monitoria",
       membros: [
-        { id: 'l4', nickname: 'Monitor Jhoy', rank: 'Monitor', image: '/membros/Monitor_Jhoy.png', colors: ['#FFFFFF', '#22c55e'], polo: 'Novo Aleixo' },
+        { id: 'l4', nickname: 'Monitor Jhoy', rank: 'Monitor', image: '/membros/Monitor_Jhoy.webp', colors: ['#FFFFFF', '#22c55e'], polo: 'Novo Aleixo' },
       ]
     },
     {
       categoria: "Formados e Estagiários",
       membros: [
-        { id: 'b5', nickname: 'Est. Invergado', rank: 'Estagiário', image: '/membros/Invergado.png', colors: ['#3b82f6', '#eab308'], polo: 'Novo Aleixo' },
+        { id: 'b5', nickname: 'Est. Invergado', rank: 'Estagiário', image: '/membros/Invergado.webp', colors: ['#3b82f6', '#eab308'], polo: 'Novo Aleixo' },
       ]
     }
   ],
@@ -25,21 +25,21 @@ const historicoBatizados: Record<string, any[]> = {
     {
       categoria: "Formados e Estagiários",
       membros: [
-        { id: 'b6', nickname: 'Est. Colorau', rank: 'Estagiário', image: '/membros/Estagiario_Colorau.jpg', colors: ['#3b82f6', '#eab308'], polo: 'Canto do Canário' },
-        { id: 'l5', nickname: 'Formado Relâmpago', rank: 'Formado', image: '/membros/Formado_Relampago.png', colors: ['#eab308', '#22c55e', '#3b82f6'], polo: 'Polo Centro' },
+        { id: 'b6', nickname: 'Est. Colorau', rank: 'Estagiário', image: '/membros/Invergado.webp', colors: ['#3b82f6', '#eab308'], polo: 'Canto do Canário' },
+        { id: 'l5', nickname: 'Formado Relâmpago', rank: 'Formado', image: '/membros/Invergado.webp', colors: ['#eab308', '#22c55e', '#3b82f6'], polo: 'Polo Centro' },
       ]
     },
     {
       categoria: "Graduados",
       membros: [
-        { id: 'b1', nickname: 'Graduado Francês', rank: 'Graduado', image: '/membros/foto_frances.jpeg', colors: ['#22c55e', '#3b82f6'], polo: 'Novo Aleixo' },
-        { id: 'b2', nickname: 'Graduado Zumbi', rank: 'Graduado', image: '/membros/foto_zumbi.jpeg', colors: ['#22c55e', '#eab308'], polo: 'Novo Aleixo' },
+        { id: 'b1', nickname: 'Graduado Francês', rank: 'Graduado', image: '/membros/foto_frances.webp', colors: ['#22c55e', '#3b82f6'], polo: 'Novo Aleixo' },
+        { id: 'b2', nickname: 'Graduado Zumbi', rank: 'Graduado', image: '/membros/foto_zumbi.webp', colors: ['#22c55e', '#eab308'], polo: 'Novo Aleixo' },
       ]
     },
     {
       categoria: "Batizados (1ª Corda)",
       membros: [
-        { id: 'a1', nickname: 'Aluno Ventania', rank: 'Aluno', image: '/membros/placeholder.jpg', colors: ['#22c55e'], polo: 'Novo Aleixo' },
+        { id: 'a1', nickname: 'Aluno Ventania', rank: 'Aluno', image: '/membros/batizado2025.webp', colors: ['#22c55e'], polo: 'Novo Aleixo' },
       ]
     }
   ],
@@ -47,7 +47,7 @@ const historicoBatizados: Record<string, any[]> = {
     {
       categoria: "Contramestria",
       membros: [
-        { id: 'l2', nickname: 'Contramestre Prateado', rank: 'Contramestre', image: '/membros/Contramestre_Prateado.jpg', colors: ['#FFFFFF', '#3b82f6'], polo: 'Polo Comunitário' },
+        { id: 'l2', nickname: 'Contramestre Prateado', rank: 'Contramestre', image: '/membros/Mestre_Canario_e_Mestre_Camisa.webp', colors: ['#FFFFFF', '#3b82f6'], polo: 'Polo Comunitário' },
       ]
     }
   ],

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronRight, Sun, Moon, Award } from 'lucide-react';
@@ -28,7 +28,7 @@ export function Navbar() {
         
         <Link to="/" className="flex items-center gap-3 group shrink-0">
           <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-yellow-500 shadow-lg transition-transform duration-300 group-hover:rotate-12 group-hover:scale-105 shrink-0">
-            <img src="/Imagem_do_grupo.png" alt="Logo ECLL" className="h-full w-full object-cover" />
+            <img src="/Imagem_do_grupo.webp" alt="Logo ECLL" className="h-full w-full object-cover" />
           </div>
           <span className="font-black text-xl tracking-tighter uppercase dark:text-white transition-colors group-hover:text-yellow-500">
             E.C.<span className="text-yellow-500">L.L.</span>

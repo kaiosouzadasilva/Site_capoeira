@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, User, MessageSquare, 
@@ -7,10 +7,12 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabase';
+import { useToast } from './Toast';
 
 export function StudentProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const toast = useToast();
   const [student, setStudent] = useState<any>(null);
   const [activeTab, setActiveTab] = useState('radar'); 
   const [loading, setLoading] = useState(true);
@@ -67,9 +69,9 @@ export function StudentProfile() {
         .eq('id', id);
 
       if (error) throw error;
-      alert('Prontuário e avaliações atualizados com sucesso!');
+      toast.success('Prontuário e avaliações atualizados com sucesso.');
     } catch (err: any) {
-      alert('Erro ao guardar dados: ' + err.message);
+      toast.error('Erro ao guardar dados: ' + err.message);
     } finally {
       setSaving(false);
     }

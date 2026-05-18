@@ -3,12 +3,12 @@
   "name": "Escola de Capoeira Luta de Libertação - Gestão",
   "icons": [
     {
-      "src": "/Imagem_do_grupo.png",
+      "src": "/Imagem_do_grupo.webp",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/Imagem_do_grupo.png",
+      "src": "/Imagem_do_grupo.webp",
       "type": "image/png",
       "sizes": "512x512"
     }

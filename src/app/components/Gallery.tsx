@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Camera, Image as ImageIcon, Video, Star, Users, MapPin } from 'lucide-react';
 
@@ -7,9 +7,9 @@ const categories = ['Todos', 'Rodas', 'Eventos', 'Histórico'];
 // DESTAQUES DO SITE (As imagens que aparecem logo de cara)
 // DICA: Escolha umas 6 fotos bem bonitas dos álbuns, descarregue e coloque na pasta public/galeria/
 const galleryItems = [
-  { id: 1, category: 'Eventos', title: 'Batizado 2025', image: '/galeria/roda1.jpg' },
-  { id: 2, category: 'Rodas', title: 'Roda na Eduardo Ribeiro', image: '/galeria/treino1.jpg' },
-  { id: 3, category: 'Histórico', title: 'Mestre Camisa e Mestre Canário (27 Anos ACBP)', image: './membros/mestre_camisa_e_mestre_canário.jpeg' },
+  { id: 1, category: 'Eventos', title: 'Batizado 2025', image: '/membros/batizado2025.webp' },
+  { id: 2, category: 'Rodas', title: 'Roda na Eduardo Ribeiro', image: '/Imagem_do_grupo.webp' },
+  { id: 3, category: 'Histórico', title: 'Mestre Camisa e Mestre Canário (27 Anos ACBP)', image: '/membros/mestre_camisa_e_mestre_canario.webp' },
 ];
 
 // OS SEUS LINKS DO GOOGLE FOTOS ORGANIZADOS

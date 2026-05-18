@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, CalendarPlus, Trash2, MapPin, 
@@ -6,9 +6,11 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../lib/supabase';
+import { useToast } from './Toast';
 
 export function AdminEventos() {
   const navigate = useNavigate();
+  const toast = useToast();
   const [eventos, setEventos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -27,7 +29,7 @@ export function AdminEventos() {
   const fetchEventos = async () => {
     setLoading(true);
     const { data, error } = await supabase.from('eventos').select('*').order('real_date', { ascending: false });
-    if (error) alert("Erro ao ler eventos: " + error.message);
+    if (error) toast.error("Erro ao ler eventos: " + error.message);
     if (data) setEventos(data);
     setLoading(false);
   };
@@ -38,7 +40,7 @@ export function AdminEventos() {
     e.preventDefault();
     setSaving(true);
     try {
-      let imagemFinal = tag === 'Workshop' ? '/galeria/treino1.jpg' : '/galeria/roda1.jpg';
+      let imagemFinal = tag === 'Workshop' ? '/Imagem_do_grupo.webp' : '/membros/batizado2025.webp';
       if (imageFile) {
         const fileExt = imageFile.name.split('.').pop();
         const fileName = `${Math.random()}.${fileExt}`;
@@ -57,9 +59,10 @@ export function AdminEventos() {
         setTitle(''); setDate(''); setRealDate(''); setLocation(''); 
         setObjetivo(''); setEditaisApoio(''); setProgramacao(''); setImageFile(null);
         setShowAddForm(false);
+        toast.success('Evento publicado no site.');
       }
     } catch (error: any) {
-      alert('Erro ao processar evento: ' + error.message);
+      toast.error('Erro ao processar evento: ' + error.message);
     } finally {
       setSaving(false);
     }
@@ -68,7 +71,12 @@ export function AdminEventos() {
   const handleDeleteEvento = async (id: string, titulo: string) => {
     if (window.confirm(`Tem a certeza que deseja apagar o evento "${titulo}"?`)) {
       const { error } = await supabase.from('eventos').delete().eq('id', id);
-      if (!error) setEventos(prev => prev.filter(e => e.id !== id));
+      if (error) {
+        toast.error('Erro ao apagar evento: ' + error.message);
+        return;
+      }
+      setEventos(prev => prev.filter(e => e.id !== id));
+      toast.success('Evento apagado.');
     }
   };
 

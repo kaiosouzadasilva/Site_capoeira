@@ -1,32 +1,31 @@
-import { useNavigate } from 'react-router-dom';
+﻿import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Award, Users, MapPin, Star, GraduationCap } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 
 // --- DADOS ORGANIZADOS PELOS NOVOS GRUPOS ---
 const mestreTopo = [
-  { id: 'm1', nickname: 'Mestre Canário', rank: 'Mestre', image: '/membros/Mestre_Canario.jpg', colors: ['#FFFFFF', '#e5e7eb'], polo: 'Canto do Canário' }
+  { id: 'm1', nickname: 'Mestre Canário', rank: 'Mestre', image: '/membros/Mestre_Canario.webp', colors: ['#FFFFFF', '#e5e7eb'], polo: 'Canto do Canário' }
 ];
 
 const liderancaTecnica = [
-  // { id: 'l1', nickname: 'Contramestre Ely', rank: 'Contramestre', image: '/membros/Contramestre_Ely.jpg', colors: ['#FFFFFF', '#3b82f6'] },
-  { id: 'l2', nickname: 'Contramestre Prateado', rank: 'Contramestre', image: '/membros/Contramestre_Prateado.jpg', colors: ['#FFFFFF', '#3b82f6'], polo: 'Polo Comunitário' },
-  { id: 'l3', nickname: 'Contramestra Peteca', rank: 'Contramestra', image: '/membros/Contramestra_Peteca.jpg', colors: ['#FFFFFF', '#3b82f6'], polo: 'Canto do Canário' },
-  { id: 'l4', nickname: 'Monitor Jhoy', rank: 'Monitor', image: '/membros/Monitor_Jhoy.png', colors: ['#FFFFFF', '#22c55e'], polo: 'Novo Aleixo' },
+  { id: 'l2', nickname: 'Contramestre Prateado', rank: 'Contramestre', image: '/membros/Mestre_Canario_e_Mestre_Camisa.webp', colors: ['#FFFFFF', '#3b82f6'], polo: 'Polo Comunitário' },
+  { id: 'l3', nickname: 'Contramestra Peteca', rank: 'Contramestra', image: '/membros/mestre_camisa_e_mestre_canario.webp', colors: ['#FFFFFF', '#3b82f6'], polo: 'Canto do Canário' },
+  { id: 'l4', nickname: 'Monitor Jhoy', rank: 'Monitor', image: '/membros/Monitor_Jhoy.webp', colors: ['#FFFFFF', '#22c55e'], polo: 'Novo Aleixo' },
 ];
 
 const formadosEstagiarios = [
-  { id: 'l5', nickname: 'Formado Relâmpago', rank: 'Formado', image: '/membros/Formado_Relampago.png', colors: ['#eab308', '#22c55e', '#3b82f6']},
-  { id: 'l6', nickname: 'Formado Chocolate', rank: 'Formado', image: '/membros/Formado_Chocolate.png', colors: ['#eab308', '#22c55e', '#3b82f6']},
-  { id: 'b5', nickname: 'Est. Invergado', rank: 'Estagiário', image: '/membros/Invergado.png', colors: ['#3b82f6', '#eab308'], polo: 'Novo Aleixo' },
-  { id: 'b6', nickname: 'Est. Colorau', rank: 'Estagiário', image: '/membros/Estagiario_Colorau.jpg', colors: ['#3b82f6', '#eab308'], polo: 'Canto do Canário' },
+  { id: 'l5', nickname: 'Formado Relâmpago', rank: 'Formado', image: '/membros/Invergado.webp', colors: ['#eab308', '#22c55e', '#3b82f6']},
+  { id: 'l6', nickname: 'Formado Chocolate', rank: 'Formado', image: '/membros/Mestre_Canario_e_Mestre_Camisa.webp', colors: ['#eab308', '#22c55e', '#3b82f6']},
+  { id: 'b5', nickname: 'Est. Invergado', rank: 'Estagiário', image: '/membros/Invergado.webp', colors: ['#3b82f6', '#eab308'], polo: 'Novo Aleixo' },
+  { id: 'b6', nickname: 'Est. Colorau', rank: 'Estagiário', image: '/membros/Invergado.webp', colors: ['#3b82f6', '#eab308'], polo: 'Canto do Canário' },
 ];
 
 const graduadosAlunos = [
-  { id: 'b1', nickname: 'Graduado Francês', rank: 'Graduado', image: '/membros/foto_frances.jpeg', colors: ['#22c55e', '#3b82f6'], polo: 'Novo Aleixo' },
-  { id: 'b2', nickname: 'Graduado Zumbi', rank: 'Graduado', image: '/membros/foto_zumbi.jpeg', colors: ['#22c55e', '#eab308'], polo: 'Novo Aleixo' },
-  { id: 'a1', nickname: 'Aluno Ventania', rank: 'Aluno', image: '/membros/placeholder.jpg', colors: ['#22c55e'], polo: 'Novo Aleixo' },
-  { id: 'a2', nickname: 'Aluna Sereia', rank: 'Aluno', image: '/membros/placeholder.jpg', colors: ['#22c55e'], polo: 'Polo Comunitário' },
+  { id: 'b1', nickname: 'Graduado Francês', rank: 'Graduado', image: '/membros/foto_frances.webp', colors: ['#22c55e', '#3b82f6'], polo: 'Novo Aleixo' },
+  { id: 'b2', nickname: 'Graduado Zumbi', rank: 'Graduado', image: '/membros/foto_zumbi.webp', colors: ['#22c55e', '#eab308'], polo: 'Novo Aleixo' },
+  { id: 'a1', nickname: 'Aluno Ventania', rank: 'Aluno', image: '/membros/batizado2025.webp', colors: ['#22c55e'], polo: 'Novo Aleixo' },
+  { id: 'a2', nickname: 'Aluna Sereia', rank: 'Aluno', image: '/membros/batizado2025.webp', colors: ['#22c55e'], polo: 'Polo Comunitário' },
 ];
 
 export function LeadershipHierarchy() {

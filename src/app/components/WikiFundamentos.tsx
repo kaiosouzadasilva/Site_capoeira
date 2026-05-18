@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+﻿import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, PlayCircle, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { BackgroundTexture } from './BackgroundTexture';
@@ -21,7 +21,7 @@ const wikiData: Record<string, any> = {
     texto: "A Capoeira Angola é a mãe da capoeira moderna. Preservada e codificada de forma brilhante pelo Mestre Pastinha (Vicente Ferreira Pastinha), caracteriza-se por um jogo mais lento, cadenciado e focado na rasteira, na malícia e no jogo de chão. Os movimentos são furtivos, dissimulando o ataque na forma de defesa. O foco não é a força bruta, mas sim a inteligência tática e a conexão com a ancestralidade e o toque do berimbau.",
     toques: ["Toque de Angola", "São Bento Pequeno", "Jogo de Dentro"],
     referencias: ["'Capoeira Angola' - Mestre Pastinha (1964)", "'A Herança de Pastinha' - CECA"],
-    imagem: "/membros/Mestre_Pastinha.jpg"
+    imagem: "/membros/Mestre_Pastinha.webp"
   }
   // Pode adicionar os outros (pandeiro, atabaque, regional) aqui seguindo o mesmo molde!
 };

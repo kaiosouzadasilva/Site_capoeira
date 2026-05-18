@@ -1,4 +1,4 @@
-// src/app/data/polos.ts
+﻿// src/app/data/polos.ts
 import { Polo } from '../types';
 
 export const polosData: Polo[] = [

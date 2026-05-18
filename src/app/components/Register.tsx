@@ -1,9 +1,11 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { User, Mail, Lock, UserPlus, ArrowRight, Loader2, ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useToast } from './Toast';
 
 export function Register({ onToggle }: { onToggle: () => void }) {
+  const toast = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nome, setNome] = useState('');
@@ -40,11 +42,11 @@ export function Register({ onToggle }: { onToggle: () => void }) {
 
         if (profileError) throw profileError;
         
-        alert("Cadastro realizado! Verifique seu e-mail para confirmar.");
+        toast.success("Cadastro realizado. Verifique seu e-mail para confirmar.");
         onToggle(); // Volta para o login
       }
     } catch (err: any) {
-      alert("Erro no cadastro: " + err.message);
+      toast.error("Erro no cadastro: " + err.message);
     } finally {
       setLoading(false);
     }
