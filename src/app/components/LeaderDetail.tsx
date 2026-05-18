@@ -74,14 +74,29 @@ const leadersData: Record<string, any> = {
     history: historiaPadrao 
   },
   "b5": { 
-    name: "Kaio Souza", 
+    name: "Kaio Souza da Silva", 
     nickname: "Estagiário Invergado", 
     rank: "Estagiário", 
     cordColor: "Azul e Amarelo",
     image: "/membros/Invergado.webp", 
-    years: 5, 
+    years: 10, 
     polo: "Novo Aleixo",
-    history: historiaPadrao
+    specialties: ["Desenvolvimento Web", "Preservação Histórica", "Técnica"],
+    history: `Iniciei minha jornada na Capoeira em 2016, aos 11 anos, treinando no quintal de casa com meu pai, o atual Monitor Jhoy. Ali nasceu uma paixão profunda por esta arte rica em cultura, história, respeito, hierarquia e disciplina.
+
+    Minha caminhada teve grandes desafios. Passei por dois grupos (Vôo da Iúna e Honra Negra) onde a falta de domínio do saber ensinar quase me fez desistir do caminho. Quem me motivou a continuar firme foi o Monitor Jhoy. A grande virada de chave aconteceu em 2022, quando fui acolhido pelo Mestre Canário, grupo onde encontrei meu verdadeiro espaço de evolução técnica e filosófica.
+
+    Buscando sempre beber direto da fonte tradicional, participei de palestras, eventos e rodas com grandes baluartes da Capoeira Angola, como Mestre Nô (Grupo Capoeira Angola Palmares), Mestre Cobra Mansa e Mestre Jurandir (FICA), vivências que moldaram profundamente minha visão sobre o respeito aos fundamentos.
+
+    Na trajetória competitiva, dediquei-me a treinar cada vez mais, transformando a derrota na minha estreia em 2017 em combustível para uma sequência sólida de conquistas:
+    • 2018: Vice-campeão no XIII Campeonato Amazonense de Capoeira.
+    • Sequência de Ouro: Conquista de três medalhas de ouro consecutivas em competições estaduais.
+    • 2023: Vice-campeão Absoluto no Campeonato Amazonense.
+    • 2025: Conquista do título e do Cinturão de Campeão Absoluto nos Jogos Extreme 2025, provando minha técnica em nível interestadual contra os melhores capoeiristas do Amazonas.
+
+    Minha paixão se transformou completamente quando passei a enxergar a capoeira além do esporte ou arte marcial, adotando-a como um verdadeiro estilo de vida. Compreendi o peso das histórias dos antigos mestres e a urgência de proteger esse legado.
+
+    Essa maturidade se consolidou através da tecnologia: atualmente aos 21 anos, desenvolver este sistema e portal digital para a Escola Luta de Libertação, percebi o impacto de registrar e estruturar a nossa memória na internet. Unindo minhas habilidades como desenvolvedor ao meu compromisso como capoeirista, assumi a missão de eternizar nossa cultura viva através do código, combatendo as inconsistências do "boca a boca" e garantindo que as próximas gerações recebam o conhecimento com consistência, verdade e respeito.`
   },
   "b6": { 
     name: "Colorau", 
