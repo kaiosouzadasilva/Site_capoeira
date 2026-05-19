@@ -46,21 +46,29 @@ export function StudentDashboard() {
     );
   }
 
-  // 🛡️ BLINDAGEM COMPLETA CONTRA OBJETOS VAZIOS RETORNADOS DO SUPABASE
-  const profile = (student && Object.keys(student).length > 0) ? student : {
-    nome: "Kaio Souza da Silva",
-    apelido: "Invergado",
-    graduacao: "Azul e Amarelo (Estagiário)",
-    polo: "Novo Aleixo",
-    status: "Apto",
-    observacoes: "Demonstra excelente liderança técnica no polo.",
-    radar_tecnico: {
-      tecnica: { nota: 8, feedback: 'Excelente precisão nas esquivas.' },
-      musicalidade: { nota: 6, feedback: 'Bom toque de berimbau.' },
-      mandinga: { nota: 7, feedback: 'Boa leitura tática da roda.' },
-      postura: { nota: 9, feedback: 'Conduta exemplar.' }
-    }
-  };
+  const hasStudent = !!student && Object.keys(student).length > 0;
+
+  if (!hasStudent) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pb-24 flex items-center justify-center p-6 transition-colors duration-300">
+        <div className="max-w-lg w-full bg-white dark:bg-gray-900 rounded-[2.5rem] p-8 border border-gray-100 dark:border-gray-800 shadow-2xl text-center">
+          <div className="mx-auto w-14 h-14 rounded-[2rem] bg-yellow-500/10 flex items-center justify-center text-yellow-500 mb-5">
+            <Award size={22} />
+          </div>
+          <h2 className="text-2xl font-black uppercase tracking-tighter text-gray-900 dark:text-white">
+            Prontuário indisponível
+          </h2>
+          <p className="mt-3 text-sm text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
+            Não foi encontrado um registro de aluno associado ao seu login.
+            <br />
+            Verifique se o campo <span className="font-black">user_id</span> está vinculado na tabela <span className="font-black">alunos</span>.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  const profile = student;
 
   const radar = {
     tecnica: profile.radar_tecnico?.tecnica || { nota: 0, feedback: '' },
@@ -68,6 +76,7 @@ export function StudentDashboard() {
     mandinga: profile.radar_tecnico?.mandinga || { nota: 0, feedback: '' },
     postura: profile.radar_tecnico?.postura || { nota: 0, feedback: '' }
   };
+
 
   const mediaGlobal = (radar.tecnica.nota + radar.musicalidade.nota + radar.mandinga.nota + radar.postura.nota) / 4;
 

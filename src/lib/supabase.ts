@@ -16,4 +16,4 @@ if (!supabaseUrl || !supabaseKey) {
 export const supabase = createClient(
   supabaseUrl || 'https://placeholder-url-para-evitar-crash.supabase.co', 
   supabaseKey || 'placeholder-key'
-);VITE_SUPABASE_ANON_KEY
+);
