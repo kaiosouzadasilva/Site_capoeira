@@ -1,4 +1,5 @@
-﻿import { useState, useEffect } from 'react';
+﻿// src/app/components/StudentDashboard.tsx
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Flame, Calendar, Zap, Music, Award, 
@@ -45,7 +46,8 @@ export function StudentDashboard() {
     );
   }
 
-  const profile = student || {
+  // 🛡️ BLINDAGEM COMPLETA CONTRA OBJETOS VAZIOS RETORNADOS DO SUPABASE
+  const profile = (student && Object.keys(student).length > 0) ? student : {
     nome: "Kaio Souza da Silva",
     apelido: "Invergado",
     graduacao: "Azul e Amarelo (Estagiário)",
@@ -60,7 +62,6 @@ export function StudentDashboard() {
     }
   };
 
-  // 🛡️ BLINDAGEM COMPLETA: Garante tratamento seguro caso venha nulo ou sem chaves do Supabase
   const radar = {
     tecnica: profile.radar_tecnico?.tecnica || { nota: 0, feedback: '' },
     musicalidade: profile.radar_tecnico?.musicalidade || { nota: 0, feedback: '' },
@@ -75,8 +76,10 @@ export function StudentDashboard() {
       
       <div className="bg-black text-white pt-24 pb-36 px-6 md:px-12 rounded-b-[50px] shadow-2xl relative overflow-hidden">
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 relative z-10">
+          
+          {/* Encadeamento opcional defensivo para o avatar */}
           <div className="w-28 h-28 rounded-[2rem] border-4 border-yellow-500 p-1 flex-shrink-0 bg-gray-900 shadow-2xl flex items-center justify-center font-black text-4xl text-yellow-500 rotate-3">
-            {profile.apelido ? profile.apelido[0] : profile.nome[0]}
+            {profile?.apelido ? profile.apelido[0] : (profile?.nome?.[0] || '?')}
           </div>
           
           <div className="text-center md:text-left space-y-2">

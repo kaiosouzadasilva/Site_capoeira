@@ -101,9 +101,8 @@ export function DetalheEvento() {
               </span>
 
               {/* URL do Google Maps higienizada e robusta para produção */}
-              <a 
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(evento.location)}`}
-                target="_blank"
+              <a
+              href={`https://maps.google.com/?q=${encodeURIComponent(evento.location)}`}
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-stone-400 dark:text-gray-500 hover:text-yellow-600 dark:hover:text-yellow-500 transition-colors group"
                 title="Clique para abrir rotas no Google Maps"

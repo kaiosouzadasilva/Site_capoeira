@@ -1,6 +1,6 @@
 # Configurações locais / Segredos
 .env
-
+.vite
 # Pastas de dependências
 node_modules/
 .pnpm-store/
@@ -8,3 +8,10 @@ node_modules/
 # Pastas de build
 dist/
 .next/
+
+# Variáveis de Ambiente / Segredos
+.env
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
