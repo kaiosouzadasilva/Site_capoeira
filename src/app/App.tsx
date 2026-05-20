@@ -6,6 +6,9 @@ import { Session } from '@supabase/supabase-js';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { Loader2 } from 'lucide-react';
 
+// 👇 CORREÇÃO: No Vite (React puro), o import correto é do pacote '/react'
+import { Analytics } from "@vercel/analytics/react";
+
 import { Navbar } from './components/NavBar';
 import { HeroSection } from './components/HeroSection';
 import { BackgroundTexture } from './components/BackgroundTexture';
@@ -107,6 +110,10 @@ function App() {
           </main>
         </div>
         </ToastProvider>
+
+        {/* 📊 O Vercel Analytics é colocado aqui dentro do Router para capturar todas as páginas */}
+        <Analytics />
+
       </Router>
     </ThemeProvider>
   );

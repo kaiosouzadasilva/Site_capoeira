@@ -76,7 +76,6 @@ export function AdminDashboard() {
   }
 
   return (
-    // 👇 CORRIGIDO: Agora a estrutura respeita as margens e o alinhamento de tela de alto padrão
     <div className="max-w-6xl mx-auto px-6 py-12 space-y-8 pb-24">
       
       {/* CABEÇALHO COM BOTÃO DE SAIR */}

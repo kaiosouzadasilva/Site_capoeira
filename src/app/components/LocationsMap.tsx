@@ -1,7 +1,7 @@
 ﻿// src/app/components/LocationsMap.tsx
 import { motion } from 'framer-motion';
 import { MapPin, Clock, MessageCircle, ArrowUpRight } from 'lucide-react';
-import { polosData } from '../data/polos'; // 👇 Importando os dados limpos
+import { polosData } from '../data/polos';
 
 export function LocationsMap() {
   return (
@@ -30,6 +30,8 @@ export function LocationsMap() {
                   </div>
                   <div>
                     <h3 className="text-xl font-black text-gray-900 dark:text-white leading-tight uppercase tracking-tighter">{polo.name}</h3>
+                    
+                    {/* Link do Google Maps completamente corrigido aqui */}
                     <a 
                       href={`https://maps.google.com/?q=${encodeURIComponent(polo.address)}`}
                       target="_blank"

@@ -1,4 +1,5 @@
-﻿import { useState, useEffect } from 'react';
+﻿// src/app/components/StudentDashboard.tsx
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Flame, Calendar, Zap, Music, Award, 
@@ -45,28 +46,37 @@ export function StudentDashboard() {
     );
   }
 
-  const profile = student || {
-    nome: "Kaio Souza da Silva",
-    apelido: "Invergado",
-    graduacao: "Azul e Amarelo (Estagiário)",
-    polo: "Novo Aleixo",
-    status: "Apto",
-    observacoes: "Demonstra excelente liderança técnica no polo.",
-    radar_tecnico: {
-      tecnica: { nota: 8, feedback: 'Excelente precisão nas esquivas.' },
-      musicalidade: { nota: 6, feedback: 'Bom toque de berimbau.' },
-      mandinga: { nota: 7, feedback: 'Boa leitura tática da roda.' },
-      postura: { nota: 9, feedback: 'Conduta exemplar.' }
-    }
-  };
+  const hasStudent = !!student && Object.keys(student).length > 0;
 
-  // 🛡️ BLINDAGEM COMPLETA: Garante tratamento seguro caso venha nulo ou sem chaves do Supabase
+  if (!hasStudent) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pb-24 flex items-center justify-center p-6 transition-colors duration-300">
+        <div className="max-w-lg w-full bg-white dark:bg-gray-900 rounded-[2.5rem] p-8 border border-gray-100 dark:border-gray-800 shadow-2xl text-center">
+          <div className="mx-auto w-14 h-14 rounded-[2rem] bg-yellow-500/10 flex items-center justify-center text-yellow-500 mb-5">
+            <Award size={22} />
+          </div>
+          <h2 className="text-2xl font-black uppercase tracking-tighter text-gray-900 dark:text-white">
+            Prontuário indisponível
+          </h2>
+          <p className="mt-3 text-sm text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
+            Não foi encontrado um registro de aluno associado ao seu login.
+            <br />
+            Verifique se o campo <span className="font-black">user_id</span> está vinculado na tabela <span className="font-black">alunos</span>.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  const profile = student;
+
   const radar = {
     tecnica: profile.radar_tecnico?.tecnica || { nota: 0, feedback: '' },
     musicalidade: profile.radar_tecnico?.musicalidade || { nota: 0, feedback: '' },
     mandinga: profile.radar_tecnico?.mandinga || { nota: 0, feedback: '' },
     postura: profile.radar_tecnico?.postura || { nota: 0, feedback: '' }
   };
+
 
   const mediaGlobal = (radar.tecnica.nota + radar.musicalidade.nota + radar.mandinga.nota + radar.postura.nota) / 4;
 
@@ -75,8 +85,10 @@ export function StudentDashboard() {
       
       <div className="bg-black text-white pt-24 pb-36 px-6 md:px-12 rounded-b-[50px] shadow-2xl relative overflow-hidden">
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 relative z-10">
+          
+          {/* Encadeamento opcional defensivo para o avatar */}
           <div className="w-28 h-28 rounded-[2rem] border-4 border-yellow-500 p-1 flex-shrink-0 bg-gray-900 shadow-2xl flex items-center justify-center font-black text-4xl text-yellow-500 rotate-3">
-            {profile.apelido ? profile.apelido[0] : profile.nome[0]}
+            {profile?.apelido ? profile.apelido[0] : (profile?.nome?.[0] || '?')}
           </div>
           
           <div className="text-center md:text-left space-y-2">
