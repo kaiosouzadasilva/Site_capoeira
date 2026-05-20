@@ -6,14 +6,12 @@ import { Session } from '@supabase/supabase-js';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { Loader2 } from 'lucide-react';
 
-// 👇 CORREÇÃO: No Vite (React puro), o import correto é do pacote '/react'
 import { Analytics } from "@vercel/analytics/react";
 
 import { Navbar } from './components/NavBar';
 import { HeroSection } from './components/HeroSection';
 import { BackgroundTexture } from './components/BackgroundTexture';
 import { ToastProvider } from './components/Toast';
-import { ScrollToTop } from './utils/ScrollToTop';
 
 const MemorialPatriarca = lazy(() => import('./components/MemorialPatriarca').then(m => ({ default: m.MemorialPatriarca })));
 const MethodologySection = lazy(() => import('./components/MethodologySection').then(m => ({ default: m.MethodologySection })));
@@ -27,8 +25,6 @@ const Eventos = lazy(() => import('./components/Eventos').then(m => ({ default: 
 const DetalheEvento = lazy(() => import('./components/DetalhesEvento').then(m => ({ default: m.DetalheEvento })));
 const Batizados = lazy(() => import('./components/Batizados').then(m => ({ default: m.Batizados })));
 const Graduacao = lazy(() => import('./components/Graduacao').then(m => ({ default: m.Graduacao })));
-
-// 👇 CORRIGIDO: Nome do ficheiro no singular sem o "s" no final para não dar tela branca
 const DetalhesOficina = lazy(() => import('./components/DetalhesOficina').then(m => ({ default: m.DetalhesOficina })));
 
 const Login = lazy(() => import('./components/Login').then(m => ({ default: m.Login })));
@@ -44,6 +40,7 @@ const PageLoader = () => (
   </div>
 );
 
+// Componente para garantir que a página sobe ao topo quando se clica num link
 function ScrollToTopComponent() {
   const { pathname } = useLocation();
   useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
@@ -111,7 +108,6 @@ function App() {
         </div>
         </ToastProvider>
 
-        {/* 📊 O Vercel Analytics é colocado aqui dentro do Router para capturar todas as páginas */}
         <Analytics />
 
       </Router>
