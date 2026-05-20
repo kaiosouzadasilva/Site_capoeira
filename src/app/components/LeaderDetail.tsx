@@ -67,7 +67,7 @@ const leadersData: Record<string, any> = {
     nickname: "Formado Chocolate", 
     rank: "Formado", 
     cordColor: "Verde, Amarelo e Azul",
-    image: "/membros/chocolate.webp", 
+    image: "./membros/chocolate.webp", 
     years: 12, 
     polo: "Polo Centro",
     specialties: ["Movimentação"],
@@ -103,7 +103,7 @@ const leadersData: Record<string, any> = {
     nickname: "Estagiário Colorau", 
     rank: "Estagiário", 
     cordColor: "Azul e Amarelo",
-    image: "/membros/colorau.webp", 
+    image: "./membros/chocolate.webp", 
     years: 5, 
     polo: "Centro Cultural Canto do Canário",
     history: historiaPadrao 

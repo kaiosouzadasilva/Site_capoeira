@@ -9,16 +9,16 @@ const mestreTopo = [
 ];
 
 const liderancaTecnica = [
-  { id: 'l2', nickname: 'Contramestre Prateado', rank: 'Contramestre', image: '/membros/Mestre_Canario_e_Mestre_Camisa.webp', colors: ['#FFFFFF', '#3b82f6'], polo: 'Polo Comunitário' },
-  { id: 'l3', nickname: 'Contramestra Peteca', rank: 'Contramestra', image: '/membros/mestre_camisa_e_mestre_canario.webp', colors: ['#FFFFFF', '#3b82f6'], polo: 'Canto do Canário' },
+  { id: 'l2', nickname: 'Contramestre Prateado', rank: 'Contramestre', image: '/membros/prateado.webp', colors: ['#FFFFFF', '#3b82f6'], polo: 'Polo Comunitário' },
+  { id: 'l3', nickname: 'Contramestra Peteca', rank: 'Contramestra', image: '/membros/peteca.webp', colors: ['#FFFFFF', '#3b82f6'], polo: 'Canto do Canário' },
   { id: 'l4', nickname: 'Monitor Jhoy', rank: 'Monitor', image: '/membros/Monitor_Jhoy.webp', colors: ['#FFFFFF', '#22c55e'], polo: 'Novo Aleixo' },
 ];
 
 const formadosEstagiarios = [
   { id: 'l5', nickname: 'Formado Relâmpago', rank: 'Formado', image: '/membros/Invergado.webp', colors: ['#eab308', '#22c55e', '#3b82f6']},
-  { id: 'l6', nickname: 'Formado Chocolate', rank: 'Formado', image: '/membros/Mestre_Canario_e_Mestre_Camisa.webp', colors: ['#eab308', '#22c55e', '#3b82f6']},
+  { id: 'l6', nickname: 'Formado Chocolate', rank: 'Formado', image: '/membros/chocolate.webp', colors: ['#eab308', '#22c55e', '#3b82f6']},
   { id: 'b5', nickname: 'Est. Invergado', rank: 'Estagiário', image: '/membros/Invergado.webp', colors: ['#3b82f6', '#eab308'], polo: 'Novo Aleixo' },
-  { id: 'b6', nickname: 'Est. Colorau', rank: 'Estagiário', image: '/membros/Invergado.webp', colors: ['#3b82f6', '#eab308'], polo: 'Canto do Canário' },
+  { id: 'b6', nickname: 'Est. Colorau', rank: 'Estagiário', image: '/membros/colorau.webp', colors: ['#3b82f6', '#eab308'], polo: 'Canto do Canário' },
 ];
 
 const graduadosAlunos = [
