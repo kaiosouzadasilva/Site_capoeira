@@ -4,12 +4,12 @@
   "icons": [
     {
       "src": "/Imagem_do_grupo.webp",
-      "type": "image/png",
+      "type": "image/webp",
       "sizes": "192x192"
     },
     {
       "src": "/Imagem_do_grupo.webp",
-      "type": "image/png",
+      "type": "image/webp",
       "sizes": "512x512"
     }
   ],
